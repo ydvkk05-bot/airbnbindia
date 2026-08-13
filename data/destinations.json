@@ -1,0 +1,60 @@
+[
+  {
+    "slug": "benaulim",
+    "name": "Benaulim",
+    "state": "Goa",
+    "tagline": "Best airbnb in Benaulim, Goa",
+    "keywords": [
+      "best airbnb in benaulim",
+      "cheap bnb in benaulim",
+      "luxury bnb in benaulim",
+      "airbnb benaulim",
+      "benaulim goa airbnb",
+      "homestays in benaulim"
+    ],
+    "created": "2026-08-13T18:29:19.842Z"
+  },
+  {
+    "slug": "goa",
+    "name": "Goa",
+    "state": "Goa",
+    "tagline": "Best airbnb in Goa, Goa",
+    "keywords": [
+      "best airbnb in goa",
+      "cheap bnb in goa",
+      "luxury bnb in goa",
+      "airbnb goa"
+    ],
+    "created": "2026-08-13T18:29:18.313Z"
+  },
+  {
+    "slug": "lucknow",
+    "name": "Lucknow",
+    "state": "Uttar Pradesh",
+    "tagline": "Best airbnb in Lucknow, Uttar Pradesh",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
+    ],
+    "created": "2026-08-13T19:01:50.648Z"
+  },
+  {
+    "slug": "north-goa",
+    "name": "North Goa",
+    "state": "Goa",
+    "tagline": "Best airbnb in North Goa, Goa",
+    "keywords": [
+      "best airbnb in north goa",
+      "cheap bnb in north goa",
+      "luxury bnb in north goa",
+      "airbnb north goa",
+      "north goa airbnb",
+      "homestays in north goa"
+    ],
+    "created": "2026-08-13T18:29:16.840Z"
+  }
+]
