@@ -83,8 +83,31 @@ const destImg = (d) => {
 function blurb(l) {
   const raw = l.ogDescription || l.description || "";
   let s = raw.split(/\n+/)[0].trim();
+  if (s.length <= 90 && (/\|/.test(s) || /(?:^| )VILLA|Luxury 1 bedroom|VILLA with/i.test(s))) s = cleanName(s);
   if (s.length > 150) { s = s.slice(0, 147).replace(/\s+\S*$/, "") + "…"; }
   return s || `A handpicked ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${l.state ? ", " + l.state : ""} — verified on Airbnb and ready to book.`;
+}
+
+/* Display name: clean raw host-entered Airbnb names for a professional look.
+   "The Yellow House |Luxury 3bhk Villa in Gomti Nagar" -> "The Yellow House — Luxury 3bhk Villa in Gomti Nagar"
+   "Luxury 1 bedroom VILLA with private pool & garden." -> "Luxury 1 Bedroom Villa with Private Pool & Garden" */
+function cleanName(raw) {
+  let n = String(raw || "").replace(/\s+/g, " ").trim();
+  if (!n) return n;
+  n = n.replace(/\s*\|\s*/g, " — ").replace(/\s+—\s+/g, " — ");
+  n = n.replace(/[.,]+$/g, "");
+  const small = new Set("a an the and or but of in on with to for at by from up down near via".split(" "));
+  const words = n.split(" ");
+  n = words.map((w, i) => {
+    if (/^\d+$/.test(w)) return w;
+    if (/\d/.test(w) && /^[0-9]+[a-z]+$/i.test(w)) return w;
+    const low = w.toLowerCase();
+    if (i !== 0 && i !== words.length - 1 && small.has(low)) return low;
+    if (w === w.toUpperCase() && w.length > 1 && /^[A-Z&.'-]+$/.test(w)) return low.charAt(0).toUpperCase() + low.slice(1);
+    if (w !== w.toLowerCase() && w !== w.toUpperCase()) return w;
+    return low.charAt(0).toUpperCase() + low.slice(1);
+  }).join(" ");
+  return n.replace(/\s+—\s+/g, " — ").trim();
 }
 
 const listingsOf = (destSlug) => LISTINGS.filter((l) => (l.destSlug || slug(l.city)) === destSlug);
@@ -146,7 +169,7 @@ function clientData() {
     };
   });
   const L = LISTINGS.map((l) => ({
-    slug: l.slug, name: l.name, city: l.city, state: l.state, type: l.type,
+    slug: l.slug, name: cleanName(l.name), city: l.city, state: l.state, type: l.type,
     price: l.price, rating: l.rating, reviews: l.reviews,
     img: l.cover, url: `bnbs/${l.slug}.html`, blurb: blurb(l),
     keywords: keywordsFor(l)
@@ -213,7 +236,7 @@ function tierPostObj(d, tier, loc) {
 }
 
 function detailsPostObj(l) {
-  const title = `${l.name} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}: Details & Price`;
+  const title = `${cleanName(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}: Details & Price`;
   return {
     slug: l.slug,
     title,
@@ -373,13 +396,13 @@ function destCard(d, p = "") {
 function bnbCard(l, p = "") {
   return `<article class="bnb-card reveal">
     <div class="bnb-photo">
-      <img src="${l.cover}" alt="${esc(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""} · book on Airbnb" loading="lazy">
+      <img src="${l.cover}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""} · book on Airbnb" loading="lazy">
       <span class="bnb-price-flag">${priceFlag(l.price)}</span>
-      <button class="bnb-heart" aria-label="Save ${esc(l.name)} to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg></button>
+      <button class="bnb-heart" aria-label="Save ${esc(cleanName(l.name))} to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg></button>
     </div>
     <div class="bnb-body">
       <div class="bnb-loc">${pinIcon()} ${l.city}${l.state ? ", " + l.state : ""}${l.type ? " · " + l.type : ""}</div>
-      <h3><a href="${p}bnbs/${l.slug}.html">${esc(l.name)}</a></h3>
+      <h3><a href="${p}bnbs/${l.slug}.html">${esc(cleanName(l.name))}</a></h3>
       <div class="bnb-meta"><span>★ ${l.rating || "—"}</span><span>${l.reviews || 0} reviews</span><span>${tierOf(l)}</span></div>
       <p class="bnb-blurb">${blurb(l)}</p>
       <div class="bnb-actions">
@@ -864,7 +887,7 @@ function genBnbPages() {
       {
         "@context": "https://schema.org",
         "@type": "VacationRental",
-        name: l.name,
+        name: cleanName(l.name),
         image: l.cover,
         url: SITE + "/bnbs/" + l.slug + ".html",
         description: blurb(l),
@@ -877,7 +900,7 @@ function genBnbPages() {
         provider: { "@type": "Organization", name: "Airbnb", url: l.url },
         brand: { "@type": "Organization", name: "airbnb-india.com", url: SITE }
       },
-      breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }, { name: l.name, item: SITE + "/bnbs/" + l.slug + ".html" }])
+      breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }, { name: cleanName(l.name), item: SITE + "/bnbs/" + l.slug + ".html" }])
     ];
     const keywords = keywordsFor(l).join(", ");
     const facts = [
@@ -890,7 +913,7 @@ function genBnbPages() {
     ].filter(Boolean);
 
     write(`bnbs/${l.slug}.html`, head({
-      title: `${l.name} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}${l.price ? " (" + inr(l.price) + "/night)" : ""} | airbnb-india.com`,
+      title: `${cleanName(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}${l.price ? " (" + inr(l.price) + "/night)" : ""} | airbnb-india.com`,
       desc: `${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews)${l.highlights && l.highlights.length ? " · " + esc(l.highlights[0]) : ""}. Book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}, ${l.state} on Airbnb — photos, amenities and live pricing.`,
       canonical: SITE + `/bnbs/${l.slug}.html`,
       image: l.cover,
@@ -899,15 +922,15 @@ function genBnbPages() {
   <main>
     <section class="bnb-hero">
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../bnbs.html">BNBs</a><span class="sep">›</span><span>${esc(l.name)}</span></nav>
+        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../bnbs.html">BNBs</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
         <div class="gallery-grid">
-          <figure class="gal-main"><img src="${l.cover}" alt="${esc(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}" width="900" height="620"></figure>
-          ${gallery.slice(1).map((g, i) => `<figure class="gal-thumb"><img src="${g}" alt="${esc(l.name)} — gallery ${i + 2}" loading="lazy"></figure>`).join("\n")}
+          <figure class="gal-main"><img src="${l.cover}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}" width="900" height="620"></figure>
+          ${gallery.slice(1).map((g, i) => `<figure class="gal-thumb"><img src="${g}" alt="${esc(cleanName(l.name))} — gallery ${i + 2}" loading="lazy"></figure>`).join("\n")}
         </div>
         <div class="bnb-head">
           <div>
             <div class="bnb-loc">${pinIcon()} ${l.city}${l.state ? ", " + l.state : ""}${l.type ? " · " + l.type : ""}</div>
-            <h1>${esc(l.name)}</h1>
+            <h1>${esc(cleanName(l.name))}</h1>
             <div class="bnb-rating">${starIcon()} ${l.rating || "—"} <small>· ${l.reviews || 0} reviews${l.host ? ` · hosted by ${l.host}` : ""}</small></div>
             ${(l.hostBadges || []).length ? `<div class="host-badges" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">${l.hostBadges.map((b) => `<span class="amen-chip" style="background:var(--teal-50,#e7f5f1);color:var(--teal-800,#0b3d34);border:1px solid var(--teal-200,#b9e2d6);border-radius:999px;padding:4px 12px;font-size:0.8rem;font-weight:600;">${esc(b)}</span>`).join("\n")}</div>` : ""}
           </div>
@@ -1050,7 +1073,7 @@ function genTierPosts() {
       const ld = [
         { "@context": "https://schema.org", "@type": "BlogPosting", headline: p.title, image: p.img, url: SITE + "/" + p.url, datePublished: p.date, dateModified: p.date, author: { "@type": "Organization", name: "airbnb-india.com", url: SITE }, publisher: { "@type": "Organization", name: "airbnb-india.com", url: SITE, logo: SITE + "/img/logo.svg" }, description: p.excerpt, mainEntityOfPage: SITE + "/" + p.url },
         breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Blog", item: SITE + "/blog/index.html" }, { name: p.title, item: SITE + "/" + p.url }]),
-        { "@context": "https://schema.org", "@type": "ItemList", name: p.title, itemListElement: sorted.map((l, i) => ({ "@type": "ListItem", position: i + 1, name: l.name, url: SITE + "/bnbs/" + l.slug + ".html" })) }
+        { "@context": "https://schema.org", "@type": "ItemList", name: p.title, itemListElement: sorted.map((l, i) => ({ "@type": "ListItem", position: i + 1, name: cleanName(l.name), url: SITE + "/bnbs/" + l.slug + ".html" })) }
       ];
 
       write(`blog/${p.slug}.html`, head({
@@ -1184,18 +1207,18 @@ function genDetailsPosts() {
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(l.name)}</span></nav>
+        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
         <span class="eyebrow eyebrow--light">${l.type || "Airbnb"} · ${l.city}${l.state ? ", " + l.state : ""}</span>
-        <h1>${esc(l.name)}</h1>
+        <h1>${esc(cleanName(l.name))}</h1>
         <p>${blurb(l)}</p>
       </div>
     </section>
     <section>
       <div class="container">
         <div class="article-wrap">
-          <div class="article-hero-cover reveal"><img src="${l.cover}" alt="${esc(l.name)} — ${l.type || "Airbnb"} in ${l.city}" width="900" height="500"></div>
+          <div class="article-hero-cover reveal"><img src="${l.cover}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}" width="900" height="500"></div>
           <div class="article-meta reveal">
-            <span class="author-chip"><span class="avatar">${esc((l.name || "?").charAt(0))}</span>${esc(l.host || "Verified Airbnb host")}</span>
+            <span class="author-chip"><span class="avatar">${esc((cleanName(l.name) || "?").charAt(0))}</span>${esc(l.host || "Verified Airbnb host")}</span>
             <span>${p.date}</span><span>${l.city}${l.state ? ", " + l.state : ""}</span>
           </div>
           <div class="article-body">
@@ -1208,7 +1231,7 @@ function genDetailsPosts() {
           </div>
           <h2 class="section-title" style="margin-top:44px;">Photos</h2>
           <div class="gallery-grid" style="grid-template-columns:repeat(auto-fill,minmax(240px,1fr));margin-top:20px;">
-            ${(l.images || []).slice(0, 6).map((g, i) => `<figure class="gal-thumb" style="margin:0;"><img src="${g}" alt="${esc(l.name)} — photo ${i + 1}" loading="lazy"></figure>`).join("\n")}
+            ${(l.images || []).slice(0, 6).map((g, i) => `<figure class="gal-thumb" style="margin:0;"><img src="${g}" alt="${esc(cleanName(l.name))} — photo ${i + 1}" loading="lazy"></figure>`).join("\n")}
           </div>
           <h2 class="section-title" style="margin-top:44px;">More About ${d.name}</h2>
           <div class="article-body">

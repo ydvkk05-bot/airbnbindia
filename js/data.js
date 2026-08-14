@@ -147,8 +147,6 @@ const DESTINATIONS = [
       "airbnb villa in north goa",
       "3 bedrooms entire villa north goa",
       "4.63 rated airbnb north goa",
-      "bottom_10 airbnb north goa",
-      "top rated airbnb north goa",
       "entire villa in north goa",
       "airbnb entire villa in north goa",
       "book entire villa in north goa",
@@ -165,7 +163,9 @@ const DESTINATIONS = [
       "private outdoor pool available all year open 24 hours north goa",
       "private outdoor pool available all year open 24 hours entire villa north goa",
       "pets allowed north goa",
-      "pets allowed entire villa north goa"
+      "pets allowed entire villa north goa",
+      "32 inch tv with cable satellite tv standard cable satellite north goa",
+      "32 inch tv with cable satellite tv standard cable satellite entire villa north goa"
     ]
   }
 ];
@@ -173,7 +173,7 @@ const DESTINATIONS = [
 const LISTINGS = [
   {
     "slug": "benaulim-54029360",
-    "name": "Luxury 1 bedroom VILLA with private pool & garden.",
+    "name": "Luxury 1 Bedroom Villa with Private Pool & Garden",
     "city": "Benaulim",
     "state": "Goa",
     "type": "Entire villa",
@@ -182,7 +182,7 @@ const LISTINGS = [
     "reviews": 117,
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "bnbs/benaulim-54029360.html",
-    "blurb": "Luxury 1 bedroom VILLA with private pool &amp; garden.",
+    "blurb": "Luxury 1 Bedroom Villa with Private Pool &amp; Garden",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -218,7 +218,7 @@ const LISTINGS = [
   },
   {
     "slug": "goa-38713733",
-    "name": "3 Bhk Luxury Beach Villa. HAPPY 2 U Candolim.",
+    "name": "3 Bhk Luxury Beach Villa. Happy 2 U Candolim",
     "city": "Goa",
     "state": "Goa",
     "type": "Entire bungalow",
@@ -227,7 +227,7 @@ const LISTINGS = [
     "reviews": 308,
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "bnbs/goa-38713733.html",
-    "blurb": "3 Bhk Luxury Beach Villa.",
+    "blurb": "3 Bhk Luxury Beach Villa",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -263,7 +263,7 @@ const LISTINGS = [
   },
   {
     "slug": "lucknow-1592729918855637425",
-    "name": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar",
+    "name": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar",
     "city": "Lucknow",
     "state": "Uttar Pradesh",
     "type": "Entire home",
@@ -272,7 +272,7 @@ const LISTINGS = [
     "reviews": 42,
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "bnbs/lucknow-1592729918855637425.html",
-    "blurb": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar",
+    "blurb": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -308,7 +308,7 @@ const LISTINGS = [
   },
   {
     "slug": "goa-45229616",
-    "name": "5BHK Villa with Pool and Full Time Chef, Near Baga",
+    "name": "5BHK Villa with Pool and Full Time Chef, near Baga",
     "city": "Goa",
     "state": "Goa",
     "type": "Entire home",
@@ -317,7 +317,7 @@ const LISTINGS = [
     "reviews": 103,
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "bnbs/goa-45229616.html",
-    "blurb": "5BHK Villa with Pool and Full Time Chef, Near Baga",
+    "blurb": "5BHK Villa with Pool and Full Time Chef, near Baga",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -375,8 +375,6 @@ const LISTINGS = [
       "airbnb villa in north goa",
       "3 bedrooms entire villa north goa",
       "4.63 rated airbnb north goa",
-      "bottom_10 airbnb north goa",
-      "top rated airbnb north goa",
       "entire villa in north goa",
       "airbnb entire villa in north goa",
       "book entire villa in north goa",
@@ -393,7 +391,9 @@ const LISTINGS = [
       "private outdoor pool available all year open 24 hours north goa",
       "private outdoor pool available all year open 24 hours entire villa north goa",
       "pets allowed north goa",
-      "pets allowed entire villa north goa"
+      "pets allowed entire villa north goa",
+      "32 inch tv with cable satellite tv standard cable satellite north goa",
+      "32 inch tv with cable satellite tv standard cable satellite entire villa north goa"
     ]
   }
 ];
@@ -599,12 +599,12 @@ const POSTS = [
   },
   {
     "slug": "benaulim-54029360",
-    "title": "Luxury 1 bedroom VILLA with private pool & garden. — Entire villa in Benaulim, Goa: Details & Price",
+    "title": "Luxury 1 Bedroom Villa with Private Pool & Garden — Entire villa in Benaulim, Goa: Details & Price",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/benaulim-54029360.html",
     "date": "Aug 14, 2026",
-    "excerpt": "Luxury 1 bedroom VILLA with private pool &amp; garden.",
+    "excerpt": "Luxury 1 Bedroom Villa with Private Pool &amp; Garden",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -640,12 +640,12 @@ const POSTS = [
   },
   {
     "slug": "goa-38713733",
-    "title": "3 Bhk Luxury Beach Villa. HAPPY 2 U Candolim. — Entire bungalow in Goa, Goa: Details & Price",
+    "title": "3 Bhk Luxury Beach Villa. Happy 2 U Candolim — Entire bungalow in Goa, Goa: Details & Price",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/goa-38713733.html",
     "date": "Aug 14, 2026",
-    "excerpt": "3 Bhk Luxury Beach Villa.",
+    "excerpt": "3 Bhk Luxury Beach Villa",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -681,12 +681,12 @@ const POSTS = [
   },
   {
     "slug": "lucknow-1592729918855637425",
-    "title": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar — Entire home in Lucknow, Uttar Pradesh: Details & Price",
+    "title": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar — Entire home in Lucknow, Uttar Pradesh: Details & Price",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/lucknow-1592729918855637425.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar",
+    "excerpt": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -722,12 +722,12 @@ const POSTS = [
   },
   {
     "slug": "goa-45229616",
-    "title": "5BHK Villa with Pool and Full Time Chef, Near Baga — Entire home in Goa, Goa: Details & Price",
+    "title": "5BHK Villa with Pool and Full Time Chef, near Baga — Entire home in Goa, Goa: Details & Price",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/goa-45229616.html",
     "date": "Aug 14, 2026",
-    "excerpt": "5BHK Villa with Pool and Full Time Chef, Near Baga",
+    "excerpt": "5BHK Villa with Pool and Full Time Chef, near Baga",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -781,8 +781,6 @@ const POSTS = [
       "airbnb villa in north goa",
       "3 bedrooms entire villa north goa",
       "4.63 rated airbnb north goa",
-      "bottom_10 airbnb north goa",
-      "top rated airbnb north goa",
       "entire villa in north goa",
       "airbnb entire villa in north goa",
       "book entire villa in north goa",
@@ -799,7 +797,9 @@ const POSTS = [
       "private outdoor pool available all year open 24 hours north goa",
       "private outdoor pool available all year open 24 hours entire villa north goa",
       "pets allowed north goa",
-      "pets allowed entire villa north goa"
+      "pets allowed entire villa north goa",
+      "32 inch tv with cable satellite tv standard cable satellite north goa",
+      "32 inch tv with cable satellite tv standard cable satellite entire villa north goa"
     ]
   }
 ];

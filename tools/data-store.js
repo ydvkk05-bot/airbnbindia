@@ -67,7 +67,7 @@ function richKeywords(l) {
 
   /* guest-review signals are high-value — keep them near the top */
   if (l.isGuestFavorite && city) { push("guest favorite airbnb " + city); push("most loved airbnb " + city); }
-  if (l.qualityPercentile) { push(l.qualityPercentile.toLowerCase() + " airbnb " + city); push("top rated airbnb " + city); }
+  if (l.qualityPercentile && /^TOP_\d+$/.test(l.qualityPercentile)) { push(l.qualityPercentile.toLowerCase() + " airbnb " + city); push("top rated airbnb " + city); }
   for (const c of (l.reviewCategories || []).slice(0, 4)) {
     const label = String(c.label || "").toLowerCase().replace(/[^\w\s]/g, " ").trim();
     if (label && c.rating >= 4.9) push(c.rating + " " + label + " " + city);
