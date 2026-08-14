@@ -462,7 +462,7 @@ const TESTIMONIALS = [
   {
     "id": "tmsrwp87on13",
     "name": "Arjun",
-    "text": "Listed my homestay here and got a booking within a week. Totally free and the page ranks really well.",
+    "text": "Listed my homestay here and got a booking within a week. Free during the launch offer and the page ranks really well.",
     "rating": 5,
     "post": ""
   },
