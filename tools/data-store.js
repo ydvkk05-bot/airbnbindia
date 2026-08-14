@@ -110,6 +110,18 @@ function saveListing(rawListing) {
   return l;
 }
 
+function saveHostDetails(slugName, host) {
+  const l = readListing(slugName);
+  if (!l) return null;
+  l.host = String(host.name || "").trim() || l.host;
+  l.hostWhatsapp = String(host.whatsapp || "").trim();
+  l.hostPhone = String(host.phone || "").trim();
+  l.hostEmail = String(host.email || "").trim();
+  l.updatedAt = iso();
+  fs.writeFileSync(path.join(LIST_DIR, l.slug + ".json"), JSON.stringify(l, null, 2) + "\n");
+  return l;
+}
+
 function deleteListing(slugName) {
   const f = path.join(LIST_DIR, slugName + ".json");
   if (!fs.existsSync(f)) return null;
@@ -190,7 +202,7 @@ function deleteNotification(sel) {
 
 module.exports = {
   readConfig, readDestinations, writeDestinations, listListingSlugs, readListing, readListingByUrl,
-  saveListing, deleteListing, regenerate, autoKw, slug, titleCase,
+  saveListing, deleteListing, saveHostDetails, regenerate, autoKw, slug, titleCase,
   listTestimonials, addTestimonial, deleteTestimonial,
   listNotifications, addNotification, deleteNotification
 };

@@ -925,8 +925,15 @@ function genBnbPages() {
             ${nearby.map((n) => `<div class="nearby-item"><span class="nearby-dot"></span>${esc(n)}</div>`).join("\n")}
           </div>
           <div class="author-box reveal">
-            <div class="avatar">${esc((l.name || "?").charAt(0))}</div>
-            <div><h4>About the host</h4><p>${esc(host)} — reachable through Airbnb's messaging. Booking and payment are fully protected by Airbnb's host guarantee.</p></div>
+            <div class="avatar">${esc((l.host || l.name || "?").charAt(0))}</div>
+            <div><h4>About the host</h4><p>${esc(host)}${l.hostEmail || l.hostPhone || l.hostWhatsapp ? " — reach the host directly:" : " — reachable through Airbnb's messaging. Booking and payment are fully protected by Airbnb's host guarantee."}</p>
+              ${l.hostEmail || l.hostPhone || l.hostWhatsapp ? `
+              <div class="host-contact">
+                ${l.hostWhatsapp ? `<a class="btn btn-teal btn-sm" href="https://wa.me/${String(l.hostWhatsapp).replace(/[^0-9]/g, "")}" target="_blank" rel="nofollow noopener">WhatsApp</a>` : ""}
+                ${l.hostPhone ? `<a class="btn btn-teal btn-sm" href="tel:${String(l.hostPhone).replace(/[^+0-9]/g, "")}">Call</a>` : ""}
+                ${l.hostEmail ? `<a class="btn btn-teal btn-sm" href="mailto:${esc(l.hostEmail)}">Email</a>` : ""}
+              </div>` : ""}
+            </div>
           </div>
         </div>
       </div>

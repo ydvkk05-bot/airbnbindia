@@ -100,6 +100,7 @@ Send me Airbnb links and I publish them on the site automatically.
 /update <i>&lt;link or slug&gt;</i> — re-fetch and refresh an existing listing
 /delete <i>&lt;link or slug&gt;</i> — remove a listing (BNB page + blog post)
 /list — show all current listings
+/sethostdetails <i>&lt;link or slug&gt; - name - whatsapp - phone - email</i> — set host contact info on the BNB page
 
 <b>Testimonials</b>
 /testimonial <i>Name - review text - rating (1-5) - optional post slug/link</i> — add a testimonial to the site
@@ -199,6 +200,29 @@ function cmdList(chatId) {
     return `• <code>${s}</code> — ${esc(l ? l.name : s)}${l && l.price ? " · " + inr(l.price) : ""}`;
   });
   return send(chatId, `<b>Current listings (${slugs.length})</b>\n\n` + lines.join("\n"));
+}
+
+async function cmdSetHostDetails(chatId, arg) {
+  const parts = String(arg).split("-").map((s) => s.trim()).filter(Boolean);
+  if (parts.length < 2) {
+    return send(chatId, "Format: <code>/sethostdetails &lt;link or slug&gt; - &lt;host name&gt; - &lt;whatsapp&gt; - &lt;phone&gt; - &lt;email&gt;</code>\nExample: <code>/sethostdetails north-goa-15839408 - Ravi - 919876543210 - 919987654321 - ravi@example.com</code>");
+  }
+  const ref = parts[0];
+  const existing = findExisting(ref);
+  if (!existing) return send(chatId, "No listing matches that link or slug. Check <code>/list</code>.");
+  const saved = store.saveHostDetails(existing.slug, {
+    name: parts[1] || "",
+    whatsapp: parts[2] || "",
+    phone: parts[3] || "",
+    email: parts[4] || ""
+  });
+  if (!saved) return send(chatId, "⚠️ Could not update <code>" + esc(existing.slug) + "</code>.");
+  await regenAndPush("set host details " + existing.slug);
+  return send(chatId, "✅ Host details saved for <b>" + esc(saved.name) + "</b> (" + esc(saved.slug) + ").\n\n" +
+    "💬 WhatsApp: " + esc(saved.hostWhatsapp || "—") + "\n" +
+    "📞 Phone: " + esc(saved.hostPhone || "—") + "\n" +
+    "✉️ Email: " + esc(saved.hostEmail || "—") + "\n\n" +
+    "They now appear on the BNB page.");
 }
 
 /* ---------- testimonials ---------- */
@@ -353,6 +377,7 @@ async function handleMessage(msg) {
   if (first === "/update") return cmdUpdate(chatId, arg);
   if (first === "/delete") return cmdDelete(chatId, arg);
   if (first === "/list") return cmdList(chatId);
+  if (first === "/sethostdetails") return cmdSetHostDetails(chatId, arg);
   if (first === "/frestart" || first === "/restart") return cmdForceRestart(chatId);
   if (first === "/testimonial" || first === "/testimonal") return cmdTestimonial(chatId, arg);
   if (first === "/testimonials" || first === "/listtestimonials") return cmdTestimonials(chatId);
@@ -394,4 +419,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { cmdListbnb, cmdUpdate, cmdDelete, cmdForceRestart, cmdList, handleMessage, isAdmin, listingSummary, extractUrl, findExisting, send, parseTestimonial };
+module.exports = { cmdListbnb, cmdUpdate, cmdDelete, cmdForceRestart, cmdList, handleMessage, isAdmin, listingSummary, extractUrl, findExisting, send, parseTestimonial, cmdSetHostDetails };
