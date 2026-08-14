@@ -482,13 +482,7 @@ const TESTIMONIALS = [
   }
 ];
 
-const NOTIFICATIONS = [
-  {
-    "id": "nmssedyr0yja",
-    "text": "Contact For Free Listing \nFree for Limited time \nWhatsapp- @jayanttt.ydv",
-    "link": ""
-  }
-];
+const NOTIFICATIONS = [];
 
 if (typeof window !== 'undefined') window.AIRBNB_INDIA_DATA = { destinations: DESTINATIONS, listings: LISTINGS, posts: POSTS, testimonials: TESTIMONIALS, notifications: NOTIFICATIONS };
 if (typeof module !== 'undefined' && module.exports) module.exports = { DESTINATIONS, LISTINGS, POSTS, TESTIMONIALS, NOTIFICATIONS };
