@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    airbnb-india.com — Telegram listing bot (zero dependencies)
    Runs anywhere Node 18+ exists (your PC, a VPS, a cron box).
    Long-polls the Telegram Bot API and mutates the data store,
@@ -26,6 +26,10 @@ const { fetchListing, isValidAirbnbUrl } = require(path.join(ROOT, "tools", "fet
 loadEnv();
 const TOKEN = process.env.BOT_TOKEN || "";
 const ADMIN_ID = process.env.ADMIN_ID ? parseInt(process.env.ADMIN_ID, 10) : null;
+
+/* a single bad command must never take the bot down */
+process.on("unhandledRejection", (e) => console.error("unhandled rejection:", e && e.message || e));
+process.on("uncaughtException", (e) => console.error("uncaught exception:", e && e.message || e));
 
 if (!TOKEN) {
   console.error("No BOT_TOKEN set. Create a .env file with BOT_TOKEN=... (and ADMIN_ID=...).");
@@ -94,7 +98,7 @@ Send me Airbnb links and I publish them on the site automatically.
 <b>Listings</b>
 /listbnb <i>&lt;airbnb link&gt;</i> — add a listing (fetches name, photos, rating, reviews, location automatically)
 /update <i>&lt;link or slug&gt;</i> — re-fetch and refresh an existing listing
-/delete <i>&lt;link or slug&gt;</i> — remove a listing
+/delete <i>&lt;link or slug&gt;</i> — remove a listing (BNB page + blog post)
 /list — show all current listings
 
 <b>Testimonials</b>
@@ -106,6 +110,9 @@ Send me Airbnb links and I publish them on the site automatically.
 /notification <i>&lt;text&gt;</i> — add an announcement popup (add a link at the end for a button)
 /notifications — list all announcements
 /deletenotification <i>&lt;id&gt;</i> — delete an announcement
+
+<b>Maintenance</b>
+/frestart — force restart the bot (regenerates the site, then restarts; run under pm2/systemd so it comes back automatically)
 
 /help — this message
 
@@ -123,7 +130,7 @@ async function cmdListbnb(chatId, arg) {
     const res = await fetchListing(url);
     if (!res.ok) return send(chatId, "⚠️ " + esc(res.error));
     const l = store.saveListing(res.listing);
-    regenAndPush(`add ${l.slug}`);
+    await regenAndPush(`add ${l.slug}`);
     return send(chatId, listingSummary(l, "Listing added"));
   } catch (e) {
     console.error(e);
@@ -140,7 +147,7 @@ async function cmdUpdate(chatId, arg) {
     if (!res.ok) return send(chatId, "⚠️ " + esc(res.error));
     const fresh = Object.assign({}, res.listing, { slug: existing.slug, listedAt: existing.listedAt, destSlug: existing.destSlug });
     store.saveListing(fresh);
-    regenAndPush(`update ${fresh.slug}`);
+    await regenAndPush(`update ${fresh.slug}`);
     return send(chatId, listingSummary(fresh, "Listing updated"));
   } catch (e) {
     console.error(e);
@@ -150,10 +157,38 @@ async function cmdUpdate(chatId, arg) {
 
 async function cmdDelete(chatId, arg) {
   const existing = findExisting(arg);
-  if (!existing) return send(chatId, "No listing matches that link or slug. Check <code>/list</code>.");
-  store.deleteListing(existing.slug);
-  regenAndPush(`delete ${existing.slug}`);
-  return send(chatId, `🗑️ Removed <b>${esc(existing.name)}</b> (<code>${existing.slug}</code>). The site has been regenerated.`);
+  if (!existing) return send(chatId, "No listing matches that link or slug. Check <code>/list</code> or use /listbnb to add it.");
+  const removed = store.deleteListing(existing.slug);
+  if (!removed) return send(chatId, "⚠️ Could not delete <code>" + esc(existing.slug) + "</code> — the listing file is missing or already gone.");
+
+  const result = await regenAndPush("delete " + existing.slug);
+  if (!result.ok) {
+    return send(chatId, "⚠️ Removed <b>" + esc(removed.name) + "</b> from the store, but " + result.reason + ". Run <code>/frestart</code> to rebuild the site.");
+  }
+
+  const siteFiles = ["bnbs/" + existing.slug + ".html", "blog/" + existing.slug + ".html"];
+  const leftover = siteFiles.filter((f) => fs.existsSync(path.join(ROOT, f)));
+  let msg = "🗑️ Removed <b>" + esc(removed.name) + "</b> (<code>" + esc(existing.slug) + "</code>)\n\n" +
+    "🏡 BNB page: " + (leftover.includes(siteFiles[0]) ? "❌ still exists" : "deleted ✅") + "\n" +
+    "📝 Blog post: " + (leftover.includes(siteFiles[1]) ? "❌ still exists" : "deleted ✅") + "\n\n";
+  if (result.pushed) msg += "✅ Pushed to git — live site updated.";
+  else if (result.pushError) msg += "⚠️ Site rebuilt locally, but git push failed: " + esc(result.pushError);
+  else msg += "ℹ️ Auto-push skipped (" + esc(result.pushSkipped || "unknown reason") + ") — the rebuild is local only.";
+  return send(chatId, msg);
+}
+
+/* ---------- force restart ---------- */
+
+async function cmdForceRestart(chatId) {
+  await send(chatId, "🔄 Force restart requested — regenerating the site, then restarting the bot…");
+  const r = store.regenerate();
+  console.log("frestart regen:", r.code, (r.stdout || "").trim(), (r.stderr || "").trim());
+  if (r.code === 0) {
+    await send(chatId, "✅ Site regenerated (" + (r.stdout || "").trim() + "). Restarting now… (run under pm2/systemd/supervisor to auto-restart)");
+  } else {
+    await send(chatId, "⚠️ Regeneration returned code " + r.code + ": " + (r.stderr || "unknown error").toString().slice(0, 300) + ". Restarting anyway…");
+  }
+  setTimeout(() => process.exit(0), 600);
 }
 
 function cmdList(chatId) {
@@ -185,7 +220,7 @@ async function cmdTestimonial(chatId, arg) {
   const t = parseTestimonial(arg);
   if (!t) return send(chatId, "Format: <code>/testimonial Name - Your review here - rating (1-5) - optional post slug or link</code>\nExample: <code>/testimonial Priya - Amazing villa, felt like home - 5 - north-goa-15839408</code>");
   const saved = store.addTestimonial(t);
-  regenAndPush("add testimonial " + saved.id);
+  await regenAndPush("add testimonial " + saved.id);
   return send(chatId, `Added a ${saved.rating}/5 testimonial from <b>${esc(saved.name)}</b>. It is now on the homepage.`);
 }
 
@@ -209,7 +244,7 @@ async function cmdDeleteTestimonial(chatId, arg) {
   }
   const removed = store.deleteTestimonial(sel);
   if (!removed) return send(chatId, `No testimonial with id <code>${esc(sel)}</code>. Check /testimonials.`);
-  regenAndPush("delete testimonial " + sel);
+  await regenAndPush("delete testimonial " + sel);
   return send(chatId, `Testimonial from <b>${esc(removed.name)}</b> deleted.`);
 }
 
@@ -222,7 +257,7 @@ async function cmdNotification(chatId, arg) {
   const text = url ? raw.replace(url, "").trim() : raw;
   if (!text) return send(chatId, "Please add some text before the link.");
   const n = store.addNotification({ text, link: url || "" });
-  regenAndPush("add notification " + n.id);
+  await regenAndPush("add notification " + n.id);
   return send(chatId, `Announcement saved (id <code>${n.id}</code>). Visitors will see it once as a popup. Manage with /notifications and /deletenotification.`);
 }
 
@@ -249,7 +284,7 @@ async function cmdDeleteNotification(chatId, arg) {
   }
   const removed = store.deleteNotification(sel);
   if (!removed) return send(chatId, `No announcement with id <code>${esc(sel)}</code>. Check /notifications.`);
-  regenAndPush("delete notification " + sel);
+  await regenAndPush("delete notification " + sel);
   return send(chatId, `Announcement deleted. It will no longer pop up for new visitors.`);
 }
 
@@ -268,17 +303,33 @@ function findExisting(arg) {
   return bySlug || null;
 }
 
-function regenAndPush(log) {
+async function regenAndPush(log) {
   const r = store.regenerate();
   console.log("regen:", r.code, (r.stdout || "").trim(), (r.stderr || "").trim());
-  if (process.env.GIT_AUTOPUSH === "1" && fs.existsSync(path.join(ROOT, ".git"))) {
+  if (r.code !== 0) {
+    const why = (r.stderr || r.stdout || "unknown error").toString().trim().slice(0, 300);
+    return { ok: false, reason: "site regeneration failed: " + why };
+  }
+  let pushed = false;
+  let pushError = "";
+  let pushSkipped = "";
+  if (process.env.GIT_AUTOPUSH !== "1") {
+    pushSkipped = "GIT_AUTOPUSH is off in .env";
+  } else if (!fs.existsSync(path.join(ROOT, ".git"))) {
+    pushSkipped = "no git repository found (missing .git) in the project folder";
+  } else {
     try {
-      execSync('git add -A && git commit -m "bot: ' + log + '" && git push', { cwd: ROOT, stdio: ["ignore", "pipe", "pipe"] });
+      execSync('git add -A && git commit -m "bot: ' + log + '" && git push', {
+        cwd: ROOT, stdio: ["ignore", "pipe", "pipe"], timeout: 30000, shell: true
+      });
+      pushed = true;
       console.log("git push done for:", log);
     } catch (e) {
-      console.error("git push failed:", (e.stderr || e.message || "").toString().slice(0, 300));
+      pushError = ((e && (e.stderr || e.message)) || "").toString().slice(0, 300);
+      console.error("git push failed:", pushError);
     }
   }
+  return { ok: true, pushed, pushError, pushSkipped };
 }
 
 /* ---------- main loop ---------- */
@@ -302,6 +353,7 @@ async function handleMessage(msg) {
   if (first === "/update") return cmdUpdate(chatId, arg);
   if (first === "/delete") return cmdDelete(chatId, arg);
   if (first === "/list") return cmdList(chatId);
+  if (first === "/frestart" || first === "/restart") return cmdForceRestart(chatId);
   if (first === "/testimonial" || first === "/testimonal") return cmdTestimonial(chatId, arg);
   if (first === "/testimonials" || first === "/listtestimonials") return cmdTestimonials(chatId);
   if (first === "/deletetestimonial") return cmdDeleteTestimonial(chatId, arg);
@@ -342,4 +394,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { cmdListbnb, cmdUpdate, cmdDelete, cmdList, handleMessage, isAdmin, listingSummary, extractUrl, findExisting, send, parseTestimonial };
+module.exports = { cmdListbnb, cmdUpdate, cmdDelete, cmdForceRestart, cmdList, handleMessage, isAdmin, listingSummary, extractUrl, findExisting, send, parseTestimonial };

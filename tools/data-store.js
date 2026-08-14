@@ -115,14 +115,21 @@ function deleteListing(slugName) {
   if (!fs.existsSync(f)) return null;
   const listing = JSON.parse(fs.readFileSync(f, "utf8"));
   fs.unlinkSync(f);
+  /* remove the generated BNB page + blog post for this listing too */
+  for (const rel of ["bnbs/" + slugName + ".html", "blog/" + slugName + ".html"]) {
+    try { fs.rmSync(path.join(ROOT, rel), { force: true }); } catch (e) { /* best-effort */ }
+  }
   removeEmptyDestination(listing.destSlug || slug(listing.city));
   return listing;
 }
 
 function regenerate() {
   const { spawnSync } = require("child_process");
-  const res = spawnSync(process.execPath, [path.join(ROOT, "tools", "gen-site.js")], { encoding: "utf8", cwd: ROOT });
-  return { code: res.status, stdout: res.stdout || "", stderr: res.stderr || "" };
+  const res = spawnSync(process.execPath, [path.join(ROOT, "tools", "gen-site.js")], {
+    encoding: "utf8", cwd: ROOT, timeout: 90000, killSignal: "SIGTERM"
+  });
+  const err = (res.error ? String(res.error.message || res.error) : "") + (res.stderr || "");
+  return { code: res.status, stdout: res.stdout || "", stderr: err.trim() };
 }
 
 /* ---------- testimonials ---------- */

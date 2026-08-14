@@ -17,6 +17,7 @@ const CONFIG = require(path.join(ROOT, "data", "config.json"));
 const SITE = CONFIG.siteUrl;
 const EMAIL = CONFIG.email;
 const PHONE = CONFIG.phone;
+const WA = "https://wa.me/" + String(CONFIG.phoneLink || CONFIG.phone || "").replace(/[^0-9]/g, "") + "?text=" + encodeURIComponent("Hi! I'd like to list my BNB on airbnb-india.com.");
 const AUTHOR = CONFIG.author || "airbnb-india.com editors";
 
 const DEST_PATH = path.join(ROOT, "data", "destinations.json");
@@ -415,7 +416,7 @@ function genIndex() {
     { q: "What is airbnb-india.com?", a: "airbnb-india.com is a free discovery platform for India's best bed & breakfasts, homestays, villas and houseboats. We pull live Airbnb listings straight into focused city and state guides, then link you to the official Airbnb listing for live pricing and secure booking." },
     { q: "How do I book a stay listed here?", a: "Click 'Book on Airbnb' on any listing and you'll be taken to the matching listing on Airbnb, where you complete payment safely through Airbnb's own booking flow." },
     { q: "How much does an Airbnb in India cost?", a: "Budget stays start around ₹800–₹1,500 a night, comfortable mid-range BNBs run ₹1,800–₹3,500, and luxury villas, houseboats and camps range from ₹4,000 to ₹20,000+ depending on the destination and season." },
-    { q: "How do I list my BNB on this website?", a: "It's free forever. Send your Airbnb listing link to our Telegram bot or email it to ${EMAIL} with your property name and city — new listings go live automatically within minutes." },
+    { q: "How do I list my BNB on this website?", a: "It's free forever. WhatsApp or email us your property name, city and Airbnb listing link — new listings go live automatically within minutes." },
     { q: "Is airbnb-india.com affiliated with Airbnb?", a: "No. We are an independent discovery site and are not affiliated with, endorsed by or a partner of Airbnb, Inc. Bookings are completed on Airbnb under their own terms." }
   ];
   const ld = [
@@ -608,9 +609,9 @@ function genIndex() {
         <div class="list-cta reveal">
           <div>
             <h3>Own a homestay or BNB? Get listed free.</h3>
-            <p>Send your Airbnb link to our Telegram bot or email ${EMAIL} — new listings go live automatically within minutes.</p>
+            <p>WhatsApp or email us your Airbnb link — new listings go live automatically within minutes. <a href="mailto:${EMAIL}">${EMAIL}</a></p>
           </div>
-          <a class="btn btn-lg" href="contact.html">List Your BNB Free</a>
+          <a class="btn btn-lg" href="${WA}" target="_blank" rel="noopener">WhatsApp Us</a>
         </div>
       </div>
     </section>
@@ -702,8 +703,8 @@ function genBnbs() {
     <section class="section-alt">
       <div class="container">
         <div class="list-cta reveal">
-          <div><h3>Hosting an Airbnb? Get listed free.</h3><p>Send your Airbnb link to our Telegram bot or email ${EMAIL} — listings go live automatically within minutes.</p></div>
-          <a class="btn btn-lg" href="list-your-bnb.html">List Your BNB Free</a>
+          <div><h3>Hosting an Airbnb? Get listed free.</h3><p>WhatsApp or email us your Airbnb link — listings go live automatically within minutes. <a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
+          <a class="btn btn-lg" href="${WA}" target="_blank" rel="noopener">WhatsApp Us</a>
         </div>
       </div>
     </section>
@@ -816,8 +817,8 @@ function genDestinationPages() {
     <section>
       <div class="container">
         <div class="list-cta reveal">
-          <div><h3>Own an Airbnb in ${d.name}?</h3><p>Send your Airbnb link to our Telegram bot and get listed on this page automatically — free. Reach travellers planning ${d.name} trips.</p></div>
-          <a class="btn btn-lg" href="../contact.html">List Your BNB Free</a>
+          <div><h3>Own an Airbnb in ${d.name}?</h3><p>WhatsApp or email us your Airbnb link and get listed on this page automatically — free. Reach travellers planning ${d.name} trips. <a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
+          <a class="btn btn-lg" href="${WA}" target="_blank" rel="noopener">WhatsApp Us</a>
         </div>
       </div>
     </section>
@@ -944,8 +945,8 @@ function genBnbPages() {
     <section>
       <div class="container">
         <div class="list-cta reveal">
-          <div><h3>Own a stay like this?</h3><p>Get listed free on airbnb-india.com — send your Airbnb link to our Telegram bot and go live automatically.</p></div>
-          <a class="btn btn-lg" href="../contact.html">List Your BNB Free</a>
+          <div><h3>Own a stay like this?</h3><p>Get listed free on airbnb-india.com — WhatsApp or email us your Airbnb link and go live automatically. <a href="mailto:${EMAIL}">${EMAIL}</a></p></div>
+          <a class="btn btn-lg" href="${WA}" target="_blank" rel="noopener">WhatsApp Us</a>
         </div>
       </div>
     </section>
