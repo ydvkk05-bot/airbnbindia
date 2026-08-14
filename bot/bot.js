@@ -58,7 +58,7 @@ async function tg(method, payload) {
   });
   const data = await res.json();
   if (data.ok) return data.result;
-  if (data.error_code === 409) { console.error("409: another bot instance is polling. Stop it first."); process.exit(1); }
+  if (data.error_code === 409) { console.error("409: another bot instance is polling. Waiting and retrying…"); await sleep(5000); return tg(method, payload); }
   if (data.error_code === 429) { const t = (data.parameters && data.parameters.retry_after) || 3; await sleep(t * 1000); return tg(method, payload); }
   throw new Error("Telegram " + method + ": " + JSON.stringify(data));
 }
