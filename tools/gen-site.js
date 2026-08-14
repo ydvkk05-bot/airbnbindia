@@ -11,6 +11,7 @@
 const fs = require("fs");
 const path = require("path");
 const { u } = require("./images.js");
+const { keywordsFor } = require("./data-store.js");
 
 const ROOT = path.join(__dirname, "..");
 const CONFIG = require(path.join(ROOT, "data", "config.json"));
@@ -80,7 +81,7 @@ const destImg = (d) => {
 };
 
 function blurb(l) {
-  const raw = l.description || "";
+  const raw = l.ogDescription || l.description || "";
   let s = raw.split(/\n+/)[0].trim();
   if (s.length > 150) { s = s.slice(0, 147).replace(/\s+\S*$/, "") + "…"; }
   return s || `A handpicked ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${l.state ? ", " + l.state : ""} — verified on Airbnb and ready to book.`;
@@ -88,6 +89,16 @@ function blurb(l) {
 
 const listingsOf = (destSlug) => LISTINGS.filter((l) => (l.destSlug || slug(l.city)) === destSlug);
 const destBySlug = (s) => DESTINATIONS.find((d) => d.slug === s);
+
+/* destination keywords: base phrases + every listing's rich keywords */
+function destKeywords(d) {
+  const base = (d.keywords && d.keywords.length ? d.keywords : autoKw(d.name, d.state)).map((k) => String(k).toLowerCase().trim());
+  const seen = new Set(base);
+  for (const l of listingsOf(d.slug)) {
+    for (const k of keywordsFor(l)) if (!seen.has(k)) { seen.add(k); base.push(k); }
+  }
+  return base.slice(0, 30);
+}
 
 const tierListings = (loc, tier) => {
   const arr = loc.slice();
@@ -131,14 +142,14 @@ function clientData() {
       img: destImg(d),
       url: `destinations/${d.slug}.html`,
       count: loc.length,
-      keywords: d.keywords || autoKw(d.name, d.state)
+      keywords: destKeywords(d)
     };
   });
   const L = LISTINGS.map((l) => ({
     slug: l.slug, name: l.name, city: l.city, state: l.state, type: l.type,
     price: l.price, rating: l.rating, reviews: l.reviews,
     img: l.cover, url: `bnbs/${l.slug}.html`, blurb: blurb(l),
-    keywords: l.keywords || autoKw(l.city, l.state)
+    keywords: keywordsFor(l)
   }));
   const P = buildPosts().map((p) => ({
     slug: p.slug, title: p.title, category: p.category, img: p.img,
@@ -211,7 +222,7 @@ function detailsPostObj(l) {
     url: `blog/${l.slug}.html`,
     date: fmtDate(l.listedAt),
     excerpt: blurb(l),
-    keywords: l.keywords || autoKw(l.city, l.state),
+    keywords: keywordsFor(l),
     listing: l
   };
 }
@@ -728,7 +739,7 @@ function genDestinationPages() {
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Destinations", item: SITE + "/destinations.html" }, { name: `${d.name}`, item: SITE + "/destinations/" + d.slug + ".html" }]),
       { "@context": "https://schema.org", "@type": "ItemList", name: `Best airbnb in ${d.name}`, itemListElement: loc.map((l, i) => ({ "@type": "ListItem", position: i + 1, url: SITE + "/bnbs/" + l.slug + ".html" })) }
     ];
-    const keywords = (d.keywords || autoKw(d.name, d.state)).join(", ");
+    const keywords = destKeywords(d).join(", ");
 
     write(`destinations/${d.slug}.html`, head({
       title: `Best Airbnb in ${d.name} (2026) — Top-Rated ${d.state} Stays & Cheap Options | airbnb-india.com`,
@@ -868,7 +879,7 @@ function genBnbPages() {
       },
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }, { name: l.name, item: SITE + "/bnbs/" + l.slug + ".html" }])
     ];
-    const keywords = (l.keywords || autoKw(l.city, l.state)).join(", ");
+    const keywords = keywordsFor(l).join(", ");
     const facts = [
       l.price ? `from ${inr(l.price)}/night` : "live pricing on Airbnb",
       l.rating ? `★ ${l.rating} rating` : null,
@@ -880,7 +891,7 @@ function genBnbPages() {
 
     write(`bnbs/${l.slug}.html`, head({
       title: `${l.name} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}${l.price ? " (" + inr(l.price) + "/night)" : ""} | airbnb-india.com`,
-      desc: `${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews). Check live pricing and book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}, ${l.state} on Airbnb.`,
+      desc: `${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews)${l.highlights && l.highlights.length ? " · " + esc(l.highlights[0]) : ""}. Book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}, ${l.state} on Airbnb — photos, amenities and live pricing.`,
       canonical: SITE + `/bnbs/${l.slug}.html`,
       image: l.cover,
       jsonld: ld
@@ -898,6 +909,7 @@ function genBnbPages() {
             <div class="bnb-loc">${pinIcon()} ${l.city}${l.state ? ", " + l.state : ""}${l.type ? " · " + l.type : ""}</div>
             <h1>${esc(l.name)}</h1>
             <div class="bnb-rating">${starIcon()} ${l.rating || "—"} <small>· ${l.reviews || 0} reviews${l.host ? ` · hosted by ${l.host}` : ""}</small></div>
+            ${(l.hostBadges || []).length ? `<div class="host-badges" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">${l.hostBadges.map((b) => `<span class="amen-chip" style="background:var(--teal-50,#e7f5f1);color:var(--teal-800,#0b3d34);border:1px solid var(--teal-200,#b9e2d6);border-radius:999px;padding:4px 12px;font-size:0.8rem;font-weight:600;">${esc(b)}</span>`).join("\n")}</div>` : ""}
           </div>
           <div class="book-panel">
             <div class="book-price">${l.price ? inr(l.price) : "Price varies"}<small>${l.price ? "/ night" : "— confirm on Airbnb"}</small></div>
@@ -913,6 +925,21 @@ function genBnbPages() {
           <div class="article-body reveal">
             ${paras.map((p) => `<p>${esc(p)}</p>`).join("\n")}
           </div>
+          ${l.highlights && l.highlights.length ? `
+          <h2 class="section-title" style="margin-top:44px;">Why Guests Love This Stay</h2>
+          <div class="highlight-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:16px;">
+            ${l.highlights.map((h) => `<div class="highlight-card" style="background:var(--teal-50,#e7f5f1);border:1px solid var(--teal-200,#b9e2d6);border-radius:14px;padding:16px 18px;font-size:0.92rem;line-height:1.5;"><span style="color:var(--teal-700,#0f5c4e);font-weight:700;margin-right:6px;">★</span>${esc(h)}</div>`).join("\n")}
+          </div>` : ""}
+          ${(l.rating || l.reviewCategories.length) ? `
+          <h2 class="section-title" style="margin-top:44px;">Guest Reviews &amp; Ratings</h2>
+          <div class="review-summary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:16px;">
+            <div class="review-card" style="background:var(--teal-50,#e7f5f1);border:1px solid var(--teal-200,#b9e2d6);border-radius:14px;padding:16px 18px;">
+              <div style="font-size:2rem;font-weight:800;color:var(--teal-800,#0b3d34);line-height:1;">${l.rating || "—"}<span style="font-size:1rem;font-weight:600;color:var(--teal-700,#0f5c4e);">/5</span></div>
+              <div style="margin-top:6px;font-size:0.9rem;font-weight:600;">${l.reviews ? l.reviews + " guest reviews on Airbnb" : "guest reviews on Airbnb"}</div>
+              ${l.isGuestFavorite ? `<div style="margin-top:8px;font-size:0.85rem;color:var(--teal-700,#0f5c4e);">${esc(l.guestFavoriteDescription || "Guest favorite")}</div>` : ""}
+            </div>
+            ${(l.reviewCategories || []).map((c) => `<div class="review-card" style="background:var(--surface,#fff);border:1px solid var(--border,#e5e7eb);border-radius:14px;padding:14px 18px;"><div style="font-size:0.85rem;font-weight:600;color:var(--muted,#6b7280);">${esc(c.label)}</div><div style="font-size:1.25rem;font-weight:700;color:var(--ink,#111827);margin-top:4px;">★ ${c.rating}</div></div>`).join("\n")}
+          </div>` : ""}
           <div class="fact-strip reveal" style="display:flex;flex-wrap:wrap;gap:10px;margin:28px 0;">
             ${facts.map((f) => `<span class="amen-chip">${f}</span>`).join("\n")}
           </div>
@@ -926,7 +953,9 @@ function genBnbPages() {
           </div>
           <div class="author-box reveal">
             <div class="avatar">${esc((l.host || l.name || "?").charAt(0))}</div>
-            <div><h4>About the host</h4><p>${esc(host)}${l.hostEmail || l.hostPhone || l.hostWhatsapp ? " — reach the host directly:" : " — reachable through Airbnb's messaging. Booking and payment are fully protected by Airbnb's host guarantee."}</p>
+            <div><h4>About the host</h4><p>${esc(host)}${l.hostEmail || l.hostPhone || l.hostWhatsapp ? " — reach the host directly:" : l.hostAbout ? "" : " — reachable through Airbnb's messaging. Booking and payment are fully protected by Airbnb's host guarantee."}</p>
+              ${l.hostAbout ? `<p style="margin-top:8px;opacity:0.92;">${esc(l.hostAbout)}</p>` : ""}
+              ${(l.hostHighlights || []).length ? `<p style="margin-top:8px;opacity:0.9;">${esc(l.hostHighlights.join(" · "))}</p>` : ""}
               ${l.hostEmail || l.hostPhone || l.hostWhatsapp ? `
               <div class="host-contact">
                 ${l.hostWhatsapp ? `<a class="btn btn-teal btn-sm" href="https://wa.me/${String(l.hostWhatsapp).replace(/[^0-9]/g, "")}" target="_blank" rel="nofollow noopener">WhatsApp</a>` : ""}
@@ -1116,7 +1145,7 @@ function genTierPosts() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${(d.keywords || autoKw(d.name, d.state)).join(", ")}">
+  <meta name="keywords" content="${destKeywords(d).join(", ")}">
   ` + tail("../"));
     }
   }
@@ -1197,7 +1226,7 @@ function genDetailsPosts() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${(l.keywords || autoKw(l.city, l.state)).join(", ")}">
+  <meta name="keywords" content="${keywordsFor(l).join(", ")}">
   ` + tail("../"));
   }
 }

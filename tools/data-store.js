@@ -35,6 +35,111 @@ function autoKw(name, state) {
   return base.concat([collapse(n, s).join(" ") + " airbnb", "homestays in " + n]).filter(Boolean);
 }
 
+/* SEO keyword stop-words stripped from description-derived phrases */
+const KW_STOP = new Set("a an and are as at be by for from in is it its of on or that the this to was were with your you our we".split(" "));
+
+/* Generate a rich, search-friendly keyword list from og details, the full
+   Airbnb description, amenities and highlights. Falls back to autoKw(). */
+function richKeywords(l) {
+  const out = [];
+  const seen = new Set();
+  const city = slug(l.city || "").replace(/-/g, " ");
+  const state = l.state ? slug(l.state).replace(/-/g, " ") : "";
+  const type = slug(l.type || "").replace(/-/g, " ");
+  const name = String(l.name || "").toLowerCase().replace(/\s+/g, " ").trim();
+  const text = String(l.ogDescription || "").toLowerCase() + " " + String(l.description || "").toLowerCase();
+  const push = (k) => {
+    k = String(k || "").toLowerCase().replace(/\s+/g, " ").trim();
+    if (k && k.length > 2 && !seen.has(k)) { seen.add(k); out.push(k); }
+  };
+
+  /* base location phrases */
+  autoKw(city, state).forEach(push);
+
+  /* og:title e.g. "Bungalow in Goa · ★4.93 · 3 bedrooms · 3 beds · 4 bathrooms" */
+  const ogTitle = String(l.ogTitle || "");
+  const ogLead = ogTitle.split("·")[0].trim().toLowerCase();
+  if (ogLead) push(ogLead + " india");
+  const ogType = ogLead.replace(/\s+in\s+.*$/, "").trim();
+  if (ogType && city) { push(ogType + " in " + city); push("airbnb " + ogType + " in " + city); }
+  const bedM = ogTitle.match(/(\d+)\s+bedrooms?/i); if (bedM) push(bedM[0].toLowerCase() + " " + (type || "bnb") + " " + city);
+  const starM = ogTitle.match(/★\s*([\d.]+)/); if (starM) push(starM[1] + " rated airbnb " + city);
+
+  /* guest-review signals are high-value — keep them near the top */
+  if (l.isGuestFavorite && city) { push("guest favorite airbnb " + city); push("most loved airbnb " + city); }
+  if (l.qualityPercentile) { push(l.qualityPercentile.toLowerCase() + " airbnb " + city); push("top rated airbnb " + city); }
+  for (const c of (l.reviewCategories || []).slice(0, 4)) {
+    const label = String(c.label || "").toLowerCase().replace(/[^\w\s]/g, " ").trim();
+    if (label && c.rating >= 4.9) push(c.rating + " " + label + " " + city);
+  }
+
+  /* type + location */
+  if (type && city) {
+    push(type + " in " + city);
+    push("airbnb " + type + " in " + city);
+    push("book " + type + " in " + city);
+    if (state) push(type + " " + city + " " + state);
+  }
+
+  /* name-based long-tails: "3 bhk luxury beach villa candolim" */
+  if (name) {
+    const words = name.replace(/[^\w\s-]/g, " ").split(/\s+/).filter((w) => w.length > 2 && !KW_STOP.has(w));
+    if (words.length) {
+      push(words.slice(0, 5).join(" "));
+      if (city) push(words.slice(0, 4).join(" ") + " in " + city);
+      if (state) push(words.slice(0, 4).join(" ") + " " + state);
+      const bh = name.match(/(\d+)\s*(?:bhk|br|bedroom)/i);
+      if (bh) { push(bh[0].toLowerCase() + " " + (type || "villa") + " " + city); push(bh[0].toLowerCase() + " " + (type || "villa") + " in " + city); }
+    }
+  }
+
+  /* phrases from amenities: "shared pool goa", "beachfront villa goa" */
+  const amenPhrases = (l.amenities || []).map((a) => String(a).toLowerCase().replace(/[–—]/g, " ").replace(/[^\w\s]/g, " ").replace(/\s+/g, " ").trim()).filter(Boolean);
+  for (const a of amenPhrases.slice(0, 12)) {
+    push(a + " " + city);
+    if (type) push(a + " " + type + " " + city);
+  }
+
+  /* content keywords from description/ogDescription: pick 2-3 word noun phrases */
+  const tokens = text.replace(/[^\w\s-]/g, " ").split(/\s+/).filter((w) => w.length > 3 && !KW_STOP.has(w));
+  const phrases = [];
+  for (let i = 0; i < tokens.length - 1; i++) {
+    const p2 = tokens[i] + " " + tokens[i + 1];
+    if (!KW_STOP.has(tokens[i]) && !KW_STOP.has(tokens[i + 1]) && p2.length > 8 && !phrases.includes(p2)) phrases.push(p2);
+    if (i < tokens.length - 2) {
+      const p3 = p2 + " " + tokens[i + 2];
+      if (!KW_STOP.has(tokens[i + 2]) && p3.length > 14 && !phrases.includes(p3)) phrases.push(p3);
+    }
+  }
+  for (const p of phrases.slice(0, 10)) {
+    push(p);
+    if (city) push(p + " " + city);
+  }
+
+  /* highlights are short marketing blurbs — keep as-is, city-qualified */
+  for (const h of (l.highlights || []).slice(0, 3)) {
+    const k = String(h).split(/[—–]/)[0].trim().toLowerCase();
+    if (k && k.length > 4) { push(k); push(k + " " + city); }
+  }
+
+  /* dedupe, cap at 30 */
+  const unique = [];
+  for (const k of out) if (!unique.includes(k)) unique.push(k);
+  return unique.slice(0, 30);
+}
+
+/* keywordsFor: stored manual keywords win, enriched by auto-generated ones */
+function keywordsFor(l) {
+  const auto = richKeywords(l);
+  const manual = Array.isArray(l.keywords) ? l.keywords.map((k) => String(k).toLowerCase().trim()).filter(Boolean) : [];
+  const merged = [];
+  const seen = new Set();
+  for (const k of manual.concat(auto)) {
+    if (k && !seen.has(k)) { seen.add(k); merged.push(k); }
+  }
+  return merged.slice(0, 30);
+}
+
 function readConfig() {
   if (!fs.existsSync(CONFIG_PATH)) return {};
   return JSON.parse(fs.readFileSync(CONFIG_PATH, "utf8"));
@@ -103,7 +208,7 @@ function saveListing(rawListing) {
   const l = Object.assign({}, rawListing);
   l.listedAt = l.listedAt || iso();
   l.updatedAt = iso();
-  l.keywords = l.keywords && l.keywords.length ? l.keywords : autoKw(l.city, l.state);
+  l.keywords = keywordsFor(l);
   l.destSlug = upsertDestination(l);
   fs.mkdirSync(LIST_DIR, { recursive: true });
   fs.writeFileSync(path.join(LIST_DIR, l.slug + ".json"), JSON.stringify(l, null, 2) + "\n");
@@ -202,7 +307,7 @@ function deleteNotification(sel) {
 
 module.exports = {
   readConfig, readDestinations, writeDestinations, listListingSlugs, readListing, readListingByUrl,
-  saveListing, deleteListing, saveHostDetails, regenerate, autoKw, slug, titleCase,
+  saveListing, deleteListing, saveHostDetails, regenerate, autoKw, richKeywords, keywordsFor, slug, titleCase,
   listTestimonials, addTestimonial, deleteTestimonial,
   listNotifications, addNotification, deleteNotification
 };

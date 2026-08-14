@@ -17,10 +17,60 @@
   "beds": 3,
   "baths": 3,
   "host": "Ravi",
-  "amenities": [],
-  "description": "Nestled in the heart of Goa and surrounded by nature, this spacious luxury villa of 2368 sqft comes with its own private pool, modern contemporary ...",
+  "hostAbout": null,
+  "hostBadges": [
+    "10 years hosting"
+  ],
+  "hostHighlights": [
+    "Lives in Goa, India"
+  ],
+  "reviewCategories": [
+    {
+      "label": "Cleanliness",
+      "rating": 4.7
+    },
+    {
+      "label": "Accuracy",
+      "rating": 4.6
+    },
+    {
+      "label": "Check-in",
+      "rating": 4.8
+    },
+    {
+      "label": "Communication",
+      "rating": 4.8
+    },
+    {
+      "label": "Location",
+      "rating": 4.2
+    },
+    {
+      "label": "Value",
+      "rating": 4.4
+    }
+  ],
+  "isGuestFavorite": false,
+  "guestFavoriteDescription": "One of the most loved homes on Airbnb, according to guests",
+  "qualityPercentile": "BOTTOM_10",
+  "amenities": [
+    "Kitchen",
+    "Wifi",
+    "Free parking on premises",
+    "Private outdoor pool – available all year, open 24 hours",
+    "Pets allowed",
+    "32-inch TV with cable/satellite TV, standard cable/satellite",
+    "Free washer – In unit",
+    "AC – split-type ductless system",
+    "Private patio or balcony",
+    "Exterior security cameras on property"
+  ],
+  "description": "Nestled in the heart of Goa and surrounded by nature, this spacious luxury villa of 2368 sqft comes with its own private pool, modern contemporary furniture, gym and every other conceivable amenity, the villa is ideal for a group of friends or a family. (Due to the prevailing Covid-19 situation, access to common areas maybe restricted). The space A beautiful Portuguese style villa with modern contemporary interiors and a private pool attached. Guest access Besides the private pool, guests have access to a common pool, a gym and a children's play area. (Due to the prevailing Covid-19 situation, access to common areas maybe restricted). Other things to note All guests are currently required by the Government of Goa to produce a double vaccination certificate (second dose taken at least 15 days before travel) or COVID-19 Negative Certificate issued from an ICMR approved laboratory, test having been done within 48 hours to enter the state of Goa. Registration details HOT0000067",
+  "highlights": [
+    "Self check-in — You can check in with the building staff.",
+    "Dive right in — This is one of the few places in the area with a pool."
+  ],
   "images": [
-    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg?im_w=720&amp;width=720&amp;quality=70&amp;auto=webp",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/05ba002d-4ffe-4f8b-9b81-c568a0100a16.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/65147517-9249-4122-88f3-34b94981ec65.jpeg",
@@ -31,24 +81,54 @@
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/5026a950-d693-4e1f-8cd9-37e08cefec5d.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/d7e8981c-fd0d-4530-ab13-dd65125e7615.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/e9a0961b-102c-4613-b058-dc4b6caa8637.jpeg",
-    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/99d6e76c-d75b-4209-bfd9-91d636a6966d.jpeg"
+    "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/99d6e76c-d75b-4209-bfd9-91d636a6966d.jpeg",
+    "https://a0.muscache.com/im/pictures/pro_photo_tool/Hosting-15839408-unapproved/original/019b77db-5556-4b64-9c72-b949ff88c392.JPEG"
   ],
   "cover": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
   "lat": 15.5712,
   "lng": 73.833,
+  "ogTitle": "Villa in North Goa · ★4.63 · 3 bedrooms · 3 beds · 3 bathrooms",
+  "ogDescription": "Private Pool Villa in Goa",
+  "metaDescription": "14 Aug 2026 · Entire villa · Nestled in the heart of Goa and surrounded by nature, this spacious luxury villa of 2368 sqft comes with its own private pool, modern contemporary ...",
+  "responseRate": "Response rate: 100%",
+  "responseTime": "Responds within an hour",
   "slug": "north-goa-15839408",
   "listedAt": "2026-08-13T18:54:10.600Z",
-  "updatedAt": "2026-08-14T05:46:20.716Z",
+  "destSlug": "north-goa",
+  "hostWhatsapp": "919876543210",
+  "hostPhone": "+91 9987654321",
+  "hostEmail": "ravi@example.com",
+  "updatedAt": "2026-08-14T06:24:49.674Z",
   "keywords": [
     "best airbnb in north goa",
     "cheap bnb in north goa",
     "luxury bnb in north goa",
     "airbnb north goa",
     "north goa airbnb",
-    "homestays in north goa"
-  ],
-  "destSlug": "north-goa",
-  "hostWhatsapp": "919876543210",
-  "hostPhone": "+91 9987654321",
-  "hostEmail": "ravi@example.com"
+    "homestays in north goa",
+    "villa in north goa india",
+    "villa in north goa",
+    "airbnb villa in north goa",
+    "3 bedrooms entire villa north goa",
+    "4.63 rated airbnb north goa",
+    "bottom_10 airbnb north goa",
+    "top rated airbnb north goa",
+    "entire villa in north goa",
+    "airbnb entire villa in north goa",
+    "book entire villa in north goa",
+    "entire villa north goa goa",
+    "private pool villa goa",
+    "private pool villa goa in north goa",
+    "private pool villa goa goa",
+    "kitchen north goa",
+    "kitchen entire villa north goa",
+    "wifi north goa",
+    "wifi entire villa north goa",
+    "free parking on premises north goa",
+    "free parking on premises entire villa north goa",
+    "private outdoor pool available all year open 24 hours north goa",
+    "private outdoor pool available all year open 24 hours entire villa north goa",
+    "pets allowed north goa",
+    "pets allowed entire villa north goa"
+  ]
 }

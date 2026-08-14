@@ -16,9 +16,63 @@
   "bedrooms": 3,
   "beds": 4,
   "baths": 3,
-  "host": null,
-  "amenities": [],
-  "description": "Step into The Yellow House, a sunlit and stylish 3-bedroom villa designed for comfort, privacy, and elegance. Nestled in a peaceful neighborhood of...",
+  "host": "Unique Haven Homes Stay",
+  "hostAbout": "\"Hello! I’m Firoz Khan, a passionate host based in Lucknow, a city rich in history and culture. I absolutely love traveling, exploring new places, and meeting people from all walks of life. As a host, I bring that same warmth and curiosity into every stay. I can’t wait to welcome you to Lucknow, share local insights, and ensure you have a wonderful experience discovering this vibrant city.\"",
+  "hostBadges": [
+    "Superhost",
+    "7 months hosting"
+  ],
+  "hostHighlights": [
+    "Born in the 90s",
+    "Where I went to school: Rani laxmi bhai memorial college"
+  ],
+  "reviewCategories": [
+    {
+      "label": "Cleanliness",
+      "rating": 4.8
+    },
+    {
+      "label": "Accuracy",
+      "rating": 4.8
+    },
+    {
+      "label": "Check-in",
+      "rating": 4.9
+    },
+    {
+      "label": "Communication",
+      "rating": 4.9
+    },
+    {
+      "label": "Location",
+      "rating": 4.8
+    },
+    {
+      "label": "Value",
+      "rating": 4.8
+    }
+  ],
+  "isGuestFavorite": true,
+  "guestFavoriteDescription": "One of the most loved homes on Airbnb, according to guests",
+  "qualityPercentile": null,
+  "amenities": [
+    "Kitchen",
+    "Wifi",
+    "Dedicated workspace",
+    "Free residential garage on premises – 1 space",
+    "Pets allowed",
+    "TV",
+    "Free washing machine",
+    "Exterior security cameras on property",
+    "Carbon monoxide alarm",
+    "Smoke alarm"
+  ],
+  "description": "Step into The Yellow House, a sunlit and stylish 3-bedroom villa designed for comfort, privacy, and elegance. Nestled in a peaceful neighborhood of Gomti Nagar, this villa is perfect for families, couples, or business travelers seeking a luxurious yet relaxed stay. Modern amenities, airy interiors, and thoughtful touches make every moment here memorable. The space A private 3-bedroom villa with contemporary interiors, bright spaces, and a calm, upscale ambiance. Ideal for short or long stays, this villa offers a premium experience for those who appreciate privacy, comfort, and style. Guest access Guests enjoy exclusive access to the entire villa, with a private entrance ensuring a discreet and comfortable stay. Other things to note Located in a quiet, premium residential neighborhood Fully furnished with modern amenities Perfect for families, couples, or business travelers Guests are kindly requested to respect house rules and quiet hours ⚠️ Important House Rules: ❌ Drinking Alcohol Not Allowed ❌ Unmarried Couples Not Allowed ❌ Parties Not Allowed ✔ Clean & Comfortable Stay ✔ Family-Friendly Environment ✔ High-Speed Wi-Fi ✔ Prime Location",
+  "highlights": [
+    "Self check-in — You can check in with the building staff.",
+    "Extra spacious — Guests love this home’s spaciousness for a comfortable stay.",
+    "Unbeatable location — 100% of guests in the past year gave this location a 5-star rating."
+  ],
   "images": [
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/b7b73c4b-426f-449e-9425-69512952e4f0.jpeg",
@@ -36,16 +90,45 @@
   "cover": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
   "lat": 26.867,
   "lng": 81.015,
+  "ogTitle": "Home in Lucknow · ★4.88 · 3 bedrooms · 4 beds · 3 bathrooms",
+  "ogDescription": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar",
+  "metaDescription": "14 Aug 2026 · Entire home · Step into The Yellow House, a sunlit and stylish 3-bedroom villa designed for comfort, privacy, and elegance. Nestled in a peaceful neighborhood of...",
+  "responseRate": "Response rate: 100%",
+  "responseTime": "Responds within an hour",
   "slug": "lucknow-1592729918855637425",
   "listedAt": "2026-08-14T02:55:45.668Z",
-  "updatedAt": "2026-08-14T02:55:45.668Z",
+  "destSlug": "lucknow",
+  "updatedAt": "2026-08-14T06:24:48.369Z",
   "keywords": [
     "best airbnb in lucknow",
     "cheap bnb in lucknow",
     "luxury bnb in lucknow",
     "airbnb lucknow",
     "lucknow uttar pradesh airbnb",
-    "homestays in lucknow"
-  ],
-  "destSlug": "lucknow"
+    "homestays in lucknow",
+    "home in lucknow india",
+    "home in lucknow",
+    "airbnb home in lucknow",
+    "3 bedrooms entire home lucknow",
+    "4.88 rated airbnb lucknow",
+    "guest favorite airbnb lucknow",
+    "most loved airbnb lucknow",
+    "4.9 check in lucknow",
+    "4.9 communication lucknow",
+    "entire home in lucknow",
+    "airbnb entire home in lucknow",
+    "book entire home in lucknow",
+    "entire home lucknow uttar pradesh",
+    "yellow house luxury 3bhk villa",
+    "yellow house luxury 3bhk in lucknow",
+    "yellow house luxury 3bhk uttar pradesh",
+    "3bhk entire home lucknow",
+    "3bhk entire home in lucknow",
+    "kitchen lucknow",
+    "kitchen entire home lucknow",
+    "wifi lucknow",
+    "wifi entire home lucknow",
+    "dedicated workspace lucknow",
+    "dedicated workspace entire home lucknow"
+  ]
 }

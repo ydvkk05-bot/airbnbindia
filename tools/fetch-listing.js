@@ -119,6 +119,84 @@ function extractStayEmbed(blocks) {
   return null;
 }
 
+/* Full "Show more" description + rich structured data from the niobe PDP JSON.
+   Path: niobeClientData[0][1].data.node.pdpPresentation.{descriptions,amenities,highlights,hostInfo} */
+function extractPdpPresentation(blocks) {
+  for (const b of blocks) {
+    const found = collect(b, "pdpPresentation").filter((v) => v && typeof v === "object" && v.descriptions && v.descriptions.longDescriptionHtml);
+    if (found.length) return found[0];
+  }
+  return null;
+}
+
+function stripHtml(s) {
+  return String(s || "")
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(p|div|li|h\d)>/gi, "\n")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&amp;/g, "&").replace(/&nbsp;/g, " ").replace(/&quot;/g, '"').replace(/&#x27;|&#39;/g, "'").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+    .replace(/[ \t]+/g, " ")
+    .replace(/\n\s*\n+/g, "\n\n")
+    .trim();
+}
+
+function extractAmenityNames(pdp) {
+  const names = [];
+  const walk = (g) => {
+    for (const grp of (g || [])) {
+      for (const a of (grp.amenities || [])) {
+        if (a && a.title && !names.includes(a.title)) names.push(a.title);
+      }
+    }
+  };
+  walk(pdp.amenities && (pdp.amenities.previewAmenitiesGroups || pdp.amenities.amenityGroups));
+  return names.slice(0, 24);
+}
+
+function extractHighlights(pdp) {
+  const out = [];
+  for (const h of (pdp.highlights || [])) {
+    const head = h && h.headline && h.headline.localizedContent;
+    const body = h && h.body && h.body.localizedContent;
+    const text = head ? (body && body !== head ? head + " — " + body : head) : body;
+    if (text && !out.includes(text)) out.push(text);
+  }
+  return out.slice(0, 5);
+}
+
+function extractHostInfo(pdp) {
+  const hi = pdp && pdp.hostInfo;
+  if (!hi) return {};
+  const ov = hi.overview || {};
+  const name = ov.title && ov.title.text ? ov.title.text.replace(/^Hosted by\s+/i, "").trim() : "";
+  const badges = (ov.items || []).map((i) => i && i.text).filter(Boolean);
+  const highlights = (hi.highlights || []).map((h) => h && h.text && h.text.text).filter(Boolean);
+  const about = hi.about && hi.about.localizedString ? stripHtml(hi.about.localizedString) : "";
+  return { name, badges, highlights, about, responseRate: hi.responseRateText, responseTime: hi.responseTimeText };
+}
+
+/* Guest-review signals from pdp.quality:
+   - categoryRatings: [{ label: "Cleanliness", localizedRating: "4.9" }, ...]
+   - guest favorite badge + percentile bucket (TOP_5 / TOP_10)
+   - overall rating stats */
+function extractQuality(pdp) {
+  const q = pdp && pdp.quality;
+  if (!q || typeof q !== "object") return {};
+  const cats = (q.categoryRatings || [])
+    .filter((c) => c && c.label)
+    .map((c) => ({ label: c.label, rating: firstNum(c.localizedRating) || null }))
+    .filter((c) => c.rating !== null);
+  const overall = q.listingRatingStats && q.listingRatingStats.overallRatingStats;
+  return {
+    reviewCategories: cats.slice(0, 8),
+    isGuestFavorite: !!q.isGuestFavorite,
+    guestFavoriteDescription: firstStr(q.guestFavoriteDescription),
+    qualityPercentile: firstStr(q.qualityScorePercentileBucket),
+    overallRating: overall ? firstNum(overall.ratingAverage) || null : null,
+    overallCount: overall ? firstNum(overall.ratingCount) || null : null
+  };
+}
+
 function extractLatLng(html, blocks) {
   for (const b of blocks) {
     const la = collect(b, "latitude").map(firstNum).filter(Boolean);
@@ -167,7 +245,9 @@ async function fetchListing(inputUrl) {
   const html = await fetchHtml("https://www.airbnb.com/rooms/" + id);
   const blocks = parseJsonBlocks(html);
   const embed = extractStayEmbed(blocks);
+  const pdp = extractPdpPresentation(blocks);
   const ogTitle = getMeta(html, "og:title") || "";
+  const ogDesc = getMeta(html, "og:description") || "";
   const metaDesc = getMeta(html, "description") || "";
   const ogImg = getMeta(html, "og:image");
 
@@ -176,7 +256,10 @@ async function fetchListing(inputUrl) {
     name: null, type: null, city: null, state: null, country: "India",
     address: null, price: null, currency: "INR", rating: null, reviews: null,
     guests: null, bedrooms: null, beds: null, baths: null,
-    host: null, amenities: [], description: "", images: [], cover: null, lat: null, lng: null
+    host: null, hostAbout: null, hostBadges: [], hostHighlights: [],
+    reviewCategories: [], isGuestFavorite: false, guestFavoriteDescription: null, qualityPercentile: null,
+    amenities: [], description: "", highlights: [], images: [], cover: null, lat: null, lng: null,
+    ogTitle: ogTitle || null, ogDescription: ogDesc || null, metaDescription: metaDesc || null
   };
 
   if (embed) {
@@ -188,6 +271,35 @@ async function fetchListing(inputUrl) {
     d.cover = firstStr(embed.pictureUrl) || d.cover;
   }
   if (d.name) d.name = d.name.replace(/\s+/g, " ").trim();
+
+  /* full "Show more" description + structured details from pdpPresentation */
+  if (pdp && pdp.descriptions && pdp.descriptions.longDescriptionHtml) {
+    const full = stripHtml(pdp.descriptions.longDescriptionHtml.localizedString || "");
+    if (full.length > (d.description || "").length) d.description = full;
+    const short = stripHtml((pdp.descriptions.shortDescriptionHtml || {}).localizedString || "");
+    if (!d.description && short) d.description = short;
+    d.highlights = extractHighlights(pdp);
+    const amens = extractAmenityNames(pdp);
+    if (amens.length) d.amenities = amens;
+    const host = extractHostInfo(pdp);
+    if (host.name) d.host = host.name;
+    if (host.about) d.hostAbout = host.about;
+    d.hostBadges = host.badges || [];
+    d.hostHighlights = host.highlights || [];
+    d.responseRate = host.responseRate;
+    d.responseTime = host.responseTime;
+    const quality = extractQuality(pdp);
+    if (quality.reviewCategories.length) d.reviewCategories = quality.reviewCategories;
+    if (quality.isGuestFavorite) d.isGuestFavorite = true;
+    if (quality.guestFavoriteDescription) d.guestFavoriteDescription = quality.guestFavoriteDescription;
+    if (quality.qualityPercentile) d.qualityPercentile = quality.qualityPercentile;
+    if (quality.overallRating && !d.rating) d.rating = quality.overallRating;
+    if (quality.overallCount && !d.reviews) d.reviews = quality.overallCount;
+    if (pdp.personCapacity && !d.guests) d.guests = pdp.personCapacity;
+    const type = firstStr(pdp.businessDetails && pdp.businessDetails.propertyType);
+    if (type && !d.type) d.type = type;
+  }
+  d.description = d.description.replace(/\s+/g, " ").trim();
 
   /* og:title e.g. "Villa in North Goa · ★4.63 · 3 bedrooms · 3 beds · 3 bathrooms" */
   const ogParts = ogTitle.split("·").map((s) => s.trim()).filter(Boolean);
@@ -206,6 +318,8 @@ async function fetchListing(inputUrl) {
     if (!d.type && descParts[1]) d.type = descParts[1];
     if (!d.description && descParts[2]) d.description = descParts[2];
   }
+  if (!d.description && ogDesc) d.description = ogDesc.replace(/\s+/g, " ").trim();
+  d.description = d.description.replace(/\s+/g, " ").trim();
 
   /* state from city map, else reverse-geocode from coordinates */
   d.state = deriveState(d.city) || null;
@@ -239,7 +353,7 @@ async function fetchListing(inputUrl) {
   /* host */
   const hostVals = collect(blocks, "hostName").map(firstStr).filter(Boolean)
     .concat(collect(blocks, "firstName").map(firstStr).filter(Boolean));
-  d.host = hostVals[0] || null;
+  if (!d.host && hostVals[0]) d.host = hostVals[0];
   /* price: embedded pricingRate -> rupee/night pattern -> null */
   const pr = collect(blocks, "pricingRate").concat(collect(blocks, "priceRate")).map(firstNum).filter(Boolean);
   if (pr.length) d.price = Math.round(pr[0]);

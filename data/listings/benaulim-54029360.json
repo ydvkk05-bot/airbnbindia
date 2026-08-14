@@ -16,11 +16,63 @@
   "bedrooms": 1,
   "beds": 1,
   "baths": 1,
-  "host": null,
-  "amenities": [],
-  "description": "Villa Gecko Dorado is part of an 18th. C. Heritage Portuguese house. Set in a serene yet vibrant tropical flowering garden, the villa with it&#x27;s own...",
+  "host": "Greet",
+  "hostAbout": "Villa Gecko Dorado",
+  "hostBadges": [
+    "Superhost",
+    "5 years hosting"
+  ],
+  "hostHighlights": [
+    "Speaks Dutch and English"
+  ],
+  "reviewCategories": [
+    {
+      "label": "Cleanliness",
+      "rating": 5
+    },
+    {
+      "label": "Accuracy",
+      "rating": 5
+    },
+    {
+      "label": "Check-in",
+      "rating": 4.9
+    },
+    {
+      "label": "Communication",
+      "rating": 5
+    },
+    {
+      "label": "Location",
+      "rating": 4.9
+    },
+    {
+      "label": "Value",
+      "rating": 4.9
+    }
+  ],
+  "isGuestFavorite": true,
+  "guestFavoriteDescription": "One of the most loved homes on Airbnb, according to guests",
+  "qualityPercentile": "TOP_10",
+  "amenities": [
+    "Courtyard view",
+    "Garden view",
+    "Wifi",
+    "Free parking on premises",
+    "Private outdoor pool – available all year, open 24 hours",
+    "Air conditioning",
+    "Private patio or balcony",
+    "Private back garden – Fully fenced",
+    "Carbon monoxide alarm",
+    "Smoke alarm"
+  ],
+  "description": "Villa Gecko Dorado is part of an 18th. C. Heritage Portuguese house. Set in a serene yet vibrant tropical flowering garden, the villa with it's own private entrance is a chic and unique living space. It's lavish interiors are themed around an eclectic mix of modernity with a combination of strong artistic influences. The living room opens out to a private pool where one can lounge or relax on sit-outs while taking in the sights and sounds of the garden surrounded by the swaying coconut palms. The space The elegant Villa Gecko Dorado offers with its cosy living space adorned with carefully curated art pieces, a colonial style bedroom, spacious attached bathroom and equipped kitchen that insures guests to enjoy there comfort and complete privacy in style. The living room opens out to a private pool. Guest access Gecko Dorado is a full compounded private Villa. Other things to note Gecko Dorado is located 2,5 km from Benaulim beach. Transport can be arranged. Registration details HOTS000886",
+  "highlights": [
+    "Top 10% of homes — This home is highly ranked based on ratings, reviews and reliability.",
+    "Dive right in — This is one of the few places in the area with a pool.",
+    "Extra spacious — Guests love this home’s spaciousness for a comfortable stay."
+  ],
   "images": [
-    "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg?im_w=720&amp;width=720&amp;quality=70&amp;auto=webp",
     "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/32d59503-0eb7-4496-8f9a-ee30382060a6.jpeg",
     "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/975e748e-0f2d-4c36-9c46-1f5623e57dff.jpeg",
@@ -31,21 +83,51 @@
     "https://a0.muscache.com/im/pictures/944c76b1-2e76-427c-a7b2-d04a75563858.jpg",
     "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/00be71c2-a037-401e-886e-e0c4f60309fe.jpeg",
     "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/81368554-964d-4d17-aa32-f3424b3893d4.jpeg",
-    "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/651cbe46-f766-41fe-9d32-115652d5d410.jpeg"
+    "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/651cbe46-f766-41fe-9d32-115652d5d410.jpeg",
+    "https://a0.muscache.com/im/pictures/c6ed4b1a-5c2b-4bab-be12-694ee4aba16c.jpg"
   ],
   "cover": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
   "lat": 15.2601,
   "lng": 73.9404,
+  "ogTitle": "Villa in Benaulim · ★4.98 · 1 bedroom · 1 bed · 1 bathroom",
+  "ogDescription": "Luxury 1 bedroom VILLA with private pool &amp; garden.",
+  "metaDescription": "14 Aug 2026 · Entire villa · Villa Gecko Dorado is part of an 18th. C. Heritage Portuguese house. Set in a serene yet vibrant tropical flowering garden, the villa with it&#x27;s own...",
+  "responseRate": "Response rate: 100%",
+  "responseTime": "Responds within an hour",
   "slug": "benaulim-54029360",
   "listedAt": "2026-08-13T18:54:13.624Z",
-  "updatedAt": "2026-08-13T18:54:13.624Z",
+  "destSlug": "benaulim",
+  "updatedAt": "2026-08-14T06:24:43.942Z",
   "keywords": [
     "best airbnb in benaulim",
     "cheap bnb in benaulim",
     "luxury bnb in benaulim",
     "airbnb benaulim",
     "benaulim goa airbnb",
-    "homestays in benaulim"
-  ],
-  "destSlug": "benaulim"
+    "homestays in benaulim",
+    "villa in benaulim india",
+    "villa in benaulim",
+    "airbnb villa in benaulim",
+    "1 bedroom entire villa benaulim",
+    "4.98 rated airbnb benaulim",
+    "guest favorite airbnb benaulim",
+    "most loved airbnb benaulim",
+    "top_10 airbnb benaulim",
+    "top rated airbnb benaulim",
+    "5 cleanliness benaulim",
+    "5 accuracy benaulim",
+    "4.9 check in benaulim",
+    "5 communication benaulim",
+    "entire villa in benaulim",
+    "airbnb entire villa in benaulim",
+    "book entire villa in benaulim",
+    "entire villa benaulim goa",
+    "luxury bedroom villa private pool",
+    "luxury bedroom villa private in benaulim",
+    "luxury bedroom villa private goa",
+    "1 bedroom entire villa in benaulim",
+    "courtyard view benaulim",
+    "courtyard view entire villa benaulim",
+    "garden view benaulim"
+  ]
 }
