@@ -406,7 +406,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/best-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best best Airbnbs in Benaulim, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. every budget.",
+    "excerpt": "1 top-rated Airbnb stay in Benaulim, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -423,7 +423,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/cheap-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best cheap Airbnbs in Benaulim, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. under ₹2,000 per night.",
+    "excerpt": "1 budget-friendly Airbnb stay in Benaulim, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -440,7 +440,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/luxury-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best luxury Airbnbs in Benaulim, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. ₹4,000+ per night.",
+    "excerpt": "1 luxury Airbnb stay in Benaulim, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -457,7 +457,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/best-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best best Airbnbs in Goa, Goa — 2 curated, verified stays with ratings, prices and one-click booking on Airbnb. every budget.",
+    "excerpt": "2 top-rated Airbnb stays in Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -472,7 +472,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/cheap-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best cheap Airbnbs in Goa, Goa — 2 curated, verified stays with ratings, prices and one-click booking on Airbnb. under ₹2,000 per night.",
+    "excerpt": "2 budget-friendly Airbnb stays in Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -487,7 +487,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/luxury-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best luxury Airbnbs in Goa, Goa — 2 curated, verified stays with ratings, prices and one-click booking on Airbnb. ₹4,000+ per night.",
+    "excerpt": "2 luxury Airbnb stays in Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -502,7 +502,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/best-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best best Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. every budget.",
+    "excerpt": "1 top-rated Airbnb stay in Lucknow, Uttar Pradesh — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -519,7 +519,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/cheap-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best cheap Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. under ₹2,000 per night.",
+    "excerpt": "1 budget-friendly Airbnb stay in Lucknow, Uttar Pradesh — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -536,7 +536,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/luxury-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best luxury Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. ₹4,000+ per night.",
+    "excerpt": "1 luxury Airbnb stay in Lucknow, Uttar Pradesh — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -553,7 +553,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/best-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best best Airbnbs in North Goa, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. every budget.",
+    "excerpt": "1 top-rated Airbnb stay in North Goa, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",
@@ -570,7 +570,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/cheap-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best cheap Airbnbs in North Goa, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. under ₹2,000 per night.",
+    "excerpt": "1 budget-friendly Airbnb stay in North Goa, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",
@@ -587,7 +587,7 @@ const POSTS = [
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/luxury-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "The best luxury Airbnbs in North Goa, Goa — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. ₹4,000+ per night.",
+    "excerpt": "1 luxury Airbnb stay in North Goa, Goa — handpicked with ratings, prices and one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",
@@ -599,7 +599,7 @@ const POSTS = [
   },
   {
     "slug": "benaulim-54029360",
-    "title": "Luxury 1 Bedroom Villa with Private Pool & Garden — Entire villa in Benaulim, Goa: Details & Price",
+    "title": "Luxury 1 Bedroom Villa with Private Pool & Garden",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/benaulim-54029360.html",
@@ -640,7 +640,7 @@ const POSTS = [
   },
   {
     "slug": "goa-38713733",
-    "title": "3 Bhk Luxury Beach Villa. Happy 2 U Candolim — Entire bungalow in Goa, Goa: Details & Price",
+    "title": "3 Bhk Luxury Beach Villa. Happy 2 U Candolim",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/goa-38713733.html",
@@ -681,7 +681,7 @@ const POSTS = [
   },
   {
     "slug": "lucknow-1592729918855637425",
-    "title": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar — Entire home in Lucknow, Uttar Pradesh: Details & Price",
+    "title": "The Yellow House — Luxury 3bhk Villa in Gomti Nagar",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/lucknow-1592729918855637425.html",
@@ -722,7 +722,7 @@ const POSTS = [
   },
   {
     "slug": "goa-45229616",
-    "title": "5BHK Villa with Pool and Full Time Chef, near Baga — Entire home in Goa, Goa: Details & Price",
+    "title": "5BHK Villa with Pool and Full Time Chef, near Baga",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/goa-45229616.html",
@@ -763,7 +763,7 @@ const POSTS = [
   },
   {
     "slug": "north-goa-15839408",
-    "title": "Private Pool Villa in Goa — Entire villa in North Goa, Goa: Details & Price",
+    "title": "Private Pool Villa in Goa — Entire villa in North Goa, Goa",
     "category": "Listed BNB",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/north-goa-15839408.html",

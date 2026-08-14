@@ -88,6 +88,45 @@ function blurb(l) {
   return s || `A handpicked ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${l.state ? ", " + l.state : ""} — verified on Airbnb and ready to book.`;
 }
 
+/* Truncate a string at a word boundary to at most `max` chars (Google displays
+   ~60 title / ~160 description chars; longer ones get cut in SERPs). */
+function fit(str, max) {
+  str = String(str || "").replace(/\s+/g, " ").trim();
+  if (str.length <= max) return str;
+  const cut = str.slice(0, max - 1).replace(/\s+\S*$/, "");
+  return cut.length ? cut + "…" : str.slice(0, max - 1) + "…";
+}
+
+/* SEO title: keep the primary phrase whole, append the brand only when it fits,
+   and gracefully drop/truncate a secondary phrase instead of the primary. */
+function seoTitle(primary, secondary) {
+  const brand = " | airbnb-india.com";
+  const max = 60;
+  let t = secondary ? `${primary} — ${secondary}` : primary;
+  if (t.length + brand.length <= max) return t + brand;
+  if (t.length <= max) return t;
+  if (secondary) {
+    const room = max - primary.length - 3;
+    if (room >= 15) {
+      t = `${primary} — ${fit(secondary, room)}`;
+      if (t.length + brand.length <= max) return t + brand;
+      return t;
+    }
+    t = primary;
+    if (t.length + brand.length <= max) return t + brand;
+    return t;
+  }
+  return fit(t, max);
+}
+
+/* "Entire home in Lucknow, Uttar Pradesh" (dedupes the "Goa, Goa" case). */
+function locStr(l, includeType = true) {
+  const state = l.state && l.state.toLowerCase() !== String(l.city).toLowerCase() ? ", " + l.state : "";
+  return `${includeType && l.type ? l.type + " in " : ""}${l.city}${state}`;
+}
+const destStateSuffix = (d) => d.state && d.state.toLowerCase() !== d.name.toLowerCase() ? ", " + d.state : "";
+const listStateSuffix = (l) => l.state && l.state.toLowerCase() !== l.city.toLowerCase() ? ", " + l.state : "";
+
 /* Display name: clean raw host-entered Airbnb names for a professional look.
    "The Yellow House |Luxury 3bhk Villa in Gomti Nagar" -> "The Yellow House — Luxury 3bhk Villa in Gomti Nagar"
    "Luxury 1 bedroom VILLA with private pool & garden." -> "Luxury 1 Bedroom Villa with Private Pool & Garden" */
@@ -229,14 +268,14 @@ function tierPostObj(d, tier, loc) {
     img: top && top.cover ? top.cover : destImg(d),
     url: `blog/${tier}-airbnb-in-${d.slug}.html`,
     date: fmtDate(top && top.listedAt) || fmtDate(today()),
-    excerpt: `The best ${tier} Airbnbs in ${d.name}, ${d.state} — ${n} curated, verified stays with ratings, prices and one-click booking on Airbnb. ${priceLine}.`,
+    excerpt: `${n} ${tier === "best" ? "top-rated" : tier === "cheap" ? "budget-friendly" : "luxury"} Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)} — handpicked with ratings, prices and one-click booking on Airbnb.`,
     keywords: autoKw(d.name, d.state),
     tier, d, listings: sorted, priceLine
   };
 }
 
 function detailsPostObj(l) {
-  const title = `${cleanName(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}: Details & Price`;
+  const title = seoTitle(cleanName(l.name), locStr(l));
   return {
     slug: l.slug,
     title,
@@ -663,7 +702,7 @@ function genDestinations() {
   ];
   const chips = DESTINATIONS.map((d) => d.name).concat(["Suggest a city", "List your BNB"]);
   write("destinations.html", head({
-    title: "Best Airbnbs in India by City & State — Location-wise Guides | airbnb-india.com",
+    title: seoTitle("Best Airbnbs in India by City & State", "Location-wise Guides"),
     desc: "Explore the best airbnb in India, city and state-wise. Every destination guide links real, verified Airbnb stays with ratings, prices and one-click booking.",
     canonical: SITE + "/destinations.html",
     image: u("jaipur", 1200, 630),
@@ -711,8 +750,8 @@ function genBnbs() {
     breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }])
   ];
   write("bnbs.html", head({
-    title: `All BNBs in India — ${LISTINGS.length} Verified Homestays, Villas & Houseboats | airbnb-india.com`,
-    desc: `Browse every handpicked BNB in India on one page — beach villas, heritage havelis, houseboats and mountain cabins. Live pricing via Airbnb.`,
+    title: seoTitle(`All BNBs in India — ${LISTINGS.length} Verified Stays`),
+    desc: "Browse every handpicked BNB in India on one page — beach villas, heritage havelis, houseboats and mountain cabins. Live pricing via Airbnb.",
     canonical: SITE + "/bnbs.html",
     image: u("kerala", 1200, 630),
     jsonld: ld
@@ -764,8 +803,8 @@ function genDestinationPages() {
     const keywords = destKeywords(d).join(", ");
 
     write(`destinations/${d.slug}.html`, head({
-      title: `Best Airbnb in ${d.name} (2026) — Top-Rated ${d.state} Stays & Cheap Options | airbnb-india.com`,
-      desc: `${c.heroLead} Explore the best airbnb in ${d.name}, ${d.state} — curated homestays, budget stays and luxury villas. Photos and live booking on Airbnb.`,
+      title: seoTitle(`Best Airbnb in ${d.name} (2026)`, `Stays & Cheap Options`),
+      desc: fit(`Explore the best airbnb in ${d.name}${destStateSuffix(d)} — curated homestays, budget stays and luxury villas. Photos and live booking on Airbnb.`, 158),
       canonical: SITE + `/destinations/${d.slug}.html`,
       image: destImg(d),
       jsonld: ld
@@ -912,8 +951,8 @@ function genBnbPages() {
     ].filter(Boolean);
 
     write(`bnbs/${l.slug}.html`, head({
-      title: `${cleanName(l.name)} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}${l.price ? " (" + inr(l.price) + "/night)" : ""} | airbnb-india.com`,
-      desc: `${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews)${l.highlights && l.highlights.length ? " · " + esc(l.highlights[0]) : ""}. Book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}, ${l.state} on Airbnb — photos, amenities and live pricing.`,
+      title: seoTitle(cleanName(l.name), `${locStr(l)}${l.price ? " (" + inr(l.price) + "/night)" : ""}`),
+      desc: fit(`${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews)${l.highlights && l.highlights.length ? " · " + esc(l.highlights[0]) : ""}. Book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}${listStateSuffix(l)} on Airbnb.`, 158),
       canonical: SITE + `/bnbs/${l.slug}.html`,
       image: l.cover,
       jsonld: ld
@@ -1025,7 +1064,7 @@ function genBlogIndex() {
     breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Blog", item: SITE + "/blog/index.html" }])
   ];
   write("blog/index.html", head({
-    title: "Blog — Best, Cheap & Luxury Airbnb Guides in India | airbnb-india.com",
+    title: seoTitle("Blog — Best, Cheap & Luxury Airbnb Guides in India"),
     desc: "India's best Airbnb guides — best, cheap and luxury stays plus detailed listing pages with real prices, photos and one-click booking on Airbnb.",
     canonical: SITE + "/blog/index.html",
     image: u("jaipur", 1200, 630),
@@ -1076,8 +1115,8 @@ function genTierPosts() {
       ];
 
       write(`blog/${p.slug}.html`, head({
-        title: `${p.title} — Curated Stays, Prices & Tips | airbnb-india.com`,
-        desc: `${p.excerpt} See the top-rated ${TIER_LABEL[tier].toLowerCase()} Airbnbs in ${d.name}, ${d.state} with prices from ${priceLine}, photos and one-click booking on Airbnb.`,
+        title: p.title,
+        desc: fit(p.excerpt, 158),
         canonical: SITE + `/blog/${p.slug}.html`,
         image: p.img,
         jsonld: ld
@@ -1196,8 +1235,8 @@ function genDetailsPosts() {
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Blog", item: SITE + "/blog/index.html" }, { name: p.title, item: SITE + "/" + p.url }])
     ];
     write(`blog/${p.slug}.html`, head({
-      title: `${p.title} | airbnb-india.com`,
-      desc: `${p.excerpt} See photos, amenities, ratings and live pricing for this ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${l.state ? ", " + l.state : ""} — book securely on Airbnb.`,
+      title: p.title,
+      desc: fit(`${p.excerpt} See photos, amenities, ratings and live pricing for this ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${listStateSuffix(l)} — book securely on Airbnb.`, 158),
       canonical: SITE + `/blog/${p.slug}.html`,
       image: p.img,
       jsonld: ld
