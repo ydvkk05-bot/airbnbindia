@@ -37,9 +37,8 @@
   "lat": 26.867,
   "lng": 81.015,
   "slug": "lucknow-1592729918855637425",
-  "listedAt": "2026-08-13T19:01:50.643Z",
-  "destSlug": "lucknow",
-  "updatedAt": "2026-08-13T19:22:08.689Z",
+  "listedAt": "2026-08-14T02:55:45.668Z",
+  "updatedAt": "2026-08-14T02:55:45.668Z",
   "keywords": [
     "best airbnb in lucknow",
     "cheap bnb in lucknow",
@@ -47,5 +46,6 @@
     "airbnb lucknow",
     "lucknow uttar pradesh airbnb",
     "homestays in lucknow"
-  ]
+  ],
+  "destSlug": "lucknow"
 }

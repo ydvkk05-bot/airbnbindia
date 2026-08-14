@@ -51,6 +51,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/destinations/lucknow.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/destinations/north-goa.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -62,6 +67,11 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/bnbs/goa-38713733.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/bnbs/lucknow-1592729918855637425.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -111,6 +121,21 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/blog/best-airbnb-in-lucknow.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/cheap-airbnb-in-lucknow.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/luxury-airbnb-in-lucknow.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/blog/best-airbnb-in-north-goa.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
@@ -132,6 +157,11 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/blog/goa-38713733.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/lucknow-1592729918855637425.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

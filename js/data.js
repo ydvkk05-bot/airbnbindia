@@ -37,6 +37,23 @@ const DESTINATIONS = [
     ]
   },
   {
+    "slug": "lucknow",
+    "name": "Lucknow",
+    "state": "Uttar Pradesh",
+    "tagline": "Best airbnb in Lucknow, Uttar Pradesh",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "destinations/lucknow.html",
+    "count": 1,
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
+    ]
+  },
+  {
     "slug": "north-goa",
     "name": "North Goa",
     "state": "Goa",
@@ -94,6 +111,27 @@ const LISTINGS = [
       "cheap bnb in goa",
       "luxury bnb in goa",
       "airbnb goa"
+    ]
+  },
+  {
+    "slug": "lucknow-1592729918855637425",
+    "name": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar",
+    "city": "Lucknow",
+    "state": "Uttar Pradesh",
+    "type": "Entire home",
+    "price": null,
+    "rating": 4.88,
+    "reviews": 42,
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "bnbs/lucknow-1592729918855637425.html",
+    "blurb": "Step into The Yellow House, a sunlit and stylish 3-bedroom villa designed for comfort, privacy, and elegance. Nestled in a peaceful neighborhood of...",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
     ]
   },
   {
@@ -236,6 +274,57 @@ const POSTS = [
     ]
   },
   {
+    "slug": "best-airbnb-in-lucknow",
+    "title": "Best Airbnb in Lucknow (2026): Top-Rated Stays & Prices",
+    "category": "Best",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "blog/best-airbnb-in-lucknow.html",
+    "date": "Aug 14, 2026",
+    "excerpt": "The best best Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. every budget.",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
+    ]
+  },
+  {
+    "slug": "cheap-airbnb-in-lucknow",
+    "title": "Cheap Airbnbs in Lucknow: 1 Stays Under ₹2,000",
+    "category": "Cheap",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "blog/cheap-airbnb-in-lucknow.html",
+    "date": "Aug 14, 2026",
+    "excerpt": "The best cheap Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. under ₹2,000 per night.",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
+    ]
+  },
+  {
+    "slug": "luxury-airbnb-in-lucknow",
+    "title": "Luxury Airbnbs in Lucknow: Premium Villas & Private Pools",
+    "category": "Luxury",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "blog/luxury-airbnb-in-lucknow.html",
+    "date": "Aug 14, 2026",
+    "excerpt": "The best luxury Airbnbs in Lucknow, Uttar Pradesh — 1 curated, verified stays with ratings, prices and one-click booking on Airbnb. ₹4,000+ per night.",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
+    ]
+  },
+  {
     "slug": "best-airbnb-in-north-goa",
     "title": "Best Airbnb in North Goa (2026): Top-Rated Stays & Prices",
     "category": "Best",
@@ -316,6 +405,23 @@ const POSTS = [
       "cheap bnb in goa",
       "luxury bnb in goa",
       "airbnb goa"
+    ]
+  },
+  {
+    "slug": "lucknow-1592729918855637425",
+    "title": "The Yellow House |Luxury 3bhk Villa in Gomti Nagar — Entire home in Lucknow, Uttar Pradesh: Details & Price",
+    "category": "Listed BNB",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
+    "url": "blog/lucknow-1592729918855637425.html",
+    "date": "Aug 14, 2026",
+    "excerpt": "Step into The Yellow House, a sunlit and stylish 3-bedroom villa designed for comfort, privacy, and elegance. Nestled in a peaceful neighborhood of...",
+    "keywords": [
+      "best airbnb in lucknow",
+      "cheap bnb in lucknow",
+      "luxury bnb in lucknow",
+      "airbnb lucknow",
+      "lucknow uttar pradesh airbnb",
+      "homestays in lucknow"
     ]
   },
   {
