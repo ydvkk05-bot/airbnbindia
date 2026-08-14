@@ -335,7 +335,6 @@ function footer(root = "") {
           <a href="${root}blog/index.html">Blog</a>
           <a href="${root}about.html">About Us</a>
           <a href="${root}contact.html">Contact</a>
-          <a href="${root}sitemap.xml">Sitemap</a>
         </div>
         <div class="footer-col">
           <h4>Contact Us</h4>
