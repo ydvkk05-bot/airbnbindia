@@ -309,10 +309,16 @@ section { padding: 84px 0; }
 /* ---------- Page hero (inner pages) ---------- */
 .page-hero { position: relative; overflow: hidden; background: linear-gradient(160deg, var(--teal-900), var(--teal-700)); color: #fff; padding: 64px 0 76px; }
 .page-hero h1 { color: #fff; }
-.page-hero .crumb { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.85rem; margin-bottom: 14px; color: rgba(255, 255, 255, 0.7); }
+.crumb { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; font-size: 0.85rem; margin-bottom: 14px; }
+.page-hero .crumb { color: rgba(255, 255, 255, 0.7); }
 .page-hero .crumb a { color: rgba(255, 255, 255, 0.85); }
 .page-hero .crumb a:hover { color: var(--amber-400); }
 .page-hero .crumb .sep { color: rgba(255, 255, 255, 0.4); }
+.bnb-hero .crumb { color: var(--ink-soft); }
+.bnb-hero .crumb a { color: var(--teal-700); }
+.bnb-hero .crumb a:hover { color: var(--amber-500); }
+.bnb-hero .crumb .sep { color: var(--ink-soft); }
+.bnb-hero .crumb > span:last-child { color: var(--ink); }
 .page-hero p { color: rgba(255, 255, 255, 0.82); max-width: 700px; margin-top: 14px; }
 .page-hero-orb { position: absolute; border-radius: 50%; background: radial-gradient(circle, var(--amber-500), transparent 70%); filter: blur(8px); opacity: 0.4; animation: float 10s ease-in-out infinite; }
 .page-hero-orb.one { width: 300px; height: 300px; top: -100px; right: -60px; }
