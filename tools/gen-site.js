@@ -42,6 +42,11 @@ const fmtDate = (iso) => {
   const d = new Date(iso);
   return isNaN(d) ? iso : d.toLocaleDateString("en-US", { year: "numeric", month: "short", day: "numeric" });
 };
+const fmtDateIso = (iso) => {
+  if (!iso) return today();
+  const d = new Date(iso);
+  return isNaN(d) ? today() : d.toISOString().slice(0, 10);
+};
 const esc = (s) => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const firstN = (l) => DESTINATIONS.find((d) => d.slug === (l.destSlug || slug(l.city)));
 
@@ -266,7 +271,7 @@ function destContent(d) {
   const loc = listingsOf(d.slug);
   return {
     heroLead: `Find the best airbnb in ${d.name}${destStateSuffix(d)} — handpicked homestays, villas and boutique stays with live Airbnb links, honest reviews and real prices.`,
-    intro: `${d.name} in ${d.state} is one of the most loved corners of ${d.state === "Goa" ? "India" : "the country"} for a reason. Travellers come for the ${vibe === "coast" ? "laid-back beach life, seafood and sunsets" : vibe === "mountains" ? "fresh mountain air, pine forests and dramatic views" : "culture, heritage and welcoming local hosts"}, and stay for the hospitality. Airbnb has turned private homes, heritage havelis and modern villas into some of the best places to sleep here.\n\nWe pick every stay you see below the way you would: verified listings, strong ratings, fair prices and hosts who actually care. No paid placement, no sponsored noise — just the best airbnb in ${d.name}${loc.length ? `, checked and linked live` : ""}.`,
+    intro: `${d.name}${d.state ? " in " + d.state : ""} is one of the most loved corners of ${d.state === "Goa" ? "India" : "the country"} for a reason. Travellers come for the ${vibe === "coast" ? "laid-back beach life, seafood and sunsets" : vibe === "mountains" ? "fresh mountain air, pine forests and dramatic views" : "culture, heritage and welcoming local hosts"}, and stay for the hospitality. Airbnb has turned private homes, heritage havelis and modern villas into some of the best places to sleep here.\n\nWe pick every stay you see below the way you would: verified listings, strong ratings, fair prices and hosts who actually care. No paid placement, no sponsored noise — just the best airbnb in ${d.name}${loc.length ? `, checked and linked live` : ""}.`,
     bestTime: `The best time to visit ${d.name} is ${beach ? `October to March, when the ${d.name} coast is warm, dry and lively` : hill ? `October to June, when the skies are clear and the ${d.name} weather is pleasant` : "October to March"}. Weekends and school holidays book out fast, so reserve early if you plan to stay on a popular long weekend.`,
     howToReach: `Fly or take a train to ${d.name}'s nearest hub, then a short taxi, auto or local bus gets you into town. Most ${d.name} hosts send precise directions after you book. If you drive, most of our listed stays offer parking — check each listing for details.`,
     faqs: [
@@ -364,6 +369,7 @@ function tierPostObj(d, tier, loc) {
     img: top && top.cover ? top.cover : destImg(d),
     url: `blog/${tier}-airbnb-in-${d.slug}.html`,
     date: fmtDate(top && top.listedAt) || fmtDate(today()),
+    isoDate: fmtDateIso(top && top.listedAt),
     excerpt,
     keywords: autoKw(d.name, d.state),
     tier, d, listings: sorted, priceLine
@@ -389,6 +395,7 @@ function detailsPostObj(l) {
     img: l.cover,
     url: `blog/${l.slug}.html`,
     date: fmtDate(l.listedAt),
+    isoDate: fmtDateIso(l.listedAt),
     excerpt: parts.join(". ") + ". Book directly on Airbnb with guest protection.",
     keywords: keywordsFor(l),
     listing: l
@@ -397,11 +404,14 @@ function detailsPostObj(l) {
 
 /* ---------- shared templates ---------- */
 
-function head({ title, desc, canonical, image, jsonld = [] }) {
+function head({ title, desc, canonical, image, jsonld = [], ogType = "website", keywords = "", dateModified = "" }) {
   const relPath = canonical.replace(SITE, "");
   const isSub = relPath.startsWith("/destinations/") || relPath.startsWith("/bnbs/") || relPath.startsWith("/blog/");
   const prefix = isSub ? "../" : "";
   const ld = jsonld.map((j) => `<script type="application/ld+json">\n${JSON.stringify(j, null, 2)}\n</script>`).join("\n  ");
+  /* Fix SVG OG images — most platforms don't support SVG for social previews */
+  const OG_FALLBACK = SITE + "/img/og-default.jpg";
+  const ogImage = image && image.endsWith(".svg") ? OG_FALLBACK : image;
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -411,16 +421,19 @@ function head({ title, desc, canonical, image, jsonld = [] }) {
   <meta name="description" content="${desc}">
   <meta name="robots" content="index, follow, max-image-preview:large">
   <meta name="theme-color" content="#0b2b26">
+  ${keywords ? `<meta name="keywords" content="${keywords}">` : ""}
+  ${dateModified ? `<meta property="article:modified_time" content="${dateModified}">` : ""}
   <link rel="canonical" href="${canonical}">
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="${ogType}">
   <meta property="og:title" content="${title}">
   <meta property="og:description" content="${desc}">
   <meta property="og:url" content="${canonical}">
-  <meta property="og:image" content="${image}">
+  <meta property="og:image" content="${ogImage}">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="${title}">
-  <meta name="twitter:image" content="${image}">
+  <meta name="twitter:description" content="${desc}">
+  <meta name="twitter:image" content="${ogImage}">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -977,7 +990,8 @@ function genDestinationPages() {
     const ld = [
       { "@context": "https://schema.org", "@type": "TouristDestination", name: `${d.name}${destStateSuffix(d)}`, description: c.intro, image: destImg(d), url: SITE + "/destinations/" + d.slug + ".html", touristType: ["vacation", "homestay", "airbnb"], touristAttraction: areas.map((a) => ({ "@type": "TouristAttraction", name: a.n })) },
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Destinations", item: SITE + "/destinations.html" }, { name: `${d.name}`, item: SITE + "/destinations/" + d.slug + ".html" }]),
-      { "@context": "https://schema.org", "@type": "ItemList", name: `Best airbnb in ${d.name}`, itemListElement: loc.map((l, i) => ({ "@type": "ListItem", position: i + 1, url: SITE + "/bnbs/" + l.slug + ".html" })) }
+      { "@context": "https://schema.org", "@type": "ItemList", name: `Best airbnb in ${d.name}`, itemListElement: loc.map((l, i) => ({ "@type": "ListItem", position: i + 1, url: SITE + "/bnbs/" + l.slug + ".html" })) },
+      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map((f) => ({ "@type": "Question", name: f.q, acceptedAnswer: { "@type": "Answer", text: f.a } })) }
     ];
     const keywords = destKeywords(d).join(", ");
 
@@ -986,7 +1000,8 @@ function genDestinationPages() {
       desc: fit(`Explore the best airbnb in ${d.name}${destStateSuffix(d)} — curated homestays, budget stays and luxury villas. Photos and live booking on Airbnb.`, 158),
       canonical: SITE + `/destinations/${d.slug}.html`,
       image: destImg(d),
-      jsonld: ld
+      jsonld: ld,
+      keywords: destKeywords(d).join(", ")
     }) + `
   <main id="main-content">
     <section class="page-hero page-hero--photo">
@@ -1146,7 +1161,9 @@ function genBnbPages() {
       desc: bnbMetaDesc(l),
       canonical: SITE + `/bnbs/${l.slug}.html`,
       image: l.cover,
-      jsonld: ld
+      jsonld: ld,
+      ogType: "article",
+      keywords: keywordsFor(l).join(", ")
     }) + `
   <main id="main-content">
     <section class="bnb-hero">
@@ -1253,7 +1270,6 @@ function genBnbPages() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${keywords}">
   ` + tail("../"));
   }
 }
@@ -1265,7 +1281,7 @@ function genBlogIndex() {
   const posts = buildPosts();
   const cats = ["all", "best", "cheap", "luxury", "listed"];
   const ld = [
-    { "@context": "https://schema.org", "@type": "Blog", name: "airbnb-india.com Blog — Best, Cheap & Luxury Airbnb Guides", url: SITE + "/blog/index.html", description: "Location-wise guides to the best, cheap and luxury Airbnbs across India, plus detailed listing pages for every stay.", blogPost: posts.map((p) => ({ "@type": "BlogPosting", headline: p.title, url: SITE + "/" + p.url, image: p.img, datePublished: p.date })) },
+    { "@context": "https://schema.org", "@type": "Blog", name: "airbnb-india.com Blog — Best, Cheap & Luxury Airbnb Guides", url: SITE + "/blog/index.html", description: "Location-wise guides to the best, cheap and luxury Airbnbs across India, plus detailed listing pages for every stay.", blogPost: posts.map((p) => ({ "@type": "BlogPosting", headline: p.title, url: SITE + "/" + p.url, image: p.img, datePublished: p.isoDate || p.date })) },
     breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Blog", item: SITE + "/blog/index.html" }])
   ];
   write("blog/index.html", head({
@@ -1316,7 +1332,7 @@ function genTierPosts() {
       const priceLine = p.priceLine;
       const tier = t;
       const ld = [
-        { "@context": "https://schema.org", "@type": "BlogPosting", headline: p.title, image: p.img, url: SITE + "/" + p.url, datePublished: p.date, dateModified: p.date, author: { "@type": "Organization", name: "airbnb-india.com", url: SITE }, publisher: { "@type": "Organization", name: "airbnb-india.com", url: SITE, logo: SITE + "/img/logo.svg" }, description: p.excerpt, mainEntityOfPage: SITE + "/" + p.url },
+        { "@context": "https://schema.org", "@type": "BlogPosting", headline: p.title, image: p.img, url: SITE + "/" + p.url, datePublished: p.isoDate || p.date, dateModified: p.isoDate || p.date, author: { "@type": "Organization", name: "airbnb-india.com", url: SITE }, publisher: { "@type": "Organization", name: "airbnb-india.com", url: SITE, logo: SITE + "/img/logo.svg" }, description: p.excerpt, mainEntityOfPage: SITE + "/" + p.url },
         breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Blog", item: SITE + "/blog/index.html" }, { name: p.title, item: SITE + "/" + p.url }]),
         { "@context": "https://schema.org", "@type": "ItemList", name: p.title, itemListElement: sorted.map((l, i) => ({ "@type": "ListItem", position: i + 1, name: cleanName(l.name), url: SITE + "/bnbs/" + l.slug + ".html" })) }
       ];
@@ -1326,7 +1342,10 @@ function genTierPosts() {
         desc: fit(p.excerpt, 158),
         canonical: SITE + `/blog/${p.slug}.html`,
         image: p.img,
-        jsonld: ld
+        jsonld: ld,
+        ogType: "article",
+        keywords: (p.keywords || []).join(", "),
+        dateModified: fmtDateIso(p.listedAt || today())
       }) + `
   <main id="main-content">
     <section class="page-hero">
@@ -1413,9 +1432,8 @@ function genTierPosts() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${destKeywords(d).join(", ")}">
   ` + tail("../"));
-    }
+  }
   }
 }
 
@@ -1446,7 +1464,10 @@ function genDetailsPosts() {
       desc: fit(`${p.excerpt} See photos, amenities, ratings and live pricing for this ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${listStateSuffix(l)} — book securely on Airbnb.`, 158),
       canonical: SITE + `/blog/${p.slug}.html`,
       image: p.img,
-      jsonld: ld
+      jsonld: ld,
+      ogType: "article",
+      keywords: keywordsFor(l).join(", "),
+      dateModified: fmtDateIso(l.listedAt || today())
     }) + `
   <main id="main-content">
     <section class="page-hero">
@@ -1494,7 +1515,6 @@ function genDetailsPosts() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${keywordsFor(l).join(", ")}">
   ` + tail("../"));
   }
 }
@@ -1570,6 +1590,15 @@ function genMisc() {
   <meta name="description" content="The page you're looking for doesn't exist. Explore handpicked BNBs, homestays and villas across India instead.">
   <meta name="robots" content="noindex, follow">
   <meta name="theme-color" content="#0b2b26">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Page Not Found (404) | airbnb-india.com">
+  <meta property="og:description" content="The page you're looking for doesn't exist. Explore handpicked BNBs, homestays and villas across India instead.">
+  <meta property="og:url" content="${SITE}/404.html">
+  <meta property="og:image" content="${SITE}/img/og-default.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Page Not Found (404) | airbnb-india.com">
+  <meta name="twitter:description" content="The page you're looking for doesn't exist. Explore handpicked BNBs, homestays and villas across India instead.">
+  <meta name="twitter:image" content="${SITE}/img/og-default.jpg">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
