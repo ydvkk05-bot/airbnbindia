@@ -180,7 +180,7 @@ function destContent(d) {
   const vibe = beach ? "coast" : hill ? "mountains" : "heart of India";
   const loc = listingsOf(d.slug);
   return {
-    heroLead: `Find the best airbnb in ${d.name}, ${d.state} — handpicked homestays, villas and boutique stays with live Airbnb links, honest reviews and real prices.`,
+    heroLead: `Find the best airbnb in ${d.name}${destStateSuffix(d)} — handpicked homestays, villas and boutique stays with live Airbnb links, honest reviews and real prices.`,
     intro: `${d.name} in ${d.state} is one of the most loved corners of ${d.state === "Goa" ? "India" : "the country"} for a reason. Travellers come for the ${vibe === "coast" ? "laid-back beach life, seafood and sunsets" : vibe === "mountains" ? "fresh mountain air, pine forests and dramatic views" : "culture, heritage and welcoming local hosts"}, and stay for the hospitality. Airbnb has turned private homes, heritage havelis and modern villas into some of the best places to sleep here.\n\nWe pick every stay you see below the way you would: verified listings, strong ratings, fair prices and hosts who actually care. No paid placement, no sponsored noise — just the best airbnb in ${d.name}${loc.length ? `, checked and linked live` : ""}.`,
     bestTime: `The best time to visit ${d.name} is ${beach ? `October to March, when the ${d.name} coast is warm, dry and lively` : hill ? `October to June, when the skies are clear and the ${d.name} weather is pleasant` : "October to March"}. Weekends and school holidays book out fast, so reserve early if you plan to stay on a popular long weekend.`,
     howToReach: `Fly or take a train to ${d.name}'s nearest hub, then a short taxi, auto or local bus gets you into town. Most ${d.name} hosts send precise directions after you book. If you drive, most of our listed stays offer parking — check each listing for details.`,
@@ -200,7 +200,7 @@ function clientData() {
     const loc = listingsOf(d.slug);
     return {
       slug: d.slug, name: d.name, state: d.state,
-      tagline: d.tagline || `Best airbnb in ${d.name}, ${d.state}`,
+      tagline: d.tagline || `Best airbnb in ${d.name}${destStateSuffix(d)}`,
       img: destImg(d),
       url: `destinations/${d.slug}.html`,
       count: loc.length,
@@ -323,6 +323,7 @@ function head({ title, desc, canonical, image, jsonld = [] }) {
   ${ld}
 </head>
 <body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
   ${header(canonical)}
   `;
 }
@@ -425,8 +426,8 @@ function testiCard(t) {
 function destCard(d, p = "") {
   const loc = listingsOf(d.slug);
   return `<a class="dest-card reveal" href="${p}destinations/${d.slug}.html" aria-label="Best Airbnb in ${d.name} — ${d.tagline || "handpicked stays"}">
-    <span class="dest-art"><img src="${destImg(d)}" alt="Best airbnb in ${d.name}, ${d.state} — ${d.tagline || "handpicked stays"}" loading="lazy"></span>
-    <span class="dest-overlay"><h3>${d.name}</h3><p>${d.tagline || `Best airbnb in ${d.name}, ${d.state}`}</p></span>
+    <span class="dest-art"><img src="${destImg(d)}" alt="Best airbnb in ${d.name}${destStateSuffix(d)} — ${d.tagline || "handpicked stays"}" loading="lazy"></span>
+    <span class="dest-overlay"><h3>${d.name}</h3><p>${d.tagline || `Best airbnb in ${d.name}${destStateSuffix(d)}`}</p></span>
     <span class="dest-count">${loc.length} stays</span>
   </a>`;
 }
@@ -510,7 +511,7 @@ function genIndex() {
     image: heroImg,
     jsonld: ld
   }) + `
-  <main>
+  <main id="main-content">
     <section class="hero hero--photo">
       <img class="hero-photo" src="${heroImg}" alt="Kerala backwaters — find the best Airbnb in India" width="1920" height="1080">
       <div class="hero-shade"></div>
@@ -708,11 +709,11 @@ function genDestinations() {
     image: u("jaipur", 1200, 630),
     jsonld: ld
   }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="index.html">Home</a><span class="sep">›</span><span>Destinations</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>Destinations</span></nav>
         <h1>Best Airbnbs in India, City by City</h1>
         <p>Location-wise, state-wise guides to the best airbnb in India — from beach villas to mountain cabins. Pick a destination to see curated stays, budget picks and luxury stays.</p>
       </div>
@@ -756,11 +757,11 @@ function genBnbs() {
     image: u("kerala", 1200, 630),
     jsonld: ld
   }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="index.html">Home</a><span class="sep">›</span><span>All BNBs</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>All BNBs</span></nav>
         <h1>All Handpicked BNBs in India</h1>
         <p>Every stay on airbnb-india.com in one place — verified, highly rated, and one click from live pricing and booking on Airbnb.</p>
       </div>
@@ -796,7 +797,7 @@ function genDestinationPages() {
     const faqs = c.faqs.slice(0, 4);
     const tiers = TIERS.map((t) => buildPosts().find((p) => p.tier === t && p.d && p.d.slug === d.slug)).filter(Boolean);
     const ld = [
-      { "@context": "https://schema.org", "@type": "TouristDestination", name: `${d.name}, ${d.state}`, description: c.intro, image: destImg(d), url: SITE + "/destinations/" + d.slug + ".html", touristType: ["vacation", "homestay", "airbnb"], touristAttraction: areas.map((a) => ({ "@type": "TouristAttraction", name: a.n })) },
+      { "@context": "https://schema.org", "@type": "TouristDestination", name: `${d.name}${destStateSuffix(d)}`, description: c.intro, image: destImg(d), url: SITE + "/destinations/" + d.slug + ".html", touristType: ["vacation", "homestay", "airbnb"], touristAttraction: areas.map((a) => ({ "@type": "TouristAttraction", name: a.n })) },
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "Destinations", item: SITE + "/destinations.html" }, { name: `${d.name}`, item: SITE + "/destinations/" + d.slug + ".html" }]),
       { "@context": "https://schema.org", "@type": "ItemList", name: `Best airbnb in ${d.name}`, itemListElement: loc.map((l, i) => ({ "@type": "ListItem", position: i + 1, url: SITE + "/bnbs/" + l.slug + ".html" })) }
     ];
@@ -809,13 +810,13 @@ function genDestinationPages() {
       image: destImg(d),
       jsonld: ld
     }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero page-hero--photo">
-      <img class="page-hero-photo" src="${destImg(d)}" alt="Best airbnb in ${d.name}, ${d.state} — ${d.tagline || "handpicked stays"}" width="1600" height="700">
+      <img class="page-hero-photo" src="${destImg(d)}" alt="Best airbnb in ${d.name}${destStateSuffix(d)} — ${d.tagline || "handpicked stays"}" width="1600" height="700">
       <div class="page-hero-shade"></div>
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../destinations.html">Destinations</a><span class="sep">›</span><span>${d.name}</span></nav>
-        <h1>Best Airbnb in ${d.name}, ${d.state}</h1>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../destinations.html">Destinations</a><span class="sep">›</span><span>${d.name}</span></nav>
+        <h1>Best Airbnb in ${d.name}${destStateSuffix(d)}</h1>
         <p>${c.heroLead}</p>
       </div>
     </section>
@@ -836,7 +837,7 @@ function genDestinationPages() {
           ${loc.map((l) => bnbCard(l, "../")).join("\n")}
           <a class="bnb-card bnb-card--more reveal" href="${airbnbSearch(d)}" target="_blank" rel="nofollow noopener">
             <div class="bnb-photo"><img src="${destImg(d)}" alt="More Airbnbs in ${d.name} — browse live listings on Airbnb" loading="lazy"><span class="bnb-price-flag">Live</span></div>
-            <div class="bnb-body"><div class="bnb-loc">${pinIcon()} ${d.name}, ${d.state}</div><h3>More Airbnbs in ${d.name}</h3>
+            <div class="bnb-body"><div class="bnb-loc">${pinIcon()} ${d.name}${destStateSuffix(d)}</div><h3>More Airbnbs in ${d.name}</h3>
             <p class="bnb-blurb">See every live listing in ${d.name} — filter by price, reviews and amenities directly on Airbnb.</p>
             <div class="bnb-actions"><a class="btn btn-primary" href="${airbnbSearch(d)}" target="_blank" rel="nofollow noopener">Browse on Airbnb</a></div></div>
           </a>
@@ -957,10 +958,10 @@ function genBnbPages() {
       image: l.cover,
       jsonld: ld
     }) + `
-  <main>
+  <main id="main-content">
     <section class="bnb-hero">
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../bnbs.html">BNBs</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../bnbs.html">BNBs</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
         <div class="gallery-grid">
           <figure class="gal-main"><img src="${l.cover}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}" width="900" height="620"></figure>
           ${gallery.slice(1).map((g, i) => `<figure class="gal-thumb"><img src="${g}" alt="${esc(cleanName(l.name))} — gallery ${i + 2}" loading="lazy"></figure>`).join("\n")}
@@ -1070,11 +1071,11 @@ function genBlogIndex() {
     image: u("jaipur", 1200, 630),
     jsonld: ld
   }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><span>Blog</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><span>Blog</span></nav>
         <h1>Best, Cheap &amp; Luxury Airbnb Guides in India</h1>
         <p>Location-wise guides written for real trip planning — find the best airbnb in India, stretch your budget, or go full luxury.</p>
         <div class="blog-filters">
@@ -1121,12 +1122,12 @@ function genTierPosts() {
         image: p.img,
         jsonld: ld
       }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${TIER_LABEL[tier]} Airbnb in ${d.name}</span></nav>
-        <span class="eyebrow eyebrow--light">${TIER_LABEL[tier]} Airbnb Guide · ${d.name}, ${d.state}</span>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${TIER_LABEL[tier]} Airbnb in ${d.name}</span></nav>
+        <span class="eyebrow eyebrow--light">${TIER_LABEL[tier]} Airbnb Guide · ${d.name}${destStateSuffix(d)}</span>
         <h1>${p.title.replace(" (2026)", "")}</h1>
         <p>${c.heroLead}</p>
       </div>
@@ -1162,7 +1163,7 @@ function genTierPosts() {
             ${sorted.map((l) => bnbCard(l, "../")).join("\n")}
             <article class="bnb-card">
               <div class="bnb-photo"><img src="${p.img}" alt="More ${TIER_LABEL[tier].toLowerCase()} Airbnbs in ${d.name} — browse on Airbnb" loading="lazy"><span class="bnb-price-flag">Live</span></div>
-              <div class="bnb-body"><div class="bnb-loc">${pinIcon()} ${d.name}, ${d.state}</div><h3>More ${TIER_LABEL[tier]} Airbnbs in ${d.name}</h3>
+              <div class="bnb-body"><div class="bnb-loc">${pinIcon()} ${d.name}${destStateSuffix(d)}</div><h3>More ${TIER_LABEL[tier]} Airbnbs in ${d.name}</h3>
               <p class="bnb-blurb">Browse every live ${TIER_LABEL[tier].toLowerCase()} Airbnb in ${d.name} on Airbnb — filter by price, reviews and amenities.</p>
               <div class="bnb-actions"><a class="btn btn-primary" href="${airbnbSearch(d)}" target="_blank" rel="nofollow noopener">Browse on Airbnb</a></div></div>
             </article>
@@ -1241,11 +1242,11 @@ function genDetailsPosts() {
       image: p.img,
       jsonld: ld
     }) + `
-  <main>
+  <main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
         <span class="eyebrow eyebrow--light">${l.type || "Airbnb"} · ${l.city}${l.state ? ", " + l.state : ""}</span>
         <h1>${esc(cleanName(l.name))}</h1>
         <p>${blurb(l)}</p>
@@ -1306,11 +1307,11 @@ function genMisc() {
       breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: title, item: `${SITE}/${file}` }])
     ]
   });
-  const body = (content) => `<main>
+  const body = (content) => `<main id="main-content">
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb"><a href="index.html">Home</a><span class="sep">›</span><span>${content.title}</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="index.html">Home</a><span class="sep">›</span><span>${content.title}</span></nav>
         <h1>${content.title}</h1>
       </div>
     </section>
