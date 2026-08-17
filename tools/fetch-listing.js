@@ -334,7 +334,7 @@ async function fetchListing(inputUrl) {
       const to = setTimeout(() => ctrl.abort(), 8000);
       const g = await fetch(
         "https://nominatim.openstreetmap.org/reverse?lat=" + d.lat + "&lon=" + d.lng + "&format=jsonv2&accept-language=en",
-        { headers: { "User-Agent": "airbnb-india.com listing bot (contact: " + "jayantydavrbl558@gmail.com)" }, signal: ctrl.signal }
+        { headers: { "User-Agent": "airbnb-india.com listing bot (contact: " + "jayantyadavrbl558@gmail.com)" }, signal: ctrl.signal }
       );
       clearTimeout(to);
       if (g.ok) {
