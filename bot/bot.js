@@ -70,6 +70,13 @@ async function send(chatId, text) {
   });
 }
 
+async function sendWithButtons(chatId, text, buttons) {
+  return tg("sendMessage", {
+    chat_id: chatId, text, parse_mode: "HTML", disable_web_page_preview: true,
+    reply_markup: { inline_keyboard: buttons }
+  });
+}
+
 function isAdmin(userId) {
   if (!ADMIN_ID) return true;
   return userId === ADMIN_ID;
@@ -77,13 +84,18 @@ function isAdmin(userId) {
 
 const inr = (n) => (n ? "₹" + Number(n).toLocaleString("en-IN") : null);
 
+/* Store pending listing confirmations keyed by chatId. */
+const pendingConfirmations = {};
+const CONFIRMATION_TTL = 5 * 60 * 1000; /* 5 minutes */
+
 function listingSummary(l, action) {
+  const lastChecked = l.lastChecked ? "\n🕐 Last fetched: " + new Date(l.lastChecked).toLocaleString("en-IN", { timeZone: "Asia/Kolkata" }) : "";
   return `✅ <b>${action}</b> — <b>${esc(l.name)}</b>
 
 🏠 ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}
 ⭐ ${l.rating || "—"} · ${l.reviews || 0} reviews
 👤 Sleeps ${l.guests || "?"}${l.bedrooms ? " · " + l.bedrooms + " bedrooms" : ""}
-💰 ${l.price ? inr(l.price) + " /night" : "Live price on Airbnb"}
+💰 ${l.price ? inr(l.price) + " /night" : "Live price on Airbnb"}${lastChecked}
 
 🔗 <a href="${l.url}">Open on Airbnb</a>
 🌐 ${SITE}/bnbs/${l.slug}.html`;
@@ -113,6 +125,7 @@ Send me Airbnb links and I publish them on the site automatically.
 /deletenotification <i>&lt;id&gt;</i> — delete an announcement
 
 <b>Maintenance</b>
+/refreshall — re-fetch every listing from Airbnb and update prices/ratings
 /frestart — force restart the bot (regenerates the site, then restarts; run under pm2/systemd so it comes back automatically)
 
 /help — this message
@@ -130,12 +143,52 @@ async function cmdListbnb(chatId, arg) {
     if (existing) return send(chatId, `This listing is already on the site as <code>${existing.slug}</code>. Use <code>/update ${existing.slug}</code> to refresh it.`);
     const res = await fetchListing(url);
     if (!res.ok) return send(chatId, "⚠️ " + esc(res.error));
-    const l = store.saveListing(res.listing);
-    await regenAndPush(`add ${l.slug}`);
-    return send(chatId, listingSummary(l, "Listing added"));
+    const l = res.listing;
+    /* Show confirmation preview with Add/Cancel buttons */
+    const preview = `📋 <b>New Listing Preview</b>
+
+<b>${esc(l.name)}</b>
+🏠 ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""}
+⭐ ${l.rating || "—"} · ${l.reviews || 0} reviews
+👤 Sleeps ${l.guests || "?"}${l.bedrooms ? " · " + l.bedrooms + " bedrooms" : ""}
+💰 ${l.price ? inr(l.price) + " /night" : "Live pricing"}
+${l.amenities && l.amenities.length ? "🎯 " + l.amenities.slice(0, 3).join(", ") : ""}`;
+    const msg = await sendWithButtons(chatId, preview, [
+      [{ text: "✅ Add to site", callback_data: "listbnb_confirm:" + chatId }, { text: "❌ Cancel", callback_data: "listbnb_cancel:" + chatId }]
+    ]);
+    pendingConfirmations[chatId] = { listing: Object.assign({}, l, { lastChecked: Date.now() }), msgId: msg.message_id, url, ts: Date.now() };
   } catch (e) {
     console.error(e);
     return send(chatId, "❌ Could not fetch that listing: " + esc(e.message));
+  }
+}
+
+async function handleCallbackQuery(callbackQuery) {
+  const chatId = callbackQuery.message && callbackQuery.message.chat && callbackQuery.message.chat.id;
+  const data = callbackQuery.data || "";
+  if (!chatId) return;
+
+  /* Answer the callback query to remove the loading spinner */
+  await tg("answerCallbackQuery", { callback_query_id: callbackQuery.id });
+
+  if (data.startsWith("listbnb_confirm:")) {
+    const pending = pendingConfirmations[chatId];
+    if (!pending || (Date.now() - (pending.ts || 0)) > CONFIRMATION_TTL) {
+      delete pendingConfirmations[chatId];
+      return tg("editMessageText", { chat_id: chatId, message_id: callbackQuery.message.message_id, text: "⚠️ Session expired. Send the listing link again.", parse_mode: "HTML" });
+    }
+    delete pendingConfirmations[chatId];
+    try {
+      const l = store.saveListing(pending.listing);
+      await regenAndPush(`add ${l.slug}`);
+      await tg("editMessageText", { chat_id: chatId, message_id: callbackQuery.message.message_id, text: listingSummary(l, "Listing added"), parse_mode: "HTML", disable_web_page_preview: true });
+    } catch (e) {
+      console.error(e);
+      await tg("editMessageText", { chat_id: chatId, message_id: callbackQuery.message.message_id, text: "❌ Failed to add: " + esc(e.message), parse_mode: "HTML" });
+    }
+  } else if (data.startsWith("listbnb_cancel:")) {
+    delete pendingConfirmations[chatId];
+    await tg("editMessageText", { chat_id: chatId, message_id: callbackQuery.message.message_id, text: "🚫 Listing addition cancelled.", parse_mode: "HTML" });
   }
 }
 
@@ -146,7 +199,7 @@ async function cmdUpdate(chatId, arg) {
   try {
     const res = await fetchListing(existing.url);
     if (!res.ok) return send(chatId, "⚠️ " + esc(res.error));
-    const fresh = Object.assign({}, res.listing, { slug: existing.slug, listedAt: existing.listedAt, destSlug: existing.destSlug });
+    const fresh = Object.assign({}, res.listing, { slug: existing.slug, listedAt: existing.listedAt, destSlug: existing.destSlug, lastChecked: Date.now(), host: existing.host, hostAbout: existing.hostAbout, hostHighlights: existing.hostHighlights, hostWhatsapp: existing.hostWhatsapp, hostPhone: existing.hostPhone, hostEmail: existing.hostEmail, hostBadges: existing.hostBadges });
     store.saveListing(fresh);
     await regenAndPush(`update ${fresh.slug}`);
     return send(chatId, listingSummary(fresh, "Listing updated"));
@@ -203,7 +256,7 @@ function cmdList(chatId) {
 }
 
 async function cmdSetHostDetails(chatId, arg) {
-  const parts = String(arg).split("-").map((s) => s.trim()).filter(Boolean);
+  const parts = String(arg).split(/\s+-\s+/).map((s) => s.trim()).filter(Boolean);
   if (parts.length < 2) {
     return send(chatId, "Format: <code>/sethostdetails &lt;link or slug&gt; - &lt;host name&gt; - &lt;whatsapp&gt; - &lt;phone&gt; - &lt;email&gt;</code>\nExample: <code>/sethostdetails north-goa-15839408 - Ravi - 919876543210 - 919987654321 - ravi@example.com</code>");
   }
@@ -312,6 +365,37 @@ async function cmdDeleteNotification(chatId, arg) {
   return send(chatId, `Announcement deleted. It will no longer pop up for new visitors.`);
 }
 
+/* ---------- refresh all listings ---------- */
+
+async function cmdRefreshAll(chatId) {
+  const slugs = store.listListingSlugs();
+  if (!slugs.length) return send(chatId, "No listings to refresh. Add one first with /listbnb.");
+  await send(chatId, `⏳ Re-fetching ${slugs.length} listings from Airbnb…`);
+  let updated = 0, failed = 0, errors = [];
+  for (const slug of slugs) {
+    const existing = store.readListing(slug);
+    if (!existing || !existing.url) { failed++; errors.push(slug + ": no URL"); continue; }
+    try {
+      const res = await fetchListing(existing.url);
+      if (!res.ok) { failed++; errors.push(slug + ": " + (res.error || "fetch failed")); continue; }
+      const fresh = Object.assign({}, res.listing, { slug: existing.slug, listedAt: existing.listedAt, destSlug: existing.destSlug, host: existing.host, hostAbout: existing.hostAbout, hostHighlights: existing.hostHighlights, hostWhatsapp: existing.hostWhatsapp, hostPhone: existing.hostPhone, hostEmail: existing.hostEmail, hostBadges: existing.hostBadges, lastChecked: Date.now() });
+      store.saveListing(fresh);
+      updated++;
+    } catch (e) {
+      failed++;
+      errors.push(slug + ": " + (e.message || "error"));
+    }
+    /* small delay between requests to avoid rate-limiting */
+    await sleep(1000);
+  }
+  const result = await regenAndPush("refreshall " + updated + "/" + slugs.length);
+  let msg = `✅ Refresh complete: <b>${updated}</b> updated, <b>${failed}</b> failed (out of ${slugs.length}).`;
+  if (errors.length) msg += "\n\n❌ Errors:\n" + errors.map((e) => "• " + esc(e)).join("\n");
+  if (result.pushed) msg += "\n\n🌐 Pushed to git — live site updated.";
+  else if (result.pushError) msg += "\n\n⚠️ Rebuilt locally, but git push failed: " + esc(result.pushError);
+  return send(chatId, msg);
+}
+
 /* ---------- helpers ---------- */
 
 function extractUrl(text) {
@@ -379,6 +463,7 @@ async function handleMessage(msg) {
   if (first === "/list") return cmdList(chatId);
   if (first === "/sethostdetails") return cmdSetHostDetails(chatId, arg);
   if (first === "/frestart" || first === "/restart") return cmdForceRestart(chatId);
+  if (first === "/refreshall" || first === "/refresh") return cmdRefreshAll(chatId);
   if (first === "/testimonial" || first === "/testimonal") return cmdTestimonial(chatId, arg);
   if (first === "/testimonials" || first === "/listtestimonials") return cmdTestimonials(chatId);
   if (first === "/deletetestimonial") return cmdDeleteTestimonial(chatId, arg);
@@ -399,6 +484,9 @@ async function poll() {
   }
   for (const update of result) {
     offset = update.update_id + 1;
+    if (update.callback_query) {
+      try { await handleCallbackQuery(update.callback_query); } catch (e) { console.error("callback error:", e.message); }
+    }
     if (update.message && update.message.text) {
       try { await handleMessage(update.message); } catch (e) { console.error("handle error:", e.message); }
     }

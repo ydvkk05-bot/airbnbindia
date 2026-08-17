@@ -88,6 +88,66 @@ function blurb(l) {
   return s || `A handpicked ${(l.type || "Airbnb").toLowerCase()} in ${l.city}${l.state ? ", " + l.state : ""} — verified on Airbnb and ready to book.`;
 }
 
+/* Format a raw Airbnb description into clean, structured HTML paragraphs.
+   Splits by Airbnb section markers, removes registration details and
+   outdated COVID text, and returns an array of paragraph strings. */
+function formatDescription(l) {
+  let raw = String(l.description || "").trim();
+  if (!raw) return [blurb(l)];
+
+  /* Clean up first */
+  raw = raw
+    .replace(/Registration details?\s*\w+/gi, "")
+    .replace(/\(Due to the prevailing Covid-19 situation[^)]*\)/gi, "")
+    .replace(/\s+/g, " ")
+    .trim();
+
+  /* Split by section markers — both on their own line and inline */
+  const sectionParts = raw.split(/\b(The space|Guest access|Other things to note|Interaction with guests)\s*/i);
+  const sections = [];
+  let i = 0;
+
+  while (i < sectionParts.length) {
+    const part = sectionParts[i].trim();
+    const isMarker = /^(The space|Guest access|Other things to note|Interaction with guests)$/i.test(part);
+
+    if (isMarker) {
+      /* This is a section header — the next part is the content */
+      const content = (sectionParts[i + 1] || "").trim();
+      if (content) sections.push(content);
+      i += 2;
+    } else if (part) {
+      /* This is the intro text (before any marker) */
+      sections.push(part);
+      i++;
+    } else {
+      i++;
+    }
+  }
+
+  if (sections.length === 0) return [blurb(l)];
+
+  return sections
+    .map((s) => s.replace(/\s+/g, " ").trim())
+    .filter((s) => s.length > 10)
+    .slice(0, 5);
+}
+
+/* Rich meta description for BNB pages — keyword-rich, location-specific, ≤158 chars. */
+function bnbMetaDesc(l) {
+  const type = (l.type || "Airbnb").toLowerCase();
+  const loc = l.city + listStateSuffix(l);
+  const parts = [];
+  if (l.name) parts.push(cleanName(l.name));
+  parts.push(`${type} in ${loc}`);
+  if (l.price) parts.push(`from ${inr(l.price)}/night`);
+  if (l.rating) parts.push(`★ ${l.rating} (${l.reviews || 0} reviews)`);
+  if (l.highlights && l.highlights.length) parts.push(l.highlights[0]);
+  let desc = parts.join(" — ");
+  if (desc.length > 158) desc = desc.slice(0, 155).replace(/\s+\S*$/, "") + "…";
+  return desc;
+}
+
 /* Truncate a string at a word boundary to at most `max` chars (Google displays
    ~60 title / ~160 description chars; longer ones get cut in SERPs). */
 function fit(str, max) {
@@ -171,6 +231,31 @@ const tierListings = (loc, tier) => {
 };
 
 const tierOf = (l) => (l.price == null ? "Mid-range" : l.price >= 4000 ? "Luxury" : l.price <= 2000 ? "Budget" : "Mid-range");
+
+/* Auto-generate FAQs for a listing — used for FAQPage schema + on-page FAQ. */
+function autoFaq(l) {
+  const loc = l.city + listStateSuffix(l);
+  const type = (l.type || "Airbnb").toLowerCase();
+  const faqs = [
+    { q: `How much does this ${type} cost in ${l.city}?`,
+      a: `This ${type} in ${loc} starts from ${l.price ? inr(l.price) + " per night" : "varies by date"}. Prices may be lower on weekdays or off-season.` },
+    { q: `What is the guest rating for this stay?`,
+      a: `This stay has a ${l.rating || "—"} star rating based on ${l.reviews || 0} guest reviews on Airbnb.${l.isGuestFavorite ? " It is a Guest Favourite." : ""}` },
+    { q: `How many guests does this ${type} accommodate?`,
+      a: `This stay accommodates ${l.guests || "up to the number of guests listed"} guests with ${l.bedrooms || 1} bedroom${l.bedrooms !== 1 ? "s" : ""}${l.baths ? " and " + l.baths + " bathroom" + (l.baths !== 1 ? "s" : "") : ""}.` },
+    { q: `Where exactly is this Airbnb located?`,
+      a: `This ${type} is located in ${l.city}${l.state ? ", " + l.state : ""}, India${l.area ? " — " + l.area + " area" : ""}.` },
+    { q: `How do I book this ${type} in ${l.city}?`,
+      a: `Click "Check Price on Airbnb" to view live availability, full pricing (including fees) and book securely on Airbnb with guest protection.` }
+  ];
+  if (l.amenities && l.amenities.length >= 2) {
+    faqs.push({
+      q: `What amenities does this ${type} offer?`,
+      a: `Key amenities include ${l.amenities.slice(0, 5).join(", ")}${l.amenities.length > 5 ? " and more" : ""}.`
+    });
+  }
+  return faqs;
+}
 
 /* ---------- content helpers (auto-copy per destination) ---------- */
 
@@ -258,9 +343,20 @@ function tierPostObj(d, tier, loc) {
   const top = sorted[0];
   const n = loc.length;
   const priceLine = tier === "cheap" ? "under ₹2,000 per night" : tier === "luxury" ? "₹4,000+ per night" : "every budget";
+  const topTitle = top ? blogTitle(top) : "";
+  const topShort = topTitle.replace(/\s*\(\d{4}\)\s*$/, "").replace(/\s+in\s+.+$/, "").trim();
   const title = tier === "best" ? `Best Airbnb in ${d.name} (2026): Top-Rated Stays & Prices`
     : tier === "cheap" ? `Cheap Airbnbs in ${d.name}: ${n} Stays Under ₹2,000`
-    : `Luxury Airbnbs in ${d.name}: Premium Villas & Private Pools`;
+    : topShort ? `${topShort} & More — Luxury Airbnbs in ${d.name}` : `Luxury Airbnbs in ${d.name}: Premium Villas & Private Pools`;
+  const topName = top ? cleanName(top.name) : "";
+  const topPrice = top && top.price ? `Starting at ${inr(top.price)}/night` : "Live pricing on Airbnb";
+  const topRating = top && top.rating ? `★ ${top.rating} rating` : "";
+  const tierLabel = tier === "best" ? "top-rated" : tier === "cheap" ? "budget-friendly" : "luxury";
+  const excerpt = tier === "best"
+    ? `${n} handpicked, top-rated Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}. ${topName} leads the list — ${topPrice}${topRating ? " · " + topRating : ""}. Real prices, real reviews, one-click booking on Airbnb.`
+    : tier === "cheap"
+    ? `${n} affordable Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}, all under ₹2,000 per night. ${topName ? topName + " — from " + (top.price ? inr(top.price) + "/night" : "live pricing") + "." : ""} Every pick is verified, reviewed and bookable directly on Airbnb.`
+    : `${n} luxury Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)} — private pools, premium villas and designer homes. ${topName ? topName + " from " + (top.price ? inr(top.price) + "/night" : "live pricing") + "." : ""} Verified listings with real photos and guest reviews on Airbnb.`;
   return {
     slug: `${tier}-airbnb-in-${d.slug}`,
     title,
@@ -268,14 +364,24 @@ function tierPostObj(d, tier, loc) {
     img: top && top.cover ? top.cover : destImg(d),
     url: `blog/${tier}-airbnb-in-${d.slug}.html`,
     date: fmtDate(top && top.listedAt) || fmtDate(today()),
-    excerpt: `${n} ${tier === "best" ? "top-rated" : tier === "cheap" ? "budget-friendly" : "luxury"} Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)} — handpicked with ratings, prices and one-click booking on Airbnb.`,
+    excerpt,
     keywords: autoKw(d.name, d.state),
     tier, d, listings: sorted, priceLine
   };
 }
 
 function detailsPostObj(l) {
-  const title = seoTitle(cleanName(l.name), locStr(l));
+  const title = blogTitle(l);
+  const type = (l.type || "Airbnb").toLowerCase();
+  const loc = l.city + listStateSuffix(l);
+  const features = extractFeatures(l);
+  const parts = [
+    `${cleanName(l.name)} — a verified ${type} in ${loc}`,
+    l.price ? `Starting from ${inr(l.price)} per night` : null,
+    l.rating ? `Rated ${l.rating}/5 by ${l.reviews || 0} guests` : null,
+    l.guests ? `Sleeps ${l.guests} guests` : null,
+    features.length ? `Featuring ${features.slice(0, 3).join(", ").toLowerCase()}` : null
+  ].filter(Boolean);
   return {
     slug: l.slug,
     title,
@@ -283,7 +389,7 @@ function detailsPostObj(l) {
     img: l.cover,
     url: `blog/${l.slug}.html`,
     date: fmtDate(l.listedAt),
-    excerpt: blurb(l),
+    excerpt: parts.join(". ") + ". Book directly on Airbnb with guest protection.",
     keywords: keywordsFor(l),
     listing: l
   };
@@ -432,10 +538,80 @@ function destCard(d, p = "") {
   </a>`;
 }
 
+/* Generate a proper SEO-friendly blog post title from listing data.
+   Combines property type, bedrooms, key features and location into a
+   natural title like "Luxury 1BHK Villa with Private Pool in Benaulim (2026)" */
+function blogTitle(l) {
+  const features = extractFeatures(l);
+  const bedrooms = l.bedrooms ? l.bedrooms + "BHK" : "";
+  const type = (l.type || "").replace(/^entire\s*/i, "").trim() || "Stay";
+  const loc = l.city + (l.state && l.state.toLowerCase() !== l.city.toLowerCase() ? ", " + l.state : "");
+  const year = new Date().getFullYear();
+
+  /* Pick the most important feature for the title — prioritise high-value features */
+  const featPriority = ["pool", "chef", "beach", "sea view", "luxury", "garden", "heritage", "wifi", "view", "parking"];
+  const topFeat = featPriority.reduce((best, kw) => {
+    const found = features.find((f) => f.toLowerCase().includes(kw));
+    return found && !best ? found : best;
+  }, "") || features[0] || "";
+  const featPart = topFeat ? topFeat.toLowerCase() : "";
+
+  /* Build: "1BHK Heritage Villa with Private Pool in Benaulim (2026)" */
+  const parts = [bedrooms, type, featPart ? "with " + featPart : "", "in", loc, "(" + year + ")"].filter(Boolean);
+  let title = parts.join(" ");
+
+  /* Ensure ≤ 65 chars for SEO, trim if needed */
+  if (title.length > 65) {
+    title = [bedrooms, type, featPart ? "with " + featPart : "", "in", loc].filter(Boolean).join(" ");
+  }
+  if (title.length > 65) {
+    title = [bedrooms, type, "in", loc].filter(Boolean).join(" ");
+  }
+  return title;
+}
+
+/* Extract unique features from listing description for richer blog content. */
+function extractFeatures(l) {
+  const desc = String(l.description || "").toLowerCase();
+  const features = [];
+  const patterns = [
+    [/(?:private|own)\s+(?:pool|swimming)/i, "Private pool"],
+    [/(?:sea|ocean|beach)\s*(?:view|facing|front)/i, "Sea-facing views"],
+    [/(?:\bgate\b.*\bbeach\b|\bbeach\b.*\bgate\b|\bbeach\b.*\baccess\b|\bbeach\b.*\bwalk\b)/i, "Beach access"],
+    [/(?:lake|river|waterfront|water\s*body)/i, "Waterfront location"],
+    [/(?:mountain|hill|valley)\s*(?:view|facing)/i, "Mountain views"],
+    [/(?:garden|lawn|patio|verandah|balcony)/i, "Private garden or patio"],
+    [/(?:kitchen|cooking|cookware)/i, "Full kitchen"],
+    [/(?:wifi|wi-fi|internet)/i, "High-speed WiFi"],
+    [/(?:parking|garage)/i, "Free parking"],
+    [/(?:air.?cond|\bAC\b|split)/i, "Air conditioning"],
+    [/(?:washer|washing\s*machine|laundry)/i, "In-unit laundry"],
+    [/(?:\bTV\b|television|netflix|streaming)/i, "Smart TV with streaming"],
+    [/(?:bbq|barbecue|grill)/i, "BBQ / grill area"],
+    [/(?:breakfast|morning\s*meal)/i, "Breakfast included"],
+    [/(?:pet.?friendly|pets?\s*(?:allowed|welcome))/i, "Pet-friendly"],
+    [/(?:security|cctv|guard)/i, "24/7 security"],
+    [/(?:luxury|premium|upscale|elegant)/i, "Luxury finishes"],
+    [/(?:chef|cooking\s*service)/i, "Private chef available"],
+    [/(?:housekeeping|cleaning|maid)/i, "Daily housekeeping"],
+    [/(?:power\s*backup|generator|inverter)/i, "Power backup"],
+    [/(?:terrace|rooftop)/i, "Rooftop terrace"],
+    [/(?:fire\s*place|fireplace|bonfire)/i, "Bonfire or fireplace"],
+    [/(?:jacuzzi|hot\s*tub)/i, "Jacuzzi or hot tub"],
+    [/(?:gym|fitness|workout)/i, "Fitness area"],
+    [/(?:kids?\s*(?:play|zone|friendly)|family)/i, "Family-friendly"]
+  ];
+  for (const [rx, label] of patterns) {
+    if (rx.test(desc) && features.length < 6) features.push(label);
+  }
+  return features;
+}
+
 function bnbCard(l, p = "") {
+  const cardImg = l.cover + (l.cover.includes("?") ? "&" : "?") + "w=600&q=75";
   return `<article class="bnb-card reveal">
     <div class="bnb-photo">
-      <img src="${l.cover}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""} · book on Airbnb" loading="lazy">
+      <img src="${cardImg}" alt="${esc(cleanName(l.name))} — ${l.type || "Airbnb"} in ${l.city}${l.state ? ", " + l.state : ""} · book on Airbnb" loading="lazy" width="600" height="400">
       <span class="bnb-price-flag">${priceFlag(l.price)}</span>
       <button class="bnb-heart" aria-label="Save ${esc(cleanName(l.name))} to wishlist"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.5-1.5 3-3.2 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.8 0-3.4 1-4.5 2.5C10.9 4 9.3 3 7.5 3A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4 3 5.5l7 7Z"/></svg></button>
     </div>
@@ -453,12 +629,14 @@ function bnbCard(l, p = "") {
 }
 
 function postCard(p, root = "") {
+  const cardImg = p.img + (p.img.includes("?") ? "&" : "?") + "w=600&q=75";
+  const shortExcerpt = p.excerpt.length > 140 ? p.excerpt.slice(0, 137).replace(/\s+\S*$/, "") + "…" : p.excerpt;
   return `<article class="blog-card reveal" data-cat="${p.category.toLowerCase()}">
-    <a class="blog-cover" href="${root}${p.url}"><img src="${p.img}" alt="${esc(p.title)}" loading="lazy"><span class="cat-tag">${p.category}</span></a>
+    <a class="blog-cover" href="${root}${p.url}"><img src="${cardImg}" alt="${esc(p.title)}" loading="lazy" width="600" height="400"><span class="cat-tag">${p.category}</span></a>
     <div class="blog-body">
       <span class="blog-date"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/></svg>${p.date}</span>
       <h3><a href="${root}${p.url}">${esc(p.title)}</a></h3>
-      <p>${esc(p.excerpt)}</p>
+      <p>${esc(shortExcerpt)}</p>
       <a class="read-more" href="${root}${p.url}">Read article <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
     </div>
   </article>`;
@@ -911,7 +1089,7 @@ function genBnbPages() {
     const related = LISTINGS.filter((x) => (x.destSlug || slug(x.city)) === destSlug && x.slug !== l.slug).slice(0, 3);
     const others = LISTINGS.filter((x) => !related.includes(x) && x.slug !== l.slug).slice(0, 3 - related.length);
     const relAll = related.concat(others).slice(0, 3);
-    const paras = String(l.description || "").split(/\n{2,}/).filter((p) => p.trim()).slice(0, 4).map((p) => p.replace(/\s+/g, " ").trim());
+    const paras = formatDescription(l);
     if (!paras.length) paras.push(blurb(l));
     const amenities = (l.amenities && l.amenities.length ? l.amenities : ["Full amenity list on Airbnb"]).slice(0, 12);
     const nearby = [
@@ -922,6 +1100,8 @@ function genBnbPages() {
     ];
     const host = l.host || "Verified Airbnb host";
     const gallery = [l.cover].concat((l.images || []).filter((i) => i !== l.cover).slice(0, 3));
+    const listingFaqs = autoFaq(l);
+    const features = extractFeatures(l);
     const ld = [
       {
         "@context": "https://schema.org",
@@ -939,9 +1119,19 @@ function genBnbPages() {
         provider: { "@type": "Organization", name: "Airbnb", url: l.url },
         brand: { "@type": "Organization", name: "airbnb-india.com", url: SITE }
       },
-      breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }, { name: cleanName(l.name), item: SITE + "/bnbs/" + l.slug + ".html" }])
+      breadcrumbJson([{ name: "Home", item: SITE + "/" }, { name: "BNBs", item: SITE + "/bnbs.html" }, { name: cleanName(l.name), item: SITE + "/bnbs/" + l.slug + ".html" }]),
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        mainEntity: listingFaqs.map((f) => ({
+          "@type": "Question",
+          name: f.q,
+          acceptedAnswer: { "@type": "Answer", text: f.a }
+        }))
+      }
     ];
     const keywords = keywordsFor(l).join(", ");
+    const destTierPosts = TIERS.map((t) => buildPosts().find((q) => q.tier === t && q.d && q.d.slug === destSlug)).filter(Boolean);
     const facts = [
       l.price ? `from ${inr(l.price)}/night` : "live pricing on Airbnb",
       l.rating ? `★ ${l.rating} rating` : null,
@@ -953,7 +1143,7 @@ function genBnbPages() {
 
     write(`bnbs/${l.slug}.html`, head({
       title: seoTitle(cleanName(l.name), `${locStr(l)}${l.price ? " (" + inr(l.price) + "/night)" : ""}`),
-      desc: fit(`${blurb(l)} ★ ${l.rating || "—"} (${l.reviews || 0} reviews)${l.highlights && l.highlights.length ? " · " + esc(l.highlights[0]) : ""}. Book this ${(l.type || "airbnb").toLowerCase()} in ${l.city}${listStateSuffix(l)} on Airbnb.`, 158),
+      desc: bnbMetaDesc(l),
       canonical: SITE + `/bnbs/${l.slug}.html`,
       image: l.cover,
       jsonld: ld
@@ -969,7 +1159,7 @@ function genBnbPages() {
         <div class="bnb-head">
           <div>
             <div class="bnb-loc">${pinIcon()} ${l.city}${l.state ? ", " + l.state : ""}${l.type ? " · " + l.type : ""}</div>
-            <h1>${esc(cleanName(l.name))}</h1>
+        <h1>${esc(blogTitle(l))}</h1>
             <div class="bnb-rating">${starIcon()} ${l.rating || "—"} <small>· ${l.reviews || 0} reviews${l.host ? ` · hosted by ${l.host}` : ""}</small></div>
             ${(l.hostBadges || []).length ? `<div class="host-badges" style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;">${l.hostBadges.map((b) => `<span class="amen-chip" style="background:var(--teal-50,#e7f5f1);color:var(--teal-800,#0b3d34);border:1px solid var(--teal-200,#b9e2d6);border-radius:999px;padding:4px 12px;font-size:0.8rem;font-weight:600;">${esc(b)}</span>`).join("\n")}</div>` : ""}
           </div>
@@ -992,7 +1182,7 @@ function genBnbPages() {
           <div class="highlight-list" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-top:16px;">
             ${l.highlights.map((h) => `<div class="highlight-card" style="background:var(--teal-50,#e7f5f1);border:1px solid var(--teal-200,#b9e2d6);border-radius:14px;padding:16px 18px;font-size:0.92rem;line-height:1.5;"><span style="color:var(--teal-700,#0f5c4e);font-weight:700;margin-right:6px;">★</span>${esc(h)}</div>`).join("\n")}
           </div>` : ""}
-          ${(l.rating || l.reviewCategories.length) ? `
+          ${(l.rating || (l.reviewCategories || []).length) ? `
           <h2 class="section-title" style="margin-top:44px;">Guest Reviews &amp; Ratings</h2>
           <div class="review-summary" style="display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin-top:16px;">
             <div class="review-card" style="background:var(--teal-50,#e7f5f1);border:1px solid var(--teal-200,#b9e2d6);border-radius:14px;padding:16px 18px;">
@@ -1005,6 +1195,11 @@ function genBnbPages() {
           <div class="fact-strip reveal" style="display:flex;flex-wrap:wrap;gap:10px;margin:28px 0;">
             ${facts.map((f) => `<span class="amen-chip">${f}</span>`).join("\n")}
           </div>
+          ${features.length ? `
+          <h2 class="section-title" style="margin-top:44px;">What Makes This Stay Special</h2>
+          <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:16px;">
+            ${features.map((f) => `<span class="amen-chip" style="background:var(--amber-50,#fef7ec);color:var(--amber-800,#92400e);border:1px solid var(--amber-200,#fde68a);border-radius:999px;padding:6px 16px;font-size:0.88rem;font-weight:600;">★ ${esc(f)}</span>`).join("\n")}
+          </div>` : ""}
           <h2 class="section-title" style="margin-top:44px;">Amenities</h2>
           <div class="amen-grid">
             ${amenities.map((a) => `<span class="amen-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.1V12a10 10 0 1 1-5.9-9.1"/><path d="M22 4 12 14l-3-3"/></svg>${esc(a)}</span>`).join("\n")}
@@ -1012,6 +1207,10 @@ function genBnbPages() {
           <h2 class="section-title" style="margin-top:44px;">Location &amp; Nearby</h2>
           <div class="nearby-list">
             ${nearby.map((n) => `<div class="nearby-item"><span class="nearby-dot"></span>${esc(n)}</div>`).join("\n")}
+          </div>
+          <h2 class="section-title" style="margin-top:44px;">Frequently Asked Questions</h2>
+          <div class="faq-list" style="margin-top:16px;">
+            ${listingFaqs.map((f) => `<details class="faq-item" style="border:1px solid var(--border,#e5e7eb);border-radius:12px;padding:16px 20px;margin-bottom:10px;"><summary style="font-weight:600;cursor:pointer;font-size:0.95rem;">${esc(f.q)}</summary><p style="margin-top:10px;font-size:0.92rem;line-height:1.6;color:var(--muted,#6b7280);">${esc(f.a)}</p></details>`).join("\n")}
           </div>
           <div class="author-box reveal">
             <div class="avatar">${esc((l.host || l.name || "?").charAt(0))}</div>
@@ -1038,6 +1237,11 @@ function genBnbPages() {
         <div class="bnb-grid">
           ${relAll.map((x) => bnbCard(x, "../")).join("\n")}
         </div>
+        ${dest || destTierPosts.length ? `
+        <div style="margin-top:32px;display:flex;flex-wrap:wrap;gap:10px;justify-content:center;">
+          ${dest ? `<a class="btn btn-teal" href="../destinations/${destSlug}.html">Explore all stays in ${dest.name}</a>` : ""}
+          ${destTierPosts.map((p) => `<a class="btn btn-teal" href="../${p.url}">${TIER_LABEL[p.tier]} ${dest ? dest.name : l.city} Guide</a>`).join("\n")}
+        </div>` : ""}
       </div>
     </section>
     <section>
@@ -1107,6 +1311,8 @@ function genTierPosts() {
       const areas = (cities.length ? cities : [d.name]).map((n) => ({ n, q: n, d: `Browse live ${t} Airbnbs in ${n} and book directly on Airbnb.` }));
       const faqs = c.faqs.slice(0, 4);
       const related = TIERS.filter((x) => x !== t).map((x) => buildPosts().find((q) => q.tier === x && q.d && q.d.slug === d.slug)).filter(Boolean);
+      const tierLinks = {};
+      for (const r of related) tierLinks[r.tier] = r;
       const priceLine = p.priceLine;
       const tier = t;
       const ld = [
@@ -1153,7 +1359,7 @@ function genTierPosts() {
           <div class="article-body">
             <p>${c.intro.split("\n\n")[0]}</p>
             <p><strong>${tier === "cheap" ? "Budget doesn't mean boring" : tier === "luxury" ? "Worth every rupee" : "Our top-rated picks"}</strong> — every recommendation below is linked straight to its live Airbnb listing, so the price you see is the price you pay, and booking stays fully protected by Airbnb.</p>
-            <blockquote>Looking for something else in ${d.name}? Browse our <a href="../${related[0] ? related[0].url : "#"}">best</a>, <a href="../${related[1] ? related[1].url : "#"}">cheap</a> and <a href="../${related[2] ? related[2].url : "#"}">luxury</a> ${d.name} Airbnb guides.</blockquote>
+            <blockquote>Looking for something else in ${d.name}? Browse our <a href="../${tierLinks.best ? tierLinks.best.url : "#"}">best</a>, <a href="../${tierLinks.cheap ? tierLinks.cheap.url : "#"}">cheap</a> and <a href="../${tierLinks.luxury ? tierLinks.luxury.url : "#"}">luxury</a> ${d.name} Airbnb guides.</blockquote>
           </div>
           <div class="article-body">
             <h2 id="picks">The ${TIER_LABEL[tier]} Airbnb in ${d.name} — Our Picks</h2>
@@ -1220,7 +1426,7 @@ function genDetailsPosts() {
     const p = buildPosts().find((x) => x.listing && x.listing.slug === l.slug);
     if (!p) continue;
     const tierPosts = TIERS.map((t) => buildPosts().find((q) => q.tier === t && q.d && q.d.slug === (dest ? dest.slug : slug(l.city)))).filter(Boolean);
-    const paras = String(l.description || "").split(/\n{2,}/).filter((x) => x.trim()).slice(0, 4).map((x) => x.replace(/\s+/g, " ").trim());
+    const paras = formatDescription(l);
     if (!paras.length) paras.push(blurb(l));
     const facts = [
       l.price ? `from ${inr(l.price)}/night` : null,
@@ -1246,9 +1452,9 @@ function genDetailsPosts() {
     <section class="page-hero">
       <div class="page-hero-orb one"></div><div class="page-hero-orb two"></div>
       <div class="container">
-        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(cleanName(l.name))}</span></nav>
+        <nav class="crumb" aria-label="Breadcrumb"><a href="../index.html">Home</a><span class="sep">›</span><a href="../blog/index.html">Blog</a><span class="sep">›</span><span>${esc(p.title)}</span></nav>
         <span class="eyebrow eyebrow--light">${l.type || "Airbnb"} · ${l.city}${l.state ? ", " + l.state : ""}</span>
-        <h1>${esc(cleanName(l.name))}</h1>
+        <h1>${esc(p.title)}</h1>
         <p>${blurb(l)}</p>
       </div>
     </section>
