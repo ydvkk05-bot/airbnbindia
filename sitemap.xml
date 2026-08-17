@@ -46,6 +46,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/destinations/dehradun.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/destinations/goa.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -62,6 +67,11 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/bnbs/benaulim-54029360.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/bnbs/dehradun-1647939228094489448.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -102,6 +112,21 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/blog/luxury-airbnb-in-benaulim.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/best-airbnb-in-dehradun.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/cheap-airbnb-in-dehradun.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/luxury-airbnb-in-dehradun.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
@@ -152,6 +177,11 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/blog/benaulim-54029360.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/dehradun-1647939228094489448.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
