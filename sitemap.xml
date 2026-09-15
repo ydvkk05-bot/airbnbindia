@@ -73,7 +73,19 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/destinations/noida.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/destinations/north-goa.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/bnbs/noida-1768825048938982936.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -193,6 +205,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/blog/best-airbnb-in-noida.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/cheap-airbnb-in-noida.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/luxury-airbnb-in-noida.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/blog/best-airbnb-in-north-goa.html</loc>
     <lastmod>2026-08-13</lastmod>
     <changefreq>weekly</changefreq>
@@ -207,6 +237,12 @@
   <url>
     <loc>https://airbnb-india.com/blog/luxury-airbnb-in-north-goa.html</loc>
     <lastmod>2026-08-13</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/noida-1768825048938982936.html</loc>
+    <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
