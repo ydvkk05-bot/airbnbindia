@@ -1960,7 +1960,13 @@ const POSTS = [
 
 const TESTIMONIALS = [];
 
-const NOTIFICATIONS = [];
+const NOTIFICATIONS = [
+  {
+    "id": "nmu2yslmpzm9",
+    "text": "List Your Bnb With Us\nGet More Happy Clients",
+    "link": "https://wa.me/qr/PARIBLU7GPSO01"
+  }
+];
 
 if (typeof window !== 'undefined') window.AIRBNB_INDIA_DATA = { destinations: DESTINATIONS, listings: LISTINGS, posts: POSTS, testimonials: TESTIMONIALS, notifications: NOTIFICATIONS };
 if (typeof module !== 'undefined' && module.exports) module.exports = { DESTINATIONS, LISTINGS, POSTS, TESTIMONIALS, NOTIFICATIONS };
