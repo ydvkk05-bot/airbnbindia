@@ -85,6 +85,12 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/destinations/nasogi.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/destinations/noida.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -98,6 +104,12 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/bnbs/jaipur-1714502666908822034.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/bnbs/nasogi-1668243246767359493.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -271,6 +283,24 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://airbnb-india.com/blog/best-airbnb-in-nasogi.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/cheap-airbnb-in-nasogi.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/luxury-airbnb-in-nasogi.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://airbnb-india.com/blog/best-airbnb-in-noida.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
@@ -308,6 +338,12 @@
   </url>
   <url>
     <loc>https://airbnb-india.com/blog/jaipur-1714502666908822034.html</loc>
+    <lastmod>2026-09-15</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://airbnb-india.com/blog/nasogi-1668243246767359493.html</loc>
     <lastmod>2026-09-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
