@@ -352,11 +352,13 @@ function tierPostObj(d, tier, loc) {
   const topShort = topTitle.replace(/\s*\(\d{4}\)\s*$/, "").replace(/\s+in\s+.+$/, "").trim();
   const title = tier === "best" ? `Best Airbnb in ${d.name} (2026): Top-Rated Stays & Prices`
     : tier === "cheap" ? `Cheap Airbnbs in ${d.name}: ${n} Stays Under ₹2,000`
-    : topShort ? `${topShort} & More — Luxury Airbnbs in ${d.name}` : `Luxury Airbnbs in ${d.name}: Premium Villas & Private Pools`;
+    : topShort ? seoTitle(`Luxury Airbnbs in ${d.name}`, topShort) : fit(`Luxury Airbnbs in ${d.name}: Premium Villas`, 60);
   const topName = top ? cleanName(top.name) : "";
   const topPrice = top && top.price ? `Starting at ${inr(top.price)}/night` : "Live pricing on Airbnb";
   const topRating = top && top.rating ? `★ ${top.rating} rating` : "";
   const tierLabel = tier === "best" ? "top-rated" : tier === "cheap" ? "budget-friendly" : "luxury";
+  const coverFrom = (idx) => (sorted[idx] && sorted[idx].cover) ? sorted[idx].cover : (top && top.cover ? top.cover : destImg(d));
+  const coverImg = tier === "cheap" ? coverFrom(1) : tier === "luxury" ? coverFrom(sorted.length - 1) : coverFrom(0);
   const excerpt = tier === "best"
     ? `${n} handpicked, top-rated Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}. ${topName} leads the list — ${topPrice}${topRating ? " · " + topRating : ""}. Real prices, real reviews, one-click booking on Airbnb.`
     : tier === "cheap"
@@ -366,7 +368,7 @@ function tierPostObj(d, tier, loc) {
     slug: `${tier}-airbnb-in-${d.slug}`,
     title,
     category: TIER_LABEL[tier],
-    img: top && top.cover ? top.cover : destImg(d),
+    img: coverImg,
     url: `blog/${tier}-airbnb-in-${d.slug}.html`,
     date: fmtDate(top && top.listedAt) || fmtDate(today()),
     isoDate: fmtDateIso(top && top.listedAt),
@@ -423,7 +425,7 @@ function head({ title, desc, canonical, image, jsonld = [], ogType = "website", 
   <meta name="theme-color" content="#0b2b26">
   ${keywords ? `<meta name="keywords" content="${keywords}">` : ""}
   ${dateModified ? `<meta property="article:modified_time" content="${dateModified}">` : ""}
-  <meta name="ai-content-declaration" content="human-authored">
+  <meta name="ai-content-declaration" content="auto-generated">
   <link rel="canonical" href="${canonical}">
   <link rel="icon" type="image/svg+xml" href="${prefix}favicon.svg">
   <meta property="og:type" content="${ogType}">
@@ -837,6 +839,7 @@ function genIndex() {
       </div>
     </section>
 
+    ${TESTIMONIALS.length ? `
     <section class="section-alt">
       <div class="container">
         <div class="section-head reveal">
@@ -848,7 +851,7 @@ function genIndex() {
           ${TESTIMONIALS.slice(0, 6).map((t) => testiCard(t)).join("\n")}
         </div>
       </div>
-    </section>
+    </section>` : ""}
 
     <section>
       <div class="container">
@@ -1103,7 +1106,6 @@ function genDestinationPages() {
       </div>
     </section>
   </main>
-  <meta name="keywords" content="${keywords}">
   ` + tail("../"));
   }
 }
@@ -1341,7 +1343,7 @@ function genTierPosts() {
       const cities = [...new Set(loc.map((l) => l.city).filter(Boolean))];
       const areas = (cities.length ? cities : [d.name]).map((n) => ({ n, q: n, d: `Browse live ${t} Airbnbs in ${n} and book directly on Airbnb.` }));
       const faqs = c.faqs.slice(0, 4);
-      const related = TIERS.filter((x) => x !== t).map((x) => buildPosts().find((q) => q.tier === x && q.d && q.d.slug === d.slug)).filter(Boolean);
+      const related = TIERS.map((x) => buildPosts().find((q) => q.tier === x && q.d && q.d.slug === d.slug)).filter(Boolean);
       const tierLinks = {};
       for (const r of related) tierLinks[r.tier] = r;
       const priceLine = p.priceLine;

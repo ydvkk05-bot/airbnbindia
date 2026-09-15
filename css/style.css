@@ -645,7 +645,7 @@ section { padding: 84px 0; }
   .logo { font-size: 1.1rem; }
   .logo-badge { width: 34px; height: 34px; }
   .hero-badge { font-size: 0.78rem; padding: 7px 12px; }
-  .bnbs-head h1 { font-size: 1.5rem; }
+  .bnb-head h1 { font-size: 1.5rem; }
 }
 
 /* ---------- Testimonials ---------- */
@@ -676,11 +676,4 @@ section { padding: 84px 0; }
 
 @media (max-width: 480px) {
   .notif-modal { padding: 34px 22px 26px; }
-}
-
-/* ---------- Reduced motion (v2) ---------- */
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: 0.001s !important; animation-iteration-count: 1 !important; transition-duration: 0.001s !important; }
-  html { scroll-behavior: auto; }
-  .reveal { opacity: 1; transform: none; }
 }

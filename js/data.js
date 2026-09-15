@@ -521,7 +521,7 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-benaulim",
-    "title": "1BHK villa with private pool & More — Luxury Airbnbs in Benaulim",
+    "title": "Luxury Airbnbs in Benaulim — 1BHK villa with private pool",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/luxury-airbnb-in-benaulim.html",
@@ -572,7 +572,7 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-dehradun",
-    "title": "2BHK home with private garden or patio & More — Luxury Airbnbs in Dehradun",
+    "title": "Luxury Airbnbs in Dehradun — 2BHK home with private garden…",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1647939228094489448/original/6468f7b5-b7a2-49ee-8d5b-36c4b4e25b43.png",
     "url": "blog/luxury-airbnb-in-dehradun.html",
@@ -606,7 +606,7 @@ const POSTS = [
     "slug": "cheap-airbnb-in-goa",
     "title": "Cheap Airbnbs in Goa: 2 Stays Under ₹2,000",
     "category": "Cheap",
-    "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/cheap-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
     "excerpt": "2 affordable Airbnb stays in Goa, all under ₹2,000 per night. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
@@ -619,9 +619,9 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-goa",
-    "title": "3BHK bungalow with beach access & More — Luxury Airbnbs in Goa",
+    "title": "Luxury Airbnbs in Goa — 3BHK bungalow with beach access",
     "category": "Luxury",
-    "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
+    "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/luxury-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
     "excerpt": "2 luxury Airbnb stays in Goa — private pools, premium villas and designer homes. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
@@ -668,7 +668,7 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-lucknow",
-    "title": "3BHK home with luxury finishes & More — Luxury Airbnbs in Lucknow",
+    "title": "Luxury Airbnbs in Lucknow — 3BHK home with luxury finishes",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/luxury-airbnb-in-lucknow.html",
@@ -719,7 +719,7 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-north-goa",
-    "title": "3BHK villa with private pool & More — Luxury Airbnbs in North Goa",
+    "title": "Luxury Airbnbs in North Goa — 3BHK villa with private pool",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/luxury-airbnb-in-north-goa.html",
@@ -982,29 +982,7 @@ const POSTS = [
   }
 ];
 
-const TESTIMONIALS = [
-  {
-    "id": "tmsrwp87on13",
-    "name": "Arjun",
-    "text": "Listed my homestay here and got a booking within a week. Free during the launch offer and the page ranks really well.",
-    "rating": 5,
-    "post": ""
-  },
-  {
-    "id": "tmsrwp87la0s",
-    "name": "Rohan & Sneha",
-    "text": "Found our perfect Goa honeymoon villa in minutes. Everything was verified and exactly as described — booked straight through Airbnb.",
-    "rating": 5,
-    "post": "benaulim-54029360"
-  },
-  {
-    "id": "tmsrwottx7ux",
-    "name": "Priya Sharma",
-    "text": "The villa was stunning, pool was spotless and host super responsive",
-    "rating": 5,
-    "post": "north-goa-15839408"
-  }
-];
+const TESTIMONIALS = [];
 
 const NOTIFICATIONS = [];
 
