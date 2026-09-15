@@ -962,12 +962,12 @@ const LISTINGS = [
 const POSTS = [
   {
     "slug": "best-airbnb-in-benaulim",
-    "title": "Best Airbnb in Benaulim (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Benaulim (2026): 1BHK villa with private…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/best-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Benaulim, Goa. Luxury 1 Bedroom Villa with Private Pool & Garden leads the list — Live pricing on Airbnb · ★ 4.98 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Benaulim, Goa. Luxury 1 Bedroom Villa with Private Pool & Garden leads the list — Starting at ₹3,000/night · ★ 4.98 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -979,12 +979,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-benaulim",
-    "title": "Cheap Airbnbs in Benaulim: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Benaulim: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/cheap-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 affordable Airbnb stay in Benaulim, Goa, all under ₹2,000 per night. Luxury 1 Bedroom Villa with Private Pool & Garden — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Benaulim, Goa, from ₹3,000 per night. Luxury 1 Bedroom Villa with Private Pool & Garden — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -996,12 +996,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-benaulim",
-    "title": "Luxury Airbnbs in Benaulim — 1BHK villa with private pool",
+    "title": "Luxury Airbnbs in Benaulim: 1BHK villa with private pool",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/miso/Hosting-54029360/original/5fe49354-558c-4fa9-9f0b-6ba684ea4bfe.jpeg",
     "url": "blog/luxury-airbnb-in-benaulim.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 luxury Airbnb stay in Benaulim, Goa — private pools, premium villas and designer homes. Luxury 1 Bedroom Villa with Private Pool & Garden from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Benaulim, Goa — private pools, premium villas and designer homes. Luxury 1 Bedroom Villa with Private Pool & Garden from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in benaulim",
       "cheap bnb in benaulim",
@@ -1013,12 +1013,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-dehradun",
-    "title": "Best Airbnb in Dehradun (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Dehradun (2026): 2BHK home with private…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1647939228094489448/original/6468f7b5-b7a2-49ee-8d5b-36c4b4e25b43.png",
     "url": "blog/best-airbnb-in-dehradun.html",
     "date": "Aug 17, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Dehradun, Uttarakhand. The Calm Courtyard - Mussoorie Foothills leads the list — Live pricing on Airbnb · ★ 4.97 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Dehradun, Uttarakhand. The Calm Courtyard - Mussoorie Foothills leads the list — Starting at ₹3,000/night · ★ 4.97 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in dehradun",
       "cheap bnb in dehradun",
@@ -1030,12 +1030,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-dehradun",
-    "title": "Cheap Airbnbs in Dehradun: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Dehradun: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1647939228094489448/original/6468f7b5-b7a2-49ee-8d5b-36c4b4e25b43.png",
     "url": "blog/cheap-airbnb-in-dehradun.html",
     "date": "Aug 17, 2026",
-    "excerpt": "1 affordable Airbnb stay in Dehradun, Uttarakhand, all under ₹2,000 per night. The Calm Courtyard - Mussoorie Foothills — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Dehradun, Uttarakhand, from ₹3,000 per night. The Calm Courtyard - Mussoorie Foothills — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in dehradun",
       "cheap bnb in dehradun",
@@ -1047,12 +1047,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-dehradun",
-    "title": "Luxury Airbnbs in Dehradun — 2BHK home with private garden…",
+    "title": "Luxury Airbnbs in Dehradun: 2BHK home with private garden…",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1647939228094489448/original/6468f7b5-b7a2-49ee-8d5b-36c4b4e25b43.png",
     "url": "blog/luxury-airbnb-in-dehradun.html",
     "date": "Aug 17, 2026",
-    "excerpt": "1 luxury Airbnb stay in Dehradun, Uttarakhand — private pools, premium villas and designer homes. The Calm Courtyard - Mussoorie Foothills from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Dehradun, Uttarakhand — private pools, premium villas and designer homes. The Calm Courtyard - Mussoorie Foothills from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in dehradun",
       "cheap bnb in dehradun",
@@ -1064,12 +1064,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-gangtok",
-    "title": "Best Airbnb in Gangtok (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Gangtok (2026): 2BHK serviced apartment &…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/aa4d1825-1934-42b1-8ec3-7b4b297ad5ad.jpg",
     "url": "blog/best-airbnb-in-gangtok.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Gangtok, Sikkim. Mountain View Suite with Kitchen at Karma Casa leads the list — Live pricing on Airbnb · ★ 4.97 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Gangtok, Sikkim. Mountain View Suite with Kitchen at Karma Casa leads the list — Starting at ₹3,000/night · ★ 4.97 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in gangtok",
       "cheap bnb in gangtok",
@@ -1081,12 +1081,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-gangtok",
-    "title": "Cheap Airbnbs in Gangtok: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Gangtok: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/aa4d1825-1934-42b1-8ec3-7b4b297ad5ad.jpg",
     "url": "blog/cheap-airbnb-in-gangtok.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 affordable Airbnb stay in Gangtok, Sikkim, all under ₹2,000 per night. Mountain View Suite with Kitchen at Karma Casa — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Gangtok, Sikkim, from ₹3,000 per night. Mountain View Suite with Kitchen at Karma Casa — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in gangtok",
       "cheap bnb in gangtok",
@@ -1098,12 +1098,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-gangtok",
-    "title": "Luxury Airbnbs in Gangtok — 2BHK serviced apartment",
+    "title": "Luxury Airbnbs in Gangtok: 2BHK serviced apartment",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/aa4d1825-1934-42b1-8ec3-7b4b297ad5ad.jpg",
     "url": "blog/luxury-airbnb-in-gangtok.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 luxury Airbnb stay in Gangtok, Sikkim — private pools, premium villas and designer homes. Mountain View Suite with Kitchen at Karma Casa from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Gangtok, Sikkim — private pools, premium villas and designer homes. Mountain View Suite with Kitchen at Karma Casa from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in gangtok",
       "cheap bnb in gangtok",
@@ -1115,12 +1115,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-goa",
-    "title": "Best Airbnb in Goa (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Goa (2026): 3BHK bungalow with beach access…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/6fb02e24-d589-42bd-8b86-41750d91c3d0.jpg",
     "url": "blog/best-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "2 handpicked, top-rated Airbnb stays in Goa. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim leads the list — Live pricing on Airbnb · ★ 4.93 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "2 handpicked, top-rated Airbnb stays in Goa. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim leads the list — Starting at ₹3,000/night · ★ 4.93 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -1130,12 +1130,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-goa",
-    "title": "Cheap Airbnbs in Goa: 2 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Goa: 2 Stays from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/cheap-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "2 affordable Airbnb stays in Goa, all under ₹2,000 per night. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "2 affordable Airbnb stays in Goa, from ₹3,000 per night. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -1145,12 +1145,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-goa",
-    "title": "Luxury Airbnbs in Goa — 3BHK bungalow with beach access",
+    "title": "Luxury Airbnbs in Goa: 3BHK bungalow with beach access",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6NDUyMjk2MTY%3D/original/7bb50571-dcff-45f4-90ae-b0a2c7eabd15.jpeg",
     "url": "blog/luxury-airbnb-in-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "2 luxury Airbnb stays in Goa — private pools, premium villas and designer homes. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "2 luxury Airbnb stays in Goa — private pools, premium villas and designer homes. 3 Bhk Luxury Beach Villa. Happy 2 U Candolim from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in goa",
       "cheap bnb in goa",
@@ -1160,12 +1160,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-jaipur",
-    "title": "Best Airbnb in Jaipur (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Jaipur (2026): 2BHK rental unit with luxury…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1714502666908822034/original/f7431427-56fd-42a3-b4b1-05901298c9a3.jpeg",
     "url": "blog/best-airbnb-in-jaipur.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Jaipur, Rajasthan. Casa Bleu -a Timeless Royal Escape by Artive Stays leads the list — Live pricing on Airbnb · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Jaipur, Rajasthan. Casa Bleu -a Timeless Royal Escape by Artive Stays leads the list — Starting at ₹3,000/night · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in jaipur",
       "cheap bnb in jaipur",
@@ -1177,12 +1177,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-jaipur",
-    "title": "Cheap Airbnbs in Jaipur: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Jaipur: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1714502666908822034/original/f7431427-56fd-42a3-b4b1-05901298c9a3.jpeg",
     "url": "blog/cheap-airbnb-in-jaipur.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 affordable Airbnb stay in Jaipur, Rajasthan, all under ₹2,000 per night. Casa Bleu -a Timeless Royal Escape by Artive Stays — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Jaipur, Rajasthan, from ₹3,000 per night. Casa Bleu -a Timeless Royal Escape by Artive Stays — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in jaipur",
       "cheap bnb in jaipur",
@@ -1194,12 +1194,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-jaipur",
-    "title": "Luxury Airbnbs in Jaipur — 2BHK rental unit with luxury…",
+    "title": "Luxury Airbnbs in Jaipur: 2BHK rental unit with luxury…",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1714502666908822034/original/f7431427-56fd-42a3-b4b1-05901298c9a3.jpeg",
     "url": "blog/luxury-airbnb-in-jaipur.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 luxury Airbnb stay in Jaipur, Rajasthan — private pools, premium villas and designer homes. Casa Bleu -a Timeless Royal Escape by Artive Stays from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Jaipur, Rajasthan — private pools, premium villas and designer homes. Casa Bleu -a Timeless Royal Escape by Artive Stays from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in jaipur",
       "cheap bnb in jaipur",
@@ -1211,12 +1211,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-lucknow",
-    "title": "Best Airbnb in Lucknow (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Lucknow (2026): 3BHK home with luxury…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/best-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Lucknow, Uttar Pradesh. The Yellow House — Luxury 3bhk Villa in Gomti Nagar leads the list — Live pricing on Airbnb · ★ 4.88 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Lucknow, Uttar Pradesh. The Yellow House — Luxury 3bhk Villa in Gomti Nagar leads the list — Starting at ₹3,000/night · ★ 4.88 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -1228,12 +1228,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-lucknow",
-    "title": "Cheap Airbnbs in Lucknow: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Lucknow: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/cheap-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 affordable Airbnb stay in Lucknow, Uttar Pradesh, all under ₹2,000 per night. The Yellow House — Luxury 3bhk Villa in Gomti Nagar — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Lucknow, Uttar Pradesh, from ₹3,000 per night. The Yellow House — Luxury 3bhk Villa in Gomti Nagar — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -1245,12 +1245,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-lucknow",
-    "title": "Luxury Airbnbs in Lucknow — 3BHK home with luxury finishes",
+    "title": "Luxury Airbnbs in Lucknow: 3BHK home with luxury finishes",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1592729918855637425/original/f9826cd1-b559-468f-bc68-754a745af7a2.jpeg",
     "url": "blog/luxury-airbnb-in-lucknow.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 luxury Airbnb stay in Lucknow, Uttar Pradesh — private pools, premium villas and designer homes. The Yellow House — Luxury 3bhk Villa in Gomti Nagar from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Lucknow, Uttar Pradesh — private pools, premium villas and designer homes. The Yellow House — Luxury 3bhk Villa in Gomti Nagar from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in lucknow",
       "cheap bnb in lucknow",
@@ -1262,12 +1262,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-nainital",
-    "title": "Best Airbnb in Nainital (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Nainital (2026): 2BHK Private room & More",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1384587580359048933/original/568f3483-e10a-4ca1-a044-ab319b1feed0.jpeg",
     "url": "blog/best-airbnb-in-nainital.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Nainital, Uttarakhand. Thulgharia Homes — near Mall Road — Parking/kitchen leads the list — Live pricing on Airbnb · ★ 4.74 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Nainital, Uttarakhand. Thulgharia Homes — near Mall Road — Parking/kitchen leads the list — Starting at ₹3,000/night · ★ 4.74 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in nainital",
       "cheap bnb in nainital",
@@ -1279,12 +1279,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-nainital",
-    "title": "Cheap Airbnbs in Nainital: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Nainital: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1384587580359048933/original/568f3483-e10a-4ca1-a044-ab319b1feed0.jpeg",
     "url": "blog/cheap-airbnb-in-nainital.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 affordable Airbnb stay in Nainital, Uttarakhand, all under ₹2,000 per night. Thulgharia Homes — near Mall Road — Parking/kitchen — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Nainital, Uttarakhand, from ₹3,000 per night. Thulgharia Homes — near Mall Road — Parking/kitchen — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in nainital",
       "cheap bnb in nainital",
@@ -1296,12 +1296,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-nainital",
-    "title": "Luxury Airbnbs in Nainital — 2BHK Private room",
+    "title": "Luxury Airbnbs in Nainital: 2BHK Private room",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1384587580359048933/original/568f3483-e10a-4ca1-a044-ab319b1feed0.jpeg",
     "url": "blog/luxury-airbnb-in-nainital.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 luxury Airbnb stay in Nainital, Uttarakhand — private pools, premium villas and designer homes. Thulgharia Homes — near Mall Road — Parking/kitchen from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Nainital, Uttarakhand — private pools, premium villas and designer homes. Thulgharia Homes — near Mall Road — Parking/kitchen from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in nainital",
       "cheap bnb in nainital",
@@ -1313,12 +1313,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-nasogi",
-    "title": "Best Airbnb in Nasogi (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Nasogi (2026): 3BHK home with luxury…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1550740345215030199/original/ab4f796f-9cc8-45a1-b3ec-00242437753c.jpeg",
     "url": "blog/best-airbnb-in-nasogi.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in Nasogi, Himachal Pradesh. The Polaris Himalyan Chalet — 3BHK leads the list — Live pricing on Airbnb · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in Nasogi, Himachal Pradesh. The Polaris Himalyan Chalet — 3BHK leads the list — Starting at ₹3,000/night · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in nasogi",
       "cheap bnb in nasogi",
@@ -1330,12 +1330,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-nasogi",
-    "title": "Cheap Airbnbs in Nasogi: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Nasogi: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1550740345215030199/original/ab4f796f-9cc8-45a1-b3ec-00242437753c.jpeg",
     "url": "blog/cheap-airbnb-in-nasogi.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 affordable Airbnb stay in Nasogi, Himachal Pradesh, all under ₹2,000 per night. The Polaris Himalyan Chalet — 3BHK — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in Nasogi, Himachal Pradesh, from ₹3,000 per night. The Polaris Himalyan Chalet — 3BHK — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in nasogi",
       "cheap bnb in nasogi",
@@ -1347,12 +1347,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-nasogi",
-    "title": "Luxury Airbnbs in Nasogi — 3BHK home with luxury finishes",
+    "title": "Luxury Airbnbs in Nasogi: 3BHK home with luxury finishes",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1550740345215030199/original/ab4f796f-9cc8-45a1-b3ec-00242437753c.jpeg",
     "url": "blog/luxury-airbnb-in-nasogi.html",
     "date": "Sep 15, 2026",
-    "excerpt": "1 luxury Airbnb stay in Nasogi, Himachal Pradesh — private pools, premium villas and designer homes. The Polaris Himalyan Chalet — 3BHK from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in Nasogi, Himachal Pradesh — private pools, premium villas and designer homes. The Polaris Himalyan Chalet — 3BHK from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in nasogi",
       "cheap bnb in nasogi",
@@ -1364,12 +1364,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-noida",
-    "title": "Best Airbnb in Noida (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in Noida (2026): 2BHK rental unit & More",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1760086790841856144/original/389efd6f-faab-49ee-9054-9f4afa06965b.png",
     "url": "blog/best-airbnb-in-noida.html",
     "date": "Sep 15, 2026",
-    "excerpt": "2 handpicked, top-rated Airbnb stays in Noida, Uttar Pradesh. Letstay – Spacious & Elegant 2BHK Apartment leads the list — Live pricing on Airbnb · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "2 handpicked, top-rated Airbnb stays in Noida, Uttar Pradesh. Letstay – Spacious & Elegant 2BHK Apartment leads the list — Starting at ₹3,000/night · ★ 5 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in noida",
       "cheap bnb in noida",
@@ -1381,12 +1381,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-noida",
-    "title": "Cheap Airbnbs in Noida: 2 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in Noida: 2 Stays from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1768825048938982936/original/dfa4dfd4-1e67-461b-8ba2-bb8f9d297526.jpeg",
     "url": "blog/cheap-airbnb-in-noida.html",
     "date": "Sep 15, 2026",
-    "excerpt": "2 affordable Airbnb stays in Noida, Uttar Pradesh, all under ₹2,000 per night. Letstay – Spacious & Elegant 2BHK Apartment — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "2 affordable Airbnb stays in Noida, Uttar Pradesh, from ₹3,000 per night. Letstay – Spacious & Elegant 2BHK Apartment — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in noida",
       "cheap bnb in noida",
@@ -1398,12 +1398,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-noida",
-    "title": "Luxury Airbnbs in Noida — 2BHK rental unit",
+    "title": "Luxury Airbnbs in Noida: 2BHK rental unit",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-1768825048938982936/original/dfa4dfd4-1e67-461b-8ba2-bb8f9d297526.jpeg",
     "url": "blog/luxury-airbnb-in-noida.html",
     "date": "Sep 15, 2026",
-    "excerpt": "2 luxury Airbnb stays in Noida, Uttar Pradesh — private pools, premium villas and designer homes. Letstay – Spacious & Elegant 2BHK Apartment from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "2 luxury Airbnb stays in Noida, Uttar Pradesh — private pools, premium villas and designer homes. Letstay – Spacious & Elegant 2BHK Apartment from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in noida",
       "cheap bnb in noida",
@@ -1415,12 +1415,12 @@ const POSTS = [
   },
   {
     "slug": "best-airbnb-in-north-goa",
-    "title": "Best Airbnb in North Goa (2026): Top-Rated Stays & Prices",
+    "title": "Best Airbnb in North Goa (2026): 3BHK villa with private…",
     "category": "Best",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/best-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 handpicked, top-rated Airbnb stay in North Goa, Goa. Private Pool Villa in Goa leads the list — Live pricing on Airbnb · ★ 4.63 rating. Real prices, real reviews, one-click booking on Airbnb.",
+    "excerpt": "1 handpicked, top-rated Airbnb stay in North Goa, Goa. Private Pool Villa in Goa leads the list — Starting at ₹3,000/night · ★ 4.63 rating. Real prices, real reviews, one-click booking on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",
@@ -1432,12 +1432,12 @@ const POSTS = [
   },
   {
     "slug": "cheap-airbnb-in-north-goa",
-    "title": "Cheap Airbnbs in North Goa: 1 Stays Under ₹2,000",
+    "title": "Cheap Airbnbs in North Goa: 1 Stay from ₹3,000",
     "category": "Cheap",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/cheap-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 affordable Airbnb stay in North Goa, Goa, all under ₹2,000 per night. Private Pool Villa in Goa — from live pricing. Every pick is verified, reviewed and bookable directly on Airbnb.",
+    "excerpt": "1 affordable Airbnb stay in North Goa, Goa, from ₹3,000 per night. Private Pool Villa in Goa — from ₹3,000/night. Every pick is verified, reviewed and bookable directly on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",
@@ -1449,12 +1449,12 @@ const POSTS = [
   },
   {
     "slug": "luxury-airbnb-in-north-goa",
-    "title": "Luxury Airbnbs in North Goa — 3BHK villa with private pool",
+    "title": "Luxury Airbnbs in North Goa: 3BHK villa with private pool",
     "category": "Luxury",
     "img": "https://a0.muscache.com/im/pictures/hosting/Hosting-U3RheVN1cHBseUxpc3Rpbmc6MTU4Mzk0MDg=/original/492dda6c-a57e-416d-8dcd-a7c83db2be0e.jpeg",
     "url": "blog/luxury-airbnb-in-north-goa.html",
     "date": "Aug 14, 2026",
-    "excerpt": "1 luxury Airbnb stay in North Goa, Goa — private pools, premium villas and designer homes. Private Pool Villa in Goa from live pricing. Verified listings with real photos and guest reviews on Airbnb.",
+    "excerpt": "1 luxury Airbnb stay in North Goa, Goa — private pools, premium villas and designer homes. Private Pool Villa in Goa from ₹3,000/night. Verified listings with real photos and guest reviews on Airbnb.",
     "keywords": [
       "best airbnb in north goa",
       "cheap bnb in north goa",

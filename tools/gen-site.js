@@ -35,6 +35,13 @@ const TIER_LABEL = { best: "Best", cheap: "Cheap", luxury: "Luxury" };
 
 const write = (rel, html) => fs.writeFileSync(path.join(ROOT, rel), html);
 const inr = (n) => (n ? "₹" + Number(n).toLocaleString("en-IN") : null);
+
+/* Listings where Airbnb doesn't reveal a price yet have no price data.
+   Treat them as a mid-range default (₹2,000–₹5,000 band) for tiering and
+   titles instead of dropping them; the cards/pages still say "Live price"
+   where the raw price is null. */
+const EFF_PRICE = 3000;
+const effPrice = (l) => (typeof l.price === "number" && l.price > 0 ? l.price : EFF_PRICE);
 const priceFlag = (n) => (n ? inr(n) + "/night" : "Live price");
 const today = () => new Date().toISOString().slice(0, 10);
 const fmtDate = (iso) => {
@@ -229,13 +236,13 @@ function destKeywords(d) {
 
 const tierListings = (loc, tier) => {
   const arr = loc.slice();
-  if (tier === "cheap") arr.sort((a, b) => (a.price || Infinity) - (b.price || Infinity));
-  else if (tier === "luxury") arr.sort((a, b) => (b.price || 0) - (a.price || 0));
+  if (tier === "cheap") arr.sort((a, b) => effPrice(a) - effPrice(b));
+  else if (tier === "luxury") arr.sort((a, b) => effPrice(b) - effPrice(a));
   else arr.sort((a, b) => (b.rating || 0) - (a.rating || 0));
   return arr;
 };
 
-const tierOf = (l) => (l.price == null ? "Mid-range" : l.price >= 4000 ? "Luxury" : l.price <= 2000 ? "Budget" : "Mid-range");
+const tierOf = (l) => { const p = effPrice(l); return p >= 4000 ? "Luxury" : p <= 2000 ? "Budget" : "Mid-range"; };
 
 /* Auto-generate FAQs for a listing — used for FAQPage schema + on-page FAQ. */
 function autoFaq(l) {
@@ -347,14 +354,30 @@ function tierPostObj(d, tier, loc) {
   const sorted = tierListings(loc, tier);
   const top = sorted[0];
   const n = loc.length;
-  const priceLine = tier === "cheap" ? "under ₹2,000 per night" : tier === "luxury" ? "₹4,000+ per night" : "every budget";
+  const eff = loc.map((l) => effPrice(l));
+  const minP = Math.min(...eff);
+  const maxP = Math.max(...eff);
+  const budgetPrices = eff.filter((p) => p <= 2000);
+  const luxPrices = eff.filter((p) => p >= 4000);
+  const cheapCap = budgetPrices.length ? Math.max(...budgetPrices) : null;
+  const luxFrom = luxPrices.length ? Math.min(...luxPrices) : null;
+  const stayWord = (x) => (x === 1 ? "Stay" : "Stays");
+  const priceLine = tier === "cheap"
+    ? (cheapCap ? `under ${inr(cheapCap)} per night` : `starting at ${inr(minP)} per night`)
+    : tier === "luxury"
+    ? `starting at ${inr(luxFrom || maxP)} per night`
+    : "every budget";
   const topTitle = top ? blogTitle(top) : "";
   const topShort = topTitle.replace(/\s*\(\d{4}\)\s*$/, "").replace(/\s+in\s+.+$/, "").trim();
-  const title = tier === "best" ? `Best Airbnb in ${d.name} (2026): Top-Rated Stays & Prices`
-    : tier === "cheap" ? `Cheap Airbnbs in ${d.name}: ${n} Stays Under ₹2,000`
-    : topShort ? seoTitle(`Luxury Airbnbs in ${d.name}`, topShort) : fit(`Luxury Airbnbs in ${d.name}: Premium Villas`, 60);
+  const title = tier === "best"
+    ? fit(`Best Airbnb in ${d.name} (2026): ${topShort ? topShort + " & More" : "Top-Rated Stays & Prices"}`, 60)
+    : tier === "cheap"
+    ? fit(`Cheap Airbnbs in ${d.name}: ${n} ${stayWord(n)} from ${inr(minP)}`, 60)
+    : topShort
+    ? fit(`Luxury Airbnbs in ${d.name}: ${topShort}`, 60)
+    : `Luxury Airbnbs in ${d.name}: Premium Villas`;
   const topName = top ? cleanName(top.name) : "";
-  const topPrice = top && top.price ? `Starting at ${inr(top.price)}/night` : "Live pricing on Airbnb";
+  const topPrice = top ? `Starting at ${inr(effPrice(top))}/night` : "Live pricing on Airbnb";
   const topRating = top && top.rating ? `★ ${top.rating} rating` : "";
   const tierLabel = tier === "best" ? "top-rated" : tier === "cheap" ? "budget-friendly" : "luxury";
   const coverFrom = (idx) => (sorted[idx] && sorted[idx].cover) ? sorted[idx].cover : (top && top.cover ? top.cover : destImg(d));
@@ -362,8 +385,8 @@ function tierPostObj(d, tier, loc) {
   const excerpt = tier === "best"
     ? `${n} handpicked, top-rated Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}. ${topName} leads the list — ${topPrice}${topRating ? " · " + topRating : ""}. Real prices, real reviews, one-click booking on Airbnb.`
     : tier === "cheap"
-    ? `${n} affordable Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}, all under ₹2,000 per night. ${topName ? topName + " — from " + (top.price ? inr(top.price) + "/night" : "live pricing") + "." : ""} Every pick is verified, reviewed and bookable directly on Airbnb.`
-    : `${n} luxury Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)} — private pools, premium villas and designer homes. ${topName ? topName + " from " + (top.price ? inr(top.price) + "/night" : "live pricing") + "." : ""} Verified listings with real photos and guest reviews on Airbnb.`;
+    ? `${n} affordable Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)}, ${cheapCap ? "all under " + inr(cheapCap) + " per night" : "from " + inr(minP) + " per night"}. ${topName ? topName + " — from " + inr(effPrice(top)) + "/night." : ""} Every pick is verified, reviewed and bookable directly on Airbnb.`
+    : `${n} luxury Airbnb ${n === 1 ? "stay" : "stays"} in ${d.name}${destStateSuffix(d)} — private pools, premium villas and designer homes. ${topName ? topName + " from " + inr(effPrice(top)) + "/night." : ""} Verified listings with real photos and guest reviews on Airbnb.`;
   return {
     slug: `${tier}-airbnb-in-${d.slug}`,
     title,
@@ -703,6 +726,8 @@ function genIndex() {
   const blogPicks = posts.slice(0, 6);
   const firstDest = DESTINATIONS[0];
   const tierHref = (t) => firstDest ? `blog/${t}-airbnb-in-${firstDest.slug}.html` : "blog/index.html";
+  const allBudget = posts.filter((p) => p.tier === "cheap").flatMap((p) => p.listings || []).map((l) => effPrice(l)).filter((p) => p <= 2000);
+  const cheapCap = allBudget.length ? Math.max(...allBudget) : EFF_PRICE;
   const marqueeNames = DESTINATIONS.length ? DESTINATIONS.map((d) => d.name) : ["Goa", "Jaipur", "Udaipur", "Manali", "Kerala", "Rishikesh", "Jaisalmer", "Shimla"];
 
   write("index.html", head({
@@ -784,7 +809,7 @@ function genIndex() {
           <a class="tier-card tier--cheap reveal" data-delay="1" href="${tierHref("cheap")}">
             <span class="tier-emoji">₹</span>
             <h3>Cheap Airbnbs in India</h3>
-            <p>Great stays under ₹2,000 — clean beds, hot water, good hosts, zero fuss. Perfect for backpackers.</p>
+            <p>Great stays under ${inr(cheapCap)} — clean beds, hot water, good hosts, zero fuss. Perfect for backpackers.</p>
             <span class="tier-link">Browse budget stays <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
           </a>
           <a class="tier-card tier--luxury reveal" data-delay="2" href="${tierHref("luxury")}">
@@ -1399,7 +1424,7 @@ function genTierPosts() {
           </div>
           <div class="article-body">
             <h2 id="picks">The ${TIER_LABEL[tier]} Airbnb in ${d.name} — Our Picks</h2>
-            <p>Prices range from ${priceLine}. Every stay is handpicked, verified and bookable in one click on Airbnb.</p>
+            <p>Prices here span ${priceLine}. Every stay is handpicked, verified and bookable in one click on Airbnb.</p>
           </div>
           <div class="bnb-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr));">
             ${sorted.map((l) => bnbCard(l, "../")).join("\n")}

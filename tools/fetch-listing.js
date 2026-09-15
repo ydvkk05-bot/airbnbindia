@@ -358,14 +358,24 @@ async function fetchListing(inputUrl) {
   const hostVals = collect(blocks, "hostName").map(firstStr).filter(Boolean)
     .concat(collect(blocks, "firstName").map(firstStr).filter(Boolean));
   if (!d.host && hostVals[0]) d.host = hostVals[0];
-  /* price: embedded pricingRate -> rupee/night pattern -> null */
-  const pr = collect(blocks, "pricingRate").concat(collect(blocks, "priceRate")).map(firstNum).filter(Boolean);
-  if (pr.length) d.price = Math.round(pr[0]);
-  if (!d.price) {
-    const m = html.match(/₹\s?([\d,]+)[^₹\n]{0,60}?\/?\s?night/i);
-    if (m) d.price = Number(m[1].replace(/,/g, ""));
+  /* price: Airbnb's SSR uses object-shaped price fields under keys it keeps
+     renaming, so collect()/firstNum() miss them. Robust alternative: the full
+     page (SSR JSON strings + meta + visible text) repeats the nightly base
+     price many times as "₹1,250" — take the most frequent ₹ amount. */
+  const priceCounts = new Map();
+  const scan = (txt) => {
+    const re = /₹\s*([\d,]{3,}(?:\.\d{1,2})?)/g;
+    let m;
+    while ((m = re.exec(txt))) {
+      const n = Number(m[1].replace(/,/g, ""));
+      if (Number.isFinite(n) && n >= 200 && n <= 5000000) priceCounts.set(n, (priceCounts.get(n) || 0) + 1);
+    }
+  };
+  try { for (const b of blocks) scan(JSON.stringify(b)); } catch (e) { /* ignore */ }
+  scan(html);
+  if (priceCounts.size) {
+    d.price = Math.round([...priceCounts.entries()].sort((a, b) => b[1] - a[1])[0][0]);
   }
-  if (d.price) d.price = Math.round(d.price);
 
   /* images */
   d.images = extractImages(html);
