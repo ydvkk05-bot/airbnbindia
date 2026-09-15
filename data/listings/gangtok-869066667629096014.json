@@ -93,9 +93,10 @@
   "responseRate": "Response rate: 100%",
   "responseTime": "Responds within an hour",
   "slug": "gangtok-869066667629096014",
-  "lastChecked": 1789494300168,
   "listedAt": "2026-09-15T17:45:04.161Z",
-  "updatedAt": "2026-09-15T17:45:04.161Z",
+  "destSlug": "gangtok",
+  "lastChecked": 1789495703014,
+  "updatedAt": "2026-09-15T18:08:23.015Z",
   "keywords": [
     "best airbnb in gangtok",
     "cheap bnb in gangtok",
@@ -127,6 +128,5 @@
     "valley view entire serviced apartment gangtok",
     "kitchen gangtok",
     "kitchen entire serviced apartment gangtok"
-  ],
-  "destSlug": "gangtok"
+  ]
 }

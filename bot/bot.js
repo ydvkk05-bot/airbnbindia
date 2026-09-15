@@ -427,7 +427,7 @@ async function regenAndPush(log) {
     pushSkipped = "no git repository found (missing .git) in the project folder";
   } else {
     try {
-      execSync('git add -A && git commit -m "bot: ' + log + '" && git push', {
+      execSync('git add -A && (git commit -m "bot: ' + log + '" || git diff --cached --quiet) && git push', {
         cwd: ROOT, stdio: ["ignore", "pipe", "pipe"], timeout: 30000, shell: true
       });
       pushed = true;
